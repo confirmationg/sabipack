@@ -1,8 +1,0 @@
-{
- "name": "sabipack",
- "private": true,
- "type": "module",
- "scripts": {
-  "test": "node scripts/test-validate.mjs && node scripts/test-api.mjs && node scripts/test-try.mjs"
- }
-}
