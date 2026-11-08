@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   if (text.length > MAX) return res.status(400).json({ error: `Please keep it under ${MAX} characters.` });
   try {
     const pack = await generatePack({ topic: 'Your notes', sub: 'Student-supplied notes', src: text, key, model,
-      audience: 'Nigerian secondary school students preparing for exams', maxTokens: 1500 });
+      audience: 'Nigerian secondary school students preparing for exams', maxTokens: 4000 });
     return res.status(200).json({ ...pack,
       meta: { status: 'draft', note: 'Made from the pasted notes by AI. Check it before use.', generated_at: new Date().toISOString() } });
   } catch (e) { return res.status(502).json({ error: 'The AI could not make a valid pack this time. Please try again.' }); }
