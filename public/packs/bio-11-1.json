@@ -1,0 +1,78 @@
+{
+ "subtopic_id": "bio-11-1",
+ "topic": "Living organisms",
+ "subtopic": "Cell structure and functions of cell components",
+ "lesson": {
+  "title": "Cell structure and function",
+  "body": "All living things are made of cells, and every part of a cell has a job. The cell membrane surrounds the cell and controls what goes in and out. The cytoplasm is the jelly-like fluid where many reactions happen. The nucleus controls the cell’s activities and holds the DNA. Mitochondria release energy from food during respiration. Ribosomes make proteins. Plant cells also have a cell wall made of cellulose that gives shape and support, chloroplasts that carry out photosynthesis, and a large vacuole that stores cell sap. Animal cells have no cell wall and no chloroplasts, and they usually have only small vacuoles.",
+  "audio_script": "Every living thing is made of cells. The nucleus is the control centre and holds the DNA. The cell membrane decides what enters and leaves. Mitochondria release energy from food. Plant cells also have a cell wall for support, chloroplasts for photosynthesis, and a large vacuole. Animal cells do not have these."
+ },
+ "questions": [
+  {
+   "stem": "Which part of the cell controls its activities and holds the DNA?",
+   "options": [
+    "Nucleus",
+    "Mitochondrion",
+    "Cell wall",
+    "Vacuole"
+   ],
+   "answer_index": 0,
+   "explanation": "The nucleus is the control centre of the cell and contains the DNA.",
+   "objective_hint": "identify the structures of plant and animal cells"
+  },
+  {
+   "stem": "Where does a cell release energy from food?",
+   "options": [
+    "Ribosome",
+    "Mitochondrion",
+    "Chloroplast",
+    "Nucleus"
+   ],
+   "answer_index": 1,
+   "explanation": "Mitochondria release energy during respiration.",
+   "objective_hint": "analyse the functions of the components of cells"
+  },
+  {
+   "stem": "Which structure is found in plant cells but not in animal cells?",
+   "options": [
+    "Cell membrane",
+    "Nucleus",
+    "Cell wall",
+    "Mitochondrion"
+   ],
+   "answer_index": 2,
+   "explanation": "Plant cells have a cellulose cell wall. Animal cells do not.",
+   "objective_hint": "compare and contrast plant and animal cells"
+  },
+  {
+   "stem": "Photosynthesis takes place in the:",
+   "options": [
+    "Mitochondrion",
+    "Ribosome",
+    "Cytoplasm",
+    "Chloroplast"
+   ],
+   "answer_index": 3,
+   "explanation": "Chloroplasts contain chlorophyll and carry out photosynthesis.",
+   "objective_hint": "analyse the functions of the components of cells"
+  },
+  {
+   "stem": "What does the cell membrane do?",
+   "options": [
+    "Makes proteins",
+    "Controls what enters and leaves the cell",
+    "Stores cell sap",
+    "Gives plant cells their shape"
+   ],
+   "answer_index": 1,
+   "explanation": "The cell membrane controls the movement of substances into and out of the cell.",
+   "objective_hint": "analyse the functions of the components of cells"
+  }
+ ],
+ "meta": {
+  "status": "draft",
+  "authored_by": "Claude (AI), written from the JAMB Biology syllabus objectives (JambKit copy). Pending review by the developer.",
+  "note": "Draft written by AI. Check it before use.",
+  "generated_at": "2026-11-09"
+ }
+}

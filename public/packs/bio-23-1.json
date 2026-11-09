@@ -1,0 +1,78 @@
+{
+ "subtopic_id": "bio-23-1",
+ "topic": "Transport",
+ "subtopic": "Media and processes of transport",
+ "lesson": {
+  "title": "Diffusion, osmosis and active transport",
+  "body": "Cells must take in materials such as oxygen and water and get rid of wastes. Diffusion is the movement of particles from where there are many of them (high concentration) to where there are few (low concentration). It needs no energy. Osmosis is the movement of water through a partially permeable membrane from a dilute solution to a more concentrated solution. A plant cell that takes in water becomes firm, which is called turgid. In a very concentrated solution, a plant cell loses water and its membrane pulls away from the cell wall, which is called plasmolysis. Active transport moves substances against a concentration gradient and needs energy.",
+  "audio_script": "Diffusion is the movement of particles from high concentration to low concentration, and it needs no energy. Osmosis is the movement of water through a partially permeable membrane, from a dilute solution to a concentrated one. A plant cell full of water is turgid. If it loses water, it is plasmolysed. Active transport needs energy."
+ },
+ "questions": [
+  {
+   "stem": "Diffusion is the movement of particles from a region of:",
+   "options": [
+    "Low concentration to high concentration",
+    "High concentration to low concentration",
+    "Cold to warm",
+    "Solid to liquid"
+   ],
+   "answer_index": 1,
+   "explanation": "Particles spread from where they are many to where they are few.",
+   "objective_hint": "describe diffusion as a mechanism of transportation"
+  },
+  {
+   "stem": "Osmosis is the movement of:",
+   "options": [
+    "Water through a partially permeable membrane",
+    "Salt through a cell wall",
+    "Oxygen out of the blood",
+    "Food through the gut wall"
+   ],
+   "answer_index": 0,
+   "explanation": "Osmosis is the movement of water through a partially permeable membrane.",
+   "objective_hint": "describe osmosis as a mechanism of transportation"
+  },
+  {
+   "stem": "A plant cell that is full of water and firm is said to be:",
+   "options": [
+    "Plasmolysed",
+    "Turgid",
+    "Flaccid and dead",
+    "Dividing"
+   ],
+   "answer_index": 1,
+   "explanation": "A cell full of water is turgid.",
+   "objective_hint": "describe turgidity"
+  },
+  {
+   "stem": "Which process needs energy to move substances against a concentration gradient?",
+   "options": [
+    "Diffusion",
+    "Osmosis",
+    "Active transport",
+    "Evaporation"
+   ],
+   "answer_index": 2,
+   "explanation": "Active transport uses energy to move substances against the gradient.",
+   "objective_hint": "describe active transport"
+  },
+  {
+   "stem": "A plant cell is placed in a very concentrated sugar solution. What happens?",
+   "options": [
+    "It takes in water and bursts",
+    "It loses water and becomes plasmolysed",
+    "Nothing happens",
+    "It makes a new cell wall"
+   ],
+   "answer_index": 1,
+   "explanation": "Water leaves the cell by osmosis, so the membrane pulls away from the cell wall.",
+   "objective_hint": "describe plasmolysis"
+  }
+ ],
+ "meta": {
+  "status": "draft",
+  "authored_by": "Claude (AI), written from the JAMB Biology syllabus objectives (JambKit copy). Pending review by the developer.",
+  "note": "Draft written by AI. Check it before use.",
+  "generated_at": "2026-11-09"
+ }
+}

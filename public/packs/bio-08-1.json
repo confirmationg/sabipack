@@ -1,1 +1,78 @@
-//
+{
+ "subtopic_id": "bio-08-1",
+ "topic": "Heredity",
+ "subtopic": "Chromosomes and transmission of hereditary characters",
+ "lesson": {
+  "title": "DNA, genes and chromosomes",
+  "body": "Traits such as height and blood group are passed from parents to children. The instructions are carried by DNA in the nucleus. DNA is coiled into structures called chromosomes, and a gene is a short section of DNA that controls a trait. A human body cell has 46 chromosomes, in 23 pairs. Gametes (sperm and egg) are made by meiosis, which halves the number of chromosomes to 23. During meiosis the two genes of a pair separate, so each gamete carries only one. This is called segregation. At fertilization a sperm and an egg join and the number returns to 46. The gametes meet by chance, so the new combination of genes is random.",
+  "audio_script": "Traits are passed from parents to children by genes. Genes are sections of DNA, and DNA is packed into chromosomes in the nucleus. A human body cell has forty-six chromosomes. Gametes are made by meiosis and have twenty-three. At fertilization, a sperm and an egg join, and the number goes back to forty-six."
+ },
+ "questions": [
+  {
+   "stem": "Genetic information is carried by:",
+   "options": [
+    "Chlorophyll",
+    "DNA",
+    "Cellulose",
+    "Haemoglobin"
+   ],
+   "answer_index": 1,
+   "explanation": "DNA carries the instructions for traits.",
+   "objective_hint": "illustrate simple structure of DNA"
+  },
+  {
+   "stem": "How many chromosomes are in a normal human body cell?",
+   "options": [
+    "23",
+    "46",
+    "48",
+    "92"
+   ],
+   "answer_index": 1,
+   "explanation": "Humans have 46 chromosomes, in 23 pairs.",
+   "objective_hint": "illustrate segregation of genes at meiosis"
+  },
+  {
+   "stem": "Gametes are produced by:",
+   "options": [
+    "Mitosis",
+    "Fertilization",
+    "Meiosis",
+    "Budding"
+   ],
+   "answer_index": 2,
+   "explanation": "Meiosis halves the chromosome number to make gametes.",
+   "objective_hint": "illustrate segregation of genes at meiosis"
+  },
+  {
+   "stem": "How many chromosomes are in a human sperm cell?",
+   "options": [
+    "46",
+    "23",
+    "12",
+    "92"
+   ],
+   "answer_index": 1,
+   "explanation": "Gametes have half the number of chromosomes: 23.",
+   "objective_hint": "illustrate segregation of genes at meiosis"
+  },
+  {
+   "stem": "What is a gene?",
+   "options": [
+    "A whole chromosome",
+    "A section of DNA that controls a trait",
+    "A type of cell",
+    "A protein that digests food"
+   ],
+   "answer_index": 1,
+   "explanation": "A gene is a short section of DNA that controls a trait.",
+   "objective_hint": "illustrate simple structure of DNA"
+  }
+ ],
+ "meta": {
+  "status": "draft",
+  "authored_by": "Claude (AI), written from the JAMB Biology syllabus objectives (JambKit copy). Pending review by the developer.",
+  "note": "Draft written by AI. Check it before use.",
+  "generated_at": "2026-11-09"
+ }
+}
