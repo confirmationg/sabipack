@@ -24,3 +24,9 @@ Environment variables: GROQ_API_KEY, GROQ_MODEL (Pack Maker also needs MAKER_PAS
 
 ## Brand
 Logo and icons are in `public/` (favicon.svg, favicon.ico, apple-touch-icon.png, icon-192/512.png, logo.svg, logo-dark.svg, logo.png, site.webmanifest). Mascot: "Sabi", an original character made for this project.
+
+## Groq model
+Set GROQ_MODEL to a current production model ID from console.groq.com/docs/models (we planned on `openai/gpt-oss-120b`, fallback `openai/gpt-oss-20b`). Reasoning models spend part of max_tokens on thinking, so try.js allows 4000. Optional: GROQ_REASONING_EFFORT=low to speed things up (only if the model supports it).
+
+## The app (`public/index.html`)
+Adapted during the hackathon from the pre-hackathon prototype (`pre-hackathon/prototype.html`). Real today: live AI notes-to-pack (via `/api/try`), saved packs that work offline (on-device storage), audio with the phone's own voice, interactive quiz, first-run tour, installable, opens offline (`sw.js`). Still previews (simulated, labelled "Preview"): SMS/USSD, pack sharing, classroom hotspot. Not built yet: JAMB Biology packs from the syllabus, Smart Revision, PDF/Word upload.

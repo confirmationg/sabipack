@@ -1,8 +1,1 @@
-{
-  "outputDirectory": "public",
-  "functions": { "api/generate.js": { "includeFiles": "content/syllabus.json" } },
-  "headers": [
-    { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }, { "key": "Service-Worker-Allowed", "value": "/" }] },
-    { "source": "/packs/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
-  ]
-}
+{ "functions": { "api/generate.js": { "includeFiles": "content/syllabus.json" } } }
