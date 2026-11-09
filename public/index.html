@@ -82,6 +82,7 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <main>
 <section class="scr on" id="s-home">
 <h1>Learn anywhere.<br>No data needed.</h1>
+<div class="card info" id="cw" style="display:none;font-size:14px"><b>Classroom Wi-Fi:</b> you are using your teacher’s server. No internet needed. Packs you open are saved on your phone.</div>
 <div class="hero"><div class="lbl" style="color:inherit" id="hl">START HERE</div><h2 id="ht">Cell structure and function</h2><div id="hs2">Biology · works offline</div><button class="btn" onclick="resume()">Open</button></div>
 <div class="row"><div class="lbl">YOUR SUBJECTS</div><button class="btn ghost" onclick="pickOpen()">Change</button></div>
 <div id="subj" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
@@ -139,7 +140,11 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <label class="btn" style="display:flex;align-items:center;justify-content:center;cursor:pointer">Import a pack file<input type="file" accept=".txt,.json,.sabipack,text/plain,application/json" style="display:none" onchange="importPack(this)"></label>
 <div class="mu" id="imsg" role="status"></div></div>
 <div class="card info" style="font-size:14px"><b>How it works:</b> Send opens your phone’s share menu. Pick Bluetooth or Nearby Share. On the other phone, save the file, open SabiPack, go to Share and tap Import.</div>
-<div class="card" style="font-size:14px"><b>Classroom hotspot:</b> one device serving a whole class over local Wi-Fi is planned for later. It is not built yet.</div>
+<div class="card" style="font-size:14px;display:flex;flex-direction:column;gap:8px"><b>Classroom hotspot</b>
+<div>One computer with the SabiPack classroom kit can serve a whole class over local Wi-Fi, with no internet.</div>
+<div><b>Teacher:</b> run the kit on a laptop and turn on its hotspot. It prints an address to write on the board.</div>
+<div><b>Students:</b> join that Wi-Fi and open the address. Packs save on each phone and keep working offline.</div>
+<div class="mu" style="font-size:12px">The kit is the classroom folder in the project. Tested on a computer, not yet with a real class.</div></div>
 </section>
 
 <section class="scr" id="s-ussd">
@@ -275,7 +280,8 @@ const nw=el('button','Make another','btn ghost');nw.style.alignSelf='flex-start'
 function openMine(i){cur=Object.assign({saved:true},mine[i]);showPack()}
 function nreset(){$('#nhead').style.display='flex';$('#nt1').hidden=false;$('#nres').hidden=true;$('#nprog').hidden=true;$('#nf').textContent='PDF and Word files are coming next.'}
 function renderMine(){const c=$('#np');c.innerHTML='';mine.forEach((p,i)=>{const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.lesson.title),document.createElement('br'),el('span',(p.subject?p.subject+' \u00b7 ':'')+(p.imported?'Imported':'From your notes')+' \u00b7 Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>openMine(i);c.append(b)})}
-function home(){renderSubj();renderMine();renderShare();fillNsub();$('#mnl').style.display=mine.length?'block':'none';const live=chosen&&chosen.includes('Biology');let id=null,had=false;try{id=localStorage.getItem('sabipack.last');had=!!id}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;const pk=id&&bio.packs[id];
+const LAN=location.protocol==='http:'&&location.hostname!=='localhost';
+function home(){$('#cw').style.display=LAN?'block':'none';renderSubj();renderMine();renderShare();fillNsub();$('#mnl').style.display=mine.length?'block':'none';const live=chosen&&chosen.includes('Biology');let id=null,had=false;try{id=localStorage.getItem('sabipack.last');had=!!id}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;const pk=id&&bio.packs[id];
 if(live&&pk){$('#hl').textContent=had?'CONTINUE':'START HERE';$('#ht').textContent=pk.lesson.title;$('#hs2').textContent='Biology \u00b7 works offline'}else{$('#hl').textContent='START HERE';$('#ht').textContent='Make your first pack';$('#hs2').textContent='From your teacher\u2019s notes \u00b7 works offline'}}
 let bio={index:[],packs:{}};
 try{bio=JSON.parse(localStorage.getItem('sabipack.bio'))||bio}catch(e){}
