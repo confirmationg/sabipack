@@ -69,6 +69,7 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 @media(prefers-reduced-motion:reduce){.guide svg{animation:none}}
 .ag{fill:var(--g)}.ap{fill:var(--ink)}.as{fill:var(--bg)}.ags{stroke:var(--g);fill:none;stroke-width:2.5;stroke-linecap:round}
 .bar button svg{transition:transform .2s}.bar button.on svg{transform:scale(1.18)}
+.sj{min-height:44px;padding:0 14px;border:1px solid var(--bd);border-radius:999px;background:var(--card);font-weight:500;font-size:14px}.sj[aria-pressed="true"]{background:var(--g);color:var(--ong);border-color:var(--g);font-weight:700}
 .toast{position:absolute;left:18px;right:18px;bottom:76px;background:var(--dk);color:var(--od);padding:12px 14px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
 .toast.on{opacity:1}
 #tr-s{position:absolute;border-radius:14px;box-shadow:0 0 0 9999px rgba(0,0,0,.68);pointer-events:none;transition:all .25s}
@@ -82,7 +83,7 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <section class="scr on" id="s-home">
 <h1>Learn anywhere.<br>No data needed.</h1>
 <div class="hero"><div class="lbl" style="color:inherit" id="hl">START HERE</div><h2 id="ht">Cell structure and function</h2><div id="hs2">Biology · works offline</div><button class="btn" onclick="resume()">Open</button></div>
-<div class="lbl">SUBJECTS</div>
+<div class="row"><div class="lbl">YOUR SUBJECTS</div><button class="btn ghost" onclick="pickOpen()">Change</button></div>
 <div id="subj" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
 <button class="pk row" onclick="go('notes')"><span><b>Bring your own notes</b><br><span class="mu">Turn a teacher’s notes into a pack</span></span><span class="chip">AI</span></button>
 <div class="lbl" id="mnl" style="display:none">MY NOTES</div>
@@ -90,10 +91,19 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <button class="btn ghost" onclick="go('lesson')" style="align-self:flex-start">Hear a lesson in local languages (demo)</button>
 </section>
 
+<section class="scr" id="s-pick">
+<h1 style="font-size:26px">Choose your subjects</h1>
+<div class="mu">Pick the subjects you are studying. Only these show on your Home. You can change them any time.</div>
+<div id="pk-l" style="display:flex;flex-direction:column;gap:16px"></div>
+<div class="row" style="gap:10px"><button class="btn ghost" id="pk-c" onclick="pickCancel()" style="display:none">Cancel</button><button class="btn" id="pk-ok" onclick="pickDone()" style="flex:1">Continue</button></div>
+</section>
+
 <section class="scr" id="s-subject">
 <div class="row"><button class="btn ghost" onclick="go('home')">‹ Home</button><span class="chip">Offline</span></div>
 <h2 id="sj-t">Biology</h2><div class="mu" id="sj-s"></div>
 <div id="tl" style="display:flex;flex-direction:column;gap:12px"></div>
+<div id="sj-m" style="display:flex;flex-direction:column;gap:12px"></div>
+<div id="sj-e"></div>
 </section>
 
 <section class="scr" id="s-lesson">
@@ -146,6 +156,7 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <div class="mu">Paste notes or open a .txt file. The AI makes a lesson and quiz you can save and use offline.</div>
 <div class="card info" style="font-size:14px"><b>Before you add notes:</b> use only notes you have permission to use, and leave out names and personal details.</div></div>
 <div id="nt1"><div style="display:flex;flex-direction:column;gap:10px">
+<select id="nsub" class="in" aria-label="Subject for this pack"></select>
 <textarea id="ntx" class="in" style="min-height:150px;padding:12px;font:inherit" aria-label="Your notes" placeholder="Paste notes here (400 to 3000 characters)"></textarea>
 <div class="row" style="gap:10px"><label class="btn am" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer">Open .txt file<input type="file" accept=".txt,text/plain" style="display:none" onchange="nfile(this)"></label><button class="btn am" style="flex:1" onclick="nsample()">Sample notes</button></div>
 <button class="btn" onclick="nrun()">Make my pack</button>
@@ -177,7 +188,7 @@ const Q=[['Which organelle releases energy?',['Nucleus','Mitochondrion','Ribosom
 ['Where is most of the cell’s DNA found?',['Nucleus','Cell wall','Vacuole'],0,'DNA']];
 function toast(t){const e=$('#ts');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2600)}
 function go(n){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id==='s-'+(n==='lesson'?'lesson':n)));
-document.querySelectorAll('#bar button').forEach(b=>b.classList.toggle('on',b.dataset.t===(n==='lesson'||n==='notes'||n==='subject'?'home':n)));if(n!=='lesson')stop()}
+document.querySelectorAll('#bar button').forEach(b=>b.classList.toggle('on',b.dataset.t===(n==='lesson'||n==='notes'||n==='subject'||n==='pick'?'home':n)));if(n!=='lesson')stop()}
 function tog(){off=!off;$('#net').classList.toggle('off',off);$('#nt').textContent=off?'Offline':'Online';toast(off?'Airplane mode on. Lessons and quizzes still work.':'Back online.')}
 function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function ui(){$('#pl').classList.toggle('playing',playing);$('#pp').innerHTML=playing?'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>':'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>';$('#pp').setAttribute('aria-label',playing?'Pause audio':'Play audio')}
@@ -219,12 +230,12 @@ ussd:'<rect class="ap" x="42" y="28" width="18" height="32" rx="4"/><rect class=
 function av(k,s){return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 64 64" aria-hidden="true" style="flex:none">'+A.b+A[k]+'</svg>'}
 const TM={home:'learn',prac:'prac',share:'share',ussd:'ussd'};
 document.querySelectorAll('#bar button').forEach(b=>b.insertAdjacentHTML('afterbegin',av(TM[b.dataset.t],30)));
-const G={home:['learn','Welcome back! Ready to sabi something new today?'],lesson:['learn','Tap play and listen. You can even learn with the screen off.'],prac:['prac','Quick questions by SMS. Let’s find your weak spots.'],share:['share','Good packs travel! Share with a classmate or your whole class.'],ussd:['ussd','No data? No problem. Dial and learn on any phone.'],subject:['learn','Pick a topic. Everything here works offline.'],notes:['learn','Got notes? I’ll turn them into a pack for your class.']};
+const G={home:['learn','Welcome back! Ready to sabi something new today?'],lesson:['learn','Tap play and listen. You can even learn with the screen off.'],prac:['prac','Quick questions by SMS. Let’s find your weak spots.'],share:['share','Good packs travel! Share with a classmate or your whole class.'],ussd:['ussd','No data? No problem. Dial and learn on any phone.'],pick:['learn','Which subjects are you studying? Pick them and I\u2019ll set up your Home.'],subject:['learn','Pick a topic. Everything here works offline.'],notes:['learn','Got notes? I’ll turn them into a pack for your class.']};
 Object.keys(G).forEach(k=>$('#s-'+k).insertAdjacentHTML('afterbegin','<div class="guide">'+av(G[k][0],56)+'<div class="sp">'+G[k][1]+'</div></div>'));
 let ti=0;
 const TS=[[null,'Hi, I’m Sabi! Let me show you around. It takes six quick steps.',null],
 ['#net','This shows if you are online. SabiPack works the same offline. Tap it to try airplane mode.',null],
-['[data-t=home]','Learn: your lessons and packs. They work offline, even with the screen off.','home'],
+['[data-t=home]','Learn: your chosen subjects and packs. They work offline, even with the screen off.','home'],
 ['[data-t=prac]','Practice: quick quiz questions, like SMS. They find your weak spots.','prac'],
 ['[data-t=share]','Share: send a pack to a classmate by Bluetooth or Nearby Share, or import one you received. No data used.','share'],
 ['[data-t=ussd]','USSD: no data on your phone? Dial a code and learn on any phone.','ussd']];
@@ -247,7 +258,7 @@ async function nrun(){const t=$('#ntx').value.trim();if(t.length<400){toast('Add
 if(off){toast('Making a pack needs data once. Go online first.');return}
 $('#nt1').hidden=true;$('#nres').hidden=true;const p=$('#nprog');p.hidden=false;p.innerHTML='<b>The AI is writing your pack\u2026</b><div class="mu" style="margin-top:6px">Only the text is sent, not a file. This can take a few seconds.</div>';
 try{const r=await fetch('/api/try',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Something went wrong.');
-p.hidden=true;cur={id:Date.now(),lesson:d.lesson,questions:d.questions,meta:d.meta,saved:false};showPack()}
+p.hidden=true;cur={id:Date.now(),lesson:d.lesson,questions:d.questions,meta:d.meta,saved:false,subject:$('#nsub').value};showPack()}
 catch(e){p.hidden=true;$('#nt1').hidden=false;toast(e.message==='Failed to fetch'?'No connection. Try again when you have data.':e.message)}}
 function showPack(){go('notes');$('#nhead').style.display='none';$('#nprog').hidden=true;$('#nt1').hidden=true;const R=$('#nres');R.hidden=false;R.innerHTML='';const d=cur;
 const bb=$('#nb');bb.textContent=d.builtin?'\u2039 Biology':'\u2039 Home';bb.onclick=()=>d.builtin?openSubject('Biology'):go('home');$('#nchip').textContent=d.builtin?'Biology':'AI';
@@ -257,23 +268,26 @@ if(d.lesson.sections)renderLayered(R,d,lab,L);else{const c=el('div','','card');c
 d.questions.forEach((q,i)=>{const k=el('div','','card');k.append(el('b','','' ));k.firstChild.textContent=(i+1)+'. '+q.stem;const w=el('div','','mu');w.style.marginTop='8px';
 q.options.forEach((o,j)=>{const b=el('button','ABCD'[j]+') '+o,'opt');b.onclick=()=>{k.querySelectorAll('.opt').forEach((x,n)=>{x.disabled=true;if(n===q.answer_index)x.classList.add('ok')});if(j!==q.answer_index)b.classList.add('no');w.textContent=(j===q.answer_index?'Correct. ':'Not quite. ')+q.explanation};k.append(b)});k.append(w);R.append(k)});
 const A=el('div','','card');A.style.cssText='display:flex;flex-direction:column;gap:10px';
-const sv=el('button',d.saved?'Saved \u2713':'Save for offline','btn');sv.onclick=()=>{if(!d.saved){d.saved=true;mine.unshift({id:d.id,lesson:d.lesson,questions:d.questions,meta:d.meta});saveMine();home();sv.textContent='Saved \u2713';toast('Saved. This pack now works offline.')}};
+const sv=el('button',d.saved?'Saved \u2713':'Save for offline','btn');sv.onclick=()=>{if(!d.saved){d.saved=true;mine.unshift({id:d.id,lesson:d.lesson,questions:d.questions,meta:d.meta,subject:d.subject||''});saveMine();home();sv.textContent='Saved \u2713';toast('Saved. This pack now works offline.')}};
 if(!d.builtin)A.append(sv);const sh=el('button','Send to a classmate','btn am');sh.onclick=()=>sharePacks([d],d.lesson.title);A.append(sh);
 if(d.saved&&!d.builtin){const dl=el('button','Delete this pack','btn ghost');dl.onclick=()=>{mine=mine.filter(x=>x.id!==d.id);saveMine();home();nreset();go('home')};A.append(dl)}
 const nw=el('button','Make another','btn ghost');nw.style.alignSelf='flex-start';nw.onclick=nreset;A.append(nw);R.append(A);$('#s-notes').scrollTop=0}
 function openMine(i){cur=Object.assign({saved:true},mine[i]);showPack()}
 function nreset(){$('#nhead').style.display='flex';$('#nt1').hidden=false;$('#nres').hidden=true;$('#nprog').hidden=true;$('#nf').textContent='PDF and Word files are coming next.'}
-function renderMine(){const c=$('#np');c.innerHTML='';mine.forEach((p,i)=>{const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.lesson.title),document.createElement('br'),el('span',(p.imported?'Imported':'From your notes')+' \u00b7 Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>openMine(i);c.append(b)})}
-function home(){renderSubj();renderMine();renderShare();$('#mnl').style.display=mine.length?'block':'none';let id=null;try{id=localStorage.getItem('sabipack.last')}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;const pk=id&&bio.packs[id];$('#hl').textContent=localStorage.getItem('sabipack.last')?'CONTINUE':'START HERE';if(pk)$('#ht').textContent=pk.lesson.title}
+function renderMine(){const c=$('#np');c.innerHTML='';mine.forEach((p,i)=>{const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.lesson.title),document.createElement('br'),el('span',(p.subject?p.subject+' \u00b7 ':'')+(p.imported?'Imported':'From your notes')+' \u00b7 Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>openMine(i);c.append(b)})}
+function home(){renderSubj();renderMine();renderShare();fillNsub();$('#mnl').style.display=mine.length?'block':'none';const live=chosen&&chosen.includes('Biology');let id=null,had=false;try{id=localStorage.getItem('sabipack.last');had=!!id}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;const pk=id&&bio.packs[id];
+if(live&&pk){$('#hl').textContent=had?'CONTINUE':'START HERE';$('#ht').textContent=pk.lesson.title;$('#hs2').textContent='Biology \u00b7 works offline'}else{$('#hl').textContent='START HERE';$('#ht').textContent='Make your first pack';$('#hs2').textContent='From your teacher\u2019s notes \u00b7 works offline'}}
 let bio={index:[],packs:{}};
 try{bio=JSON.parse(localStorage.getItem('sabipack.bio'))||bio}catch(e){}
 async function loadBio(){try{const ix=await (await fetch('/packs/index.json')).json();const packs={};for(const p of ix){const r=await fetch('/packs/'+p.id+'.json');if(r.ok)packs[p.id]=await r.json()}bio={index:ix,packs};try{localStorage.setItem('sabipack.bio',JSON.stringify(bio))}catch(e){}home()}catch(e){}}
 const SUBJ=[['Biology','B',1],['Chemistry','C',0],['Physics','P',0],['Mathematics','M',0],['English','E',0],['Economics','Ec',0]];
-function renderSubj(){const c=$('#subj');c.innerHTML='';SUBJ.forEach(([n,l,on])=>{const b=el('button','','pk');b.style.cssText='display:flex;flex-direction:column;align-items:flex-start;gap:8px;opacity:'+(on?1:.55);const m=el('span',on?(bio.index.length+' topics \u00b7 offline'):'Coming soon','mu');m.style.fontSize='13px';b.append(el('span',l,'av'),el('b',n),m);b.onclick=()=>{if(on)openSubject(n);else toast(n+' is coming soon.')};c.append(b)})}
-function openSubject(n){go('subject');$('#sj-t').textContent=n;$('#sj-s').textContent=bio.index.length+' topics \u00b7 work without internet';renderTopics()}
-function renderTopics(){const c=$('#tl');c.innerHTML='';bio.index.forEach(p=>{const pk=bio.packs[p.id];if(!pk)return;const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.title),document.createElement('br'),el('span',p.topic,'mu'));b.append(s2,el('span',pk.lesson.sections?'Full lesson':'Short lesson','chip'));b.onclick=()=>openBio(p.id);c.append(b)});if(!c.children.length)c.append(el('div','Topics appear here after the app loads them once with data.','mu'))}
+function renderSubj(){const c=$('#subj');c.innerHTML='';(chosen||[]).forEach(n=>{const live=n==='Biology';const b=el('button','','pk');b.style.cssText='display:flex;flex-direction:column;align-items:flex-start;gap:8px';const cnt=mine.filter(p=>p.subject===n).length;const m=el('span',live?(bio.index.length+' topics \u00b7 offline'):(cnt?cnt+' of your packs':'Add packs from notes'),'mu');m.style.fontSize='13px';b.append(el('span',n.slice(0,2).toUpperCase(),'av'),el('b',n),m);b.onclick=()=>openSubject(n);c.append(b)});if(!c.children.length)c.append(el('div','No subjects chosen yet. Tap Change.','mu'))}
+function openSubject(n){go('subject');$('#sj-t').textContent=n;const live=n==='Biology';const mp=mine.filter(p=>p.subject===n);$('#sj-s').textContent=live?bio.index.length+' topics \u00b7 work without internet':'Your own packs, made from notes or imported';renderTopics(live);
+const m=$('#sj-m');m.innerHTML='';if(mp.length){m.append(el('div','YOUR PACKS','lbl'));mp.forEach(p=>{const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.lesson.title),document.createElement('br'),el('span','Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>openMine(mine.indexOf(p));m.append(b)})}
+const e=$('#sj-e');e.innerHTML='';if(!live&&!mp.length){const c=el('div','','card');c.style.cssText='display:flex;flex-direction:column;gap:10px';c.append(el('b','No built-in lessons for '+n+' yet.'),el('div','Make a pack from your teacher\u2019s notes, or import one a classmate sends you.','mu'));const b1=el('button','Make a pack from notes','btn');b1.onclick=()=>notesFor(n);const b2=el('button','Import a pack','btn am');b2.onclick=()=>go('share');c.append(b1,b2);e.append(c)}}
+function renderTopics(live){const c=$('#tl');c.innerHTML='';if(live===false)return;bio.index.forEach(p=>{const pk=bio.packs[p.id];if(!pk)return;const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.title),document.createElement('br'),el('span',p.topic,'mu'));b.append(s2,el('span',pk.lesson.sections?'Full lesson':'Short lesson','chip'));b.onclick=()=>openBio(p.id);c.append(b)});if(!c.children.length)c.append(el('div','Topics appear here after the app loads them once with data.','mu'))}
 function openBio(id){const pk=bio.packs[id];if(!pk)return;try{localStorage.setItem('sabipack.last',id)}catch(e){}cur=Object.assign({builtin:true,saved:true,id},pk);showPack();home()}
-function resume(){let id=null;try{id=localStorage.getItem('sabipack.last')}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;if(id)openBio(id);else toast('Packs load once with data. Go online first.')}
+function resume(){if(!(chosen&&chosen.includes('Biology'))){notesFor('');return}let id=null;try{id=localStorage.getItem('sabipack.last')}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;if(id)openBio(id);else toast('Packs load once with data. Go online first.')}
 function renderLayered(R,d,lab,L){const x=d.lesson;const mk=css=>{const c=el('div','','card');c.style.cssText='display:flex;flex-direction:column;gap:8px;'+(css||'');return c};const hd=t=>{const h=el('h3',t);h.style.cssText='margin:0;font-size:17px';return h};
 const t=mk();const ch=el('span',lab,'chip');ch.style.alignSelf='flex-start';const big=el('div',x.big_idea);big.style.cssText='font-size:17px;line-height:1.45';t.append(ch,el('h2',x.title),big,L,el('div',d.meta&&d.meta.note||'','mu'));R.append(t);
 if(d.builtin&&x.diagrams)x.diagrams.forEach(g=>{const c=mk();const f=el('div');f.innerHTML=g.svg;f.firstChild.style.cssText='width:100%;height:auto';c.append(f,el('div',g.caption,'mu'));R.append(c)});
@@ -283,7 +297,7 @@ if(x.example){const c=mk();c.append(el('div','EVERYDAY EXAMPLE','lbl'),el('div',
 if(x.key_terms){const c=mk();c.append(el('div','KEY TERMS','lbl'));x.key_terms.forEach(k=>{const r=el('div');r.append(el('b',k[0]+': '),document.createTextNode(k[1]));c.append(r)});R.append(c)}
 if(x.exam_trap){const c=mk('background:var(--am);border-color:var(--am);color:#14221C');const l2=el('div','JAMB TRAP','lbl');l2.style.color='#14221C';c.append(l2,el('div',x.exam_trap));R.append(c)}}
 const safe=t=>String(t||'pack').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'pack';
-const out=p=>({lesson:p.lesson,questions:p.questions,meta:p.meta||{}});
+const out=p=>({lesson:p.lesson,questions:p.questions,meta:p.meta||{},subject:p.subject||''});
 async function sharePacks(list,name){const data=JSON.stringify({format:'sabipack',version:1,exported:new Date().toISOString(),packs:list.map(out)});const fname=safe(name)+'.sabipack.txt';
 try{const file=new File([data],fname,{type:'text/plain'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'SabiPack: '+name,text:'A study pack from SabiPack. Open SabiPack, go to Share and tap Import.'});return}}catch(e){if(e&&e.name==='AbortError')return}
 try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'text/plain'}));a.download=fname;document.body.append(a);a.click();a.remove();toast('Saved as a file. Send it by Bluetooth or Nearby Share from your Files app.')}catch(e){toast('Sharing is not available on this phone.')}}
@@ -298,16 +312,26 @@ if(str(l.big_idea,600))lesson.big_idea=l.big_idea;if(str(l.example,1200))lesson.
 if(Array.isArray(l.sections)&&l.sections.length<=12&&l.sections.every(x=>str(x.heading,120)&&(str(x.text,2000)||(Array.isArray(x.items)&&x.items.every(i=>Array.isArray(i)&&str(i[0],120)&&str(i[1],800))))))lesson.sections=l.sections.map(x=>({heading:x.heading,text:str(x.text,2000)?x.text:undefined,items:Array.isArray(x.items)?x.items.map(i=>[i[0],i[1]]):undefined}));
 if(Array.isArray(l.key_terms)&&l.key_terms.length<=20&&l.key_terms.every(k=>Array.isArray(k)&&str(k[0],120)&&str(k[1],500)))lesson.key_terms=l.key_terms.map(k=>[k[0],k[1]]);
 const m=l.compare;if(m&&str(m.title,120)&&Array.isArray(m.headers)&&Array.isArray(m.rows)&&m.rows.length<=20&&m.headers.every(h=>typeof h==='string')&&m.rows.every(r=>Array.isArray(r)&&r.every(v=>typeof v==='string'&&v.length<300)))lesson.compare={title:m.title,headers:m.headers,rows:m.rows};
-return{id:Date.now()+Math.random(),lesson,questions,imported:true,meta:{status:'draft',note:'Imported from a classmate. Check it before use.'}}}
+return{id:Date.now()+Math.random(),lesson,questions,imported:true,subject:str(p.subject,40)?p.subject:'',meta:{status:'draft',note:'Imported from a classmate. Check it before use.'}}}
 function importPack(inp){const f=inp.files[0];inp.value='';const say=t=>{$('#imsg').textContent=t};if(!f)return;if(f.size>300000){say('That file is too big to be a SabiPack pack.');return}
 const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||o.format!=='sabipack'||!Array.isArray(o.packs)||!o.packs.length||o.packs.length>40)throw 0;const add=o.packs.map(cleanPack);mine=[...add,...mine];saveMine();home();say('Imported '+add.length+' pack'+(add.length>1?'s':'')+'. Find '+(add.length>1?'them':'it')+' on Home under My notes.');toast('Pack imported.')}catch(e){say('That file is not a SabiPack pack.')}};r.onerror=()=>say('Could not read that file.');r.readAsText(f)}
+const CAT=[['Core',['English Language','Mathematics']],['Sciences',['Biology','Chemistry','Physics','Agricultural Science','Further Mathematics','Geography','Computer Studies']],['Arts',['Literature in English','Government','Christian Religious Knowledge (CRK)','Islamic Religious Knowledge (IRK)','History','Yoruba','Hausa','Igbo','French']],['Commercial',['Economics','Commerce','Financial Accounting']],['General',['Social Studies','Civic Education']]];
+const SK='sabipack.subjects';let chosen=null;try{chosen=JSON.parse(localStorage.getItem(SK)||'null')}catch(e){}if(!Array.isArray(chosen))chosen=null;let sel=new Set(chosen||[]);
+function renderPick(){const c=$('#pk-l');c.innerHTML='';CAT.forEach(([g,list])=>{const w=el('div');w.append(el('div',g.toUpperCase(),'lbl'));const r=el('div');r.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin-top:8px';list.forEach(n=>{const b=el('button',n,'sj');b.setAttribute('aria-pressed',String(sel.has(n)));b.onclick=()=>{sel.has(n)?sel.delete(n):sel.add(n);b.setAttribute('aria-pressed',String(sel.has(n)));cnt()};r.append(b)});w.append(r);c.append(w)});$('#pk-c').style.display=chosen?'inline-block':'none';cnt()}
+function cnt(){$('#pk-ok').textContent=sel.size?'Continue ('+sel.size+')':'Continue'}
+function pickOpen(){sel=new Set(chosen||[]);renderPick();go('pick')}
+function pickCancel(){go('home')}
+function pickDone(){if(!sel.size){toast('Pick at least one subject.');return}chosen=[...sel];try{localStorage.setItem(SK,JSON.stringify(chosen))}catch(e){}home();go('home');if(!seen)setTimeout(()=>tour(0),300)}
+function fillNsub(){const s=$('#nsub');if(!s)return;const keep=s.value;s.innerHTML='';const o=el('option','No subject');o.value='';s.append(o);(chosen||[]).forEach(n=>{const x=el('option',n);x.value=n;s.append(x)});if([...s.options].some(o=>o.value===keep))s.value=keep}
+function notesFor(n){go('notes');nreset();fillNsub();if(n&&[...$('#nsub').options].some(o=>o.value===n))$('#nsub').value=n}
+const _go=go;go=function(n){$('#bar').style.display=n==='pick'?'none':'';_go(n)};
 function netUi(){$('#net').classList.toggle('off',off);$('#nt').textContent=off?'Offline':'Online'}
 window.addEventListener('offline',()=>{off=true;netUi();toast('You are offline. Saved packs still work.')});
 window.addEventListener('online',()=>{off=false;netUi();toast('Back online.')});
 off=!navigator.onLine;netUi();
 lg();ui();qc();home();qz();udial();
 let seen=false;try{seen=!!localStorage.getItem('sabipack.tour')}catch(e){}
-if(!seen)setTimeout(()=>tour(0),400);
+if(!chosen){renderPick();go('pick')}else if(!seen)setTimeout(()=>tour(0),400);
 loadBio();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 $('#wv').innerHTML='<i></i>'.repeat(16);document.querySelectorAll('#wv i').forEach((e,i)=>e.style.animationDelay=(i*0.07)+'s');
