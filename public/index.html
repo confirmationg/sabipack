@@ -83,8 +83,8 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <h1>Learn anywhere.<br>No data needed.</h1>
 <div class="hero"><div class="lbl" style="color:inherit">CONTINUE</div><h2>Cell Structure and Function</h2><div>Sample lesson · tap Resume to listen</div><button class="btn" onclick="go('lesson')">Resume</button></div>
 <div class="lbl">YOUR PACKS</div>
-<button class="pk row" onclick="go('lesson')"><span><b>JAMB Biology</b><br><span class="mu">Sample lesson · Ready offline</span></span><span class="chip">Ready</span></button>
-<div class="card row" id="chem"></div>
+<button class="pk row" onclick="go('lesson')"><span><b>Audio lesson demo</b><br><span class="mu">Local-language text is demo only</span></span><span class="chip">Ready</span></button>
+<div id="chem" style="display:flex;flex-direction:column;gap:14px"></div>
 <div id="np" style="display:flex;flex-direction:column;gap:14px"></div>
 <button class="pk row" onclick="go('notes')"><span><b>Bring your own notes</b><br><span class="mu">Turn a teacher’s notes into a pack</span></span><span class="chip">AI</span></button>
 <div class="card info" id="used"></div>
@@ -133,9 +133,9 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 
 <section class="scr" id="s-notes">
 <div class="row"><button class="btn ghost" onclick="go('home')">‹ Home</button><span class="chip">AI</span></div>
-<h2>My notes</h2>
+<div id="nhead" style="display:flex;flex-direction:column;gap:14px"><h2>My notes</h2>
 <div class="mu">Paste notes or open a .txt file. The AI makes a lesson and quiz you can save and use offline.</div>
-<div class="card info" style="font-size:14px"><b>Before you add notes:</b> use only notes you have permission to use, and leave out names and personal details.</div>
+<div class="card info" style="font-size:14px"><b>Before you add notes:</b> use only notes you have permission to use, and leave out names and personal details.</div></div>
 <div id="nt1"><div style="display:flex;flex-direction:column;gap:10px">
 <textarea id="ntx" class="in" style="min-height:150px;padding:12px;font:inherit" aria-label="Your notes" placeholder="Paste notes here (400 to 3000 characters)"></textarea>
 <div class="row" style="gap:10px"><label class="btn am" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer">Open .txt file<input type="file" accept=".txt,text/plain" style="display:none" onchange="nfile(this)"></label><button class="btn am" style="flex:1" onclick="nsample()">Sample notes</button></div>
@@ -248,8 +248,8 @@ $('#nt1').hidden=true;$('#nres').hidden=true;const p=$('#nprog');p.hidden=false;
 try{const r=await fetch('/api/try',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Something went wrong.');
 p.hidden=true;cur={id:Date.now(),lesson:d.lesson,questions:d.questions,meta:d.meta,saved:false};showPack()}
 catch(e){p.hidden=true;$('#nt1').hidden=false;toast(e.message==='Failed to fetch'?'No connection. Try again when you have data.':e.message)}}
-function showPack(){go('notes');$('#nt1').hidden=true;$('#nprog').hidden=true;const R=$('#nres');R.hidden=false;R.innerHTML='';const d=cur;
-const c=el('div','','card');c.style.cssText='display:flex;flex-direction:column;gap:10px';c.append(el('span','Draft \u00b7 made by AI','chip'),el('h2',d.lesson.title),el('div',d.lesson.body));
+function showPack(){go('notes');$('#nhead').style.display='none';$('#nt1').hidden=true;$('#nprog').hidden=true;const R=$('#nres');R.hidden=false;R.innerHTML='';const d=cur;
+const c=el('div','','card');c.style.cssText='display:flex;flex-direction:column;gap:10px';c.append(el('span',d.builtin?'Draft \u00b7 written by AI, needs review':'Draft \u00b7 made by AI','chip'),el('h2',d.lesson.title),el('div',d.lesson.body));
 c.querySelector('span').style.alignSelf='flex-start';
 const L=el('button','Listen (your phone\u2019s voice)','btn am');L.onclick=()=>{try{speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(d.lesson.audio_script))}catch(e){toast('Audio is not available on this phone.')}};
 c.append(L,el('div',d.meta&&d.meta.note||'Check this pack before use.','mu'));R.append(c);
@@ -257,13 +257,17 @@ d.questions.forEach((q,i)=>{const k=el('div','','card');k.append(el('b','','' ))
 q.options.forEach((o,j)=>{const b=el('button','ABCD'[j]+') '+o,'opt');b.onclick=()=>{k.querySelectorAll('.opt').forEach((x,n)=>{x.disabled=true;if(n===q.answer_index)x.classList.add('ok')});if(j!==q.answer_index)b.classList.add('no');w.textContent=(j===q.answer_index?'Correct. ':'Not quite. ')+q.explanation};k.append(b)});k.append(w);R.append(k)});
 const A=el('div','','card');A.style.cssText='display:flex;flex-direction:column;gap:10px';
 const sv=el('button',d.saved?'Saved \u2713':'Save for offline','btn');sv.onclick=()=>{if(!d.saved){d.saved=true;mine.unshift({id:d.id,lesson:d.lesson,questions:d.questions,meta:d.meta});saveMine();home();sv.textContent='Saved \u2713';toast('Saved. This pack now works offline.')}};
-A.append(sv);const sh=el('button','Share with class','btn am');sh.onclick=()=>{go('share');toast('Sharing is a preview for now.')};A.append(sh);
-if(d.saved){const dl=el('button','Delete this pack','btn ghost');dl.onclick=()=>{mine=mine.filter(x=>x.id!==d.id);saveMine();home();nreset();go('home')};A.append(dl)}
+if(!d.builtin)A.append(sv);const sh=el('button','Share with class','btn am');sh.onclick=()=>{go('share');toast('Sharing is a preview for now.')};A.append(sh);
+if(d.saved&&!d.builtin){const dl=el('button','Delete this pack','btn ghost');dl.onclick=()=>{mine=mine.filter(x=>x.id!==d.id);saveMine();home();nreset();go('home')};A.append(dl)}
 const nw=el('button','Make another','btn ghost');nw.style.alignSelf='flex-start';nw.onclick=nreset;A.append(nw);R.append(A);$('#s-notes').scrollTop=0}
 function openMine(i){cur=Object.assign({saved:true},mine[i]);showPack()}
-function nreset(){$('#nt1').hidden=false;$('#nres').hidden=true;$('#nprog').hidden=true;$('#nf').textContent='PDF and Word files are coming next.'}
+function nreset(){$('#nhead').style.display='flex';$('#nt1').hidden=false;$('#nres').hidden=true;$('#nprog').hidden=true;$('#nf').textContent='PDF and Word files are coming next.'}
 function renderMine(){const c=$('#np');c.innerHTML='';mine.forEach((p,i)=>{const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.lesson.title),document.createElement('br'),el('span','From your notes \u00b7 Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>openMine(i);c.append(b)})}
-function home(){renderMine();$('#used').innerHTML='<b>Packs you save work fully offline</b>, audio included. Make one from your own notes.';$('#chem').innerHTML='<span><b>JAMB Biology packs</b><br><span class="mu">Coming next: lessons built from the syllabus</span></span><span class="chip">Soon</span>'}
+function home(){renderMine();$('#used').innerHTML='<b>Packs you save work fully offline</b>, audio included. Make one from your own notes.';renderBio()}
+let bio={index:[],packs:{}};
+try{bio=JSON.parse(localStorage.getItem('sabipack.bio'))||bio}catch(e){}
+async function loadBio(){try{const ix=await (await fetch('/packs/index.json')).json();const packs={};for(const p of ix){const r=await fetch('/packs/'+p.id+'.json');if(r.ok)packs[p.id]=await r.json()}bio={index:ix,packs};try{localStorage.setItem('sabipack.bio',JSON.stringify(bio))}catch(e){}renderBio()}catch(e){}}
+function renderBio(){const c=$('#chem');c.innerHTML='';c.append(el('div','JAMB BIOLOGY','lbl'));let n=0;bio.index.forEach(p=>{const pk=bio.packs[p.id];if(!pk)return;n++;const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.title),document.createElement('br'),el('span',p.topic+' \u00b7 Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>{cur=Object.assign({builtin:true,saved:true,id:p.id},pk);showPack()};c.append(b)});if(!n)c.append(el('div','Biology packs appear here after the app loads them once with data.','mu'))}
 function netUi(){$('#net').classList.toggle('off',off);$('#nt').textContent=off?'Offline':'Online'}
 window.addEventListener('offline',()=>{off=true;netUi();toast('You are offline. Saved packs still work.')});
 window.addEventListener('online',()=>{off=false;netUi();toast('Back online.')});
@@ -271,6 +275,7 @@ off=!navigator.onLine;netUi();
 lg();ui();qc();home();qz();share();hs();udial();
 let seen=false;try{seen=!!localStorage.getItem('sabipack.tour')}catch(e){}
 if(!seen)setTimeout(()=>tour(0),400);
+loadBio();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 $('#wv').innerHTML='<i></i>'.repeat(16);document.querySelectorAll('#wv i').forEach((e,i)=>e.style.animationDelay=(i*0.07)+'s');
 </script>
