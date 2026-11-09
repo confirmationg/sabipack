@@ -3,6 +3,6 @@
  "private": true,
  "type": "module",
  "scripts": {
-  "test": "node scripts/test-validate.mjs && node scripts/test-api.mjs && node scripts/test-try.mjs"
+  "test": "node scripts/test-validate.mjs && node scripts/test-api.mjs && node scripts/test-try.mjs && node scripts/test-packs.mjs"
  }
 }

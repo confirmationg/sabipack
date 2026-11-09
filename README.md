@@ -30,3 +30,6 @@ Set GROQ_MODEL to a current production model ID from console.groq.com/docs/model
 
 ## The app (`public/index.html`)
 Adapted during the hackathon from the pre-hackathon prototype (`pre-hackathon/prototype.html`). Real today: live AI notes-to-pack (via `/api/try`), saved packs that work offline (on-device storage), audio with the phone's own voice, interactive quiz, first-run tour, installable, opens offline (`sw.js`). Still previews (simulated, labelled "Preview"): SMS/USSD, pack sharing, classroom hotspot. Not built yet: JAMB Biology packs from the syllabus, Smart Revision, PDF/Word upload.
+
+## Built-in JAMB Biology packs (`public/packs/`)
+Three draft packs (Cell structure, Transport, Heredity) written by Claude from the syllabus objectives, labelled "draft, written by AI, needs review". They are loaded once, stored on the phone and work offline. Pending review by the developer before any claim of accuracy.
