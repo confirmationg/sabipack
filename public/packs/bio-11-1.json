@@ -5,7 +5,155 @@
  "lesson": {
   "title": "Cell structure and function",
   "body": "All living things are made of cells, and every part of a cell has a job. The cell membrane surrounds the cell and controls what goes in and out. The cytoplasm is the jelly-like fluid where many reactions happen. The nucleus controls the cell’s activities and holds the DNA. Mitochondria release energy from food during respiration. Ribosomes make proteins. Plant cells also have a cell wall made of cellulose that gives shape and support, chloroplasts that carry out photosynthesis, and a large vacuole that stores cell sap. Animal cells have no cell wall and no chloroplasts, and they usually have only small vacuoles.",
-  "audio_script": "Every living thing is made of cells. The nucleus is the control centre and holds the DNA. The cell membrane decides what enters and leaves. Mitochondria release energy from food. Plant cells also have a cell wall for support, chloroplasts for photosynthesis, and a large vacuole. Animal cells do not have these."
+  "audio_script": "Every living thing is made of cells. In both plant and animal cells you find a cell membrane, which controls what enters and leaves; cytoplasm, where many reactions happen; a nucleus, which controls the cell and holds the DNA; mitochondria, which release energy from food; and ribosomes, which make proteins. Plant cells also have a cellulose cell wall for support, chloroplasts for photosynthesis, and a large vacuole filled with cell sap. Animal cells have no cell wall and no chloroplasts. Remember the exam trap: the cell membrane controls what enters the cell, not the cell wall.",
+  "big_idea": "The cell is the basic unit of life. Each part of a cell has its own job, and the parts work together to keep the cell alive.",
+  "diagrams": [
+   {
+    "caption": "Plant cell, labelled",
+    "svg": "<svg viewBox='0 0 360 250' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Labelled plant cell' font-family='system-ui,sans-serif' font-size='11'><rect x='100' y='20' width='170' height='210' rx='14' fill='none' style='stroke:var(--g)' stroke-width='6'/><rect x='106' y='26' width='158' height='198' rx='10' fill='rgba(242,184,75,.2)' stroke='#F2B84B' stroke-width='2'/><ellipse cx='215' cy='125' rx='40' ry='70' fill='rgba(80,150,220,.35)' stroke='rgba(80,150,220,.9)'/><circle cx='140' cy='70' r='22' fill='rgba(140,90,200,.35)' stroke='#8C5AC8'/><circle cx='140' cy='70' r='6' fill='#8C5AC8'/><ellipse cx='135' cy='130' rx='14' ry='8' fill='#3FA866' stroke='#1E6B3C'/><ellipse cx='150' cy='190' rx='14' ry='8' fill='#3FA866' stroke='#1E6B3C'/><ellipse cx='235' cy='45' rx='14' ry='8' fill='#3FA866' stroke='#1E6B3C'/><ellipse cx='130' cy='165' rx='10' ry='5' fill='#F08A24' stroke='#B85F0C'/><ellipse cx='245' cy='205' rx='10' ry='5' fill='#F08A24' stroke='#B85F0C'/><g style='stroke:var(--mu)' stroke-width='1'><line x1='58' y1='36' x2='102' y2='36'/><line x1='48' y1='71' x2='119' y2='70'/><line x1='62' y1='104' x2='120' y2='104'/><line x1='88' y1='164' x2='120' y2='165'/><line x1='249' y1='44' x2='270' y2='36'/><line x1='264' y1='100' x2='270' y2='100'/><line x1='255' y1='127' x2='270' y2='127'/></g><g style='fill:var(--ink)'><text x='4' y='40'>Cell wall</text><text x='4' y='75'>Nucleus</text><text x='4' y='108'>Cytoplasm</text><text x='4' y='168'>Mitochondrion</text><text x='272' y='38'>Chloroplast</text><text x='272' y='104'>Cell membrane</text><text x='272' y='130'>Vacuole</text></g></svg>"
+   },
+   {
+    "caption": "Animal cell, labelled. It has no cell wall and no chloroplasts.",
+    "svg": "<svg viewBox='0 0 360 240' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Labelled animal cell' font-family='system-ui,sans-serif' font-size='11'><ellipse cx='180' cy='115' rx='80' ry='85' fill='rgba(242,184,75,.2)' stroke='#F2B84B' stroke-width='3'/><circle cx='180' cy='105' r='26' fill='rgba(140,90,200,.35)' stroke='#8C5AC8'/><circle cx='180' cy='105' r='7' fill='#8C5AC8'/><ellipse cx='135' cy='150' rx='12' ry='6' fill='#F08A24' stroke='#B85F0C'/><ellipse cx='225' cy='160' rx='12' ry='6' fill='#F08A24' stroke='#B85F0C'/><circle cx='215' cy='62' r='9' fill='rgba(80,150,220,.35)' stroke='rgba(80,150,220,.9)'/><g style='stroke:var(--mu)' stroke-width='1'><line x1='80' y1='56' x2='118' y2='63'/><line x1='62' y1='114' x2='125' y2='118'/><line x1='88' y1='161' x2='124' y2='152'/><line x1='206' y1='105' x2='268' y2='105'/><line x1='224' y1='60' x2='270' y2='46'/></g><g style='fill:var(--ink)'><text x='4' y='60'>Cell membrane</text><text x='4' y='118'>Cytoplasm</text><text x='4' y='165'>Mitochondrion</text><text x='272' y='108'>Nucleus</text><text x='272' y='48'>Small vacuole</text></g></svg>"
+   }
+  ],
+  "sections": [
+   {
+    "heading": "What is a cell?",
+    "text": "All living things are made of cells. Some living things, such as Amoeba and bacteria, are just one cell. A human body is made of trillions of cells working together. Most cells are too small to see without a microscope."
+   },
+   {
+    "heading": "Parts found in both plant and animal cells",
+    "items": [
+     [
+      "Cell membrane",
+      "A thin, partially permeable layer around the cell. It controls what enters and leaves."
+     ],
+     [
+      "Cytoplasm",
+      "The jelly-like fluid inside the cell. Many of the cell’s chemical reactions take place here."
+     ],
+     [
+      "Nucleus",
+      "Controls the activities of the cell. It contains the chromosomes, which carry the DNA."
+     ],
+     [
+      "Mitochondria",
+      "Release energy from food during respiration."
+     ],
+     [
+      "Ribosomes",
+      "Tiny structures that make proteins."
+     ],
+     [
+      "Endoplasmic reticulum",
+      "A network of channels that carries materials around the cell."
+     ],
+     [
+      "Golgi body",
+      "Packages and sends out substances such as enzymes."
+     ]
+    ]
+   },
+   {
+    "heading": "Parts found only in plant cells",
+    "items": [
+     [
+      "Cell wall",
+      "A rigid layer outside the membrane, made of cellulose. It gives the cell shape and support. It is fully permeable, so it does not control what enters."
+     ],
+     [
+      "Chloroplasts",
+      "Contain chlorophyll, the green pigment. Photosynthesis takes place here."
+     ],
+     [
+      "Large vacuole",
+      "A large space filled with cell sap. It stores water and dissolved substances and helps keep the cell firm."
+     ]
+    ]
+   },
+   {
+    "heading": "Parts mostly found in animal cells",
+    "items": [
+     [
+      "Centrioles",
+      "Help in cell division. Present in animal cells and absent in higher plants."
+     ],
+     [
+      "Lysosomes",
+      "Contain enzymes that break down worn-out parts and unwanted materials."
+     ],
+     [
+      "Small vacuoles",
+      "Animal cells have small, temporary vacuoles, or none."
+     ]
+    ]
+   }
+  ],
+  "compare": {
+   "title": "Plant cell and animal cell compared",
+   "headers": [
+    "",
+    "Plant cell",
+    "Animal cell"
+   ],
+   "rows": [
+    [
+     "Cell wall",
+     "Present (cellulose)",
+     "Absent"
+    ],
+    [
+     "Chloroplasts",
+     "Present",
+     "Absent"
+    ],
+    [
+     "Vacuole",
+     "One large vacuole",
+     "Small or none"
+    ],
+    [
+     "Shape",
+     "Fixed, regular",
+     "Irregular, can change"
+    ],
+    [
+     "Stored food",
+     "Starch",
+     "Glycogen"
+    ],
+    [
+     "Centrioles",
+     "Absent in higher plants",
+     "Present"
+    ]
+   ]
+  },
+  "example": "Think of a compound house. The gate is the cell membrane, deciding who comes in and who goes out. The head of the family is the nucleus, giving instructions. The generator is the mitochondrion, supplying the power. (In a plant cell, the fence around the compound is like the cell wall.) This is an analogy to help you remember, not an exact copy of how a cell works.",
+  "key_terms": [
+   [
+    "Organelle",
+    "A small part of a cell with a special job."
+   ],
+   [
+    "Partially permeable",
+    "Lets some substances pass through and blocks others."
+   ],
+   [
+    "Cellulose",
+    "The tough material that makes up the plant cell wall."
+   ],
+   [
+    "Chlorophyll",
+    "The green pigment that traps light for photosynthesis."
+   ],
+   [
+    "Cell sap",
+    "The watery liquid inside the vacuole."
+   ]
+  ],
+  "exam_trap": "The cell membrane, not the cell wall, controls what enters and leaves the cell. The cell wall only gives support and lets everything pass. Also, mitochondria release energy from food; they do not make energy. And plant cells have a cell membrane too, just inside the wall."
  },
  "questions": [
   {
@@ -67,6 +215,42 @@
    "answer_index": 1,
    "explanation": "The cell membrane controls the movement of substances into and out of the cell.",
    "objective_hint": "analyse the functions of the components of cells"
+  },
+  {
+   "stem": "Which structure is found in animal cells but not in higher plant cells?",
+   "options": [
+    "Centrioles",
+    "Cell wall",
+    "Chloroplasts",
+    "Large vacuole"
+   ],
+   "answer_index": 0,
+   "explanation": "Centrioles help in cell division and are present in animal cells but absent in higher plants.",
+   "objective_hint": "compare and contrast plant and animal cells"
+  },
+  {
+   "stem": "Which part of a plant cell is made of cellulose?",
+   "options": [
+    "Cell membrane",
+    "Cell wall",
+    "Nucleus",
+    "Cytoplasm"
+   ],
+   "answer_index": 1,
+   "explanation": "The plant cell wall is made of cellulose.",
+   "objective_hint": "identify the structures of plant and animal cells"
+  },
+  {
+   "stem": "Plant cells store food as starch. In what form do animal cells store food?",
+   "options": [
+    "Cellulose",
+    "Glycogen",
+    "Chlorophyll",
+    "Sucrose"
+   ],
+   "answer_index": 1,
+   "explanation": "Animal cells store food as glycogen.",
+   "objective_hint": "compare and contrast plant and animal cells"
   }
  ],
  "meta": {
