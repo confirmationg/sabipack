@@ -119,13 +119,17 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 </section>
 
 <section class="scr" id="s-share">
-<div class="row"><h2>Share a pack</h2><span class="chip">Preview</span></div>
-<div class="mu">Send <b>JAMB Biology (4.2 MB)</b> to a classmate. Pick a method, then tap Send.</div>
-<div class="mth" id="mth"></div>
-<div class="lbl">NEARBY PHONES</div>
-<div id="dv" style="display:flex;flex-direction:column;gap:10px"></div>
-<div class="card" id="hs"></div>
-<div class="card tip" id="sc"></div>
+<div class="row"><h2>Share a pack</h2><span class="chip">No data</span></div>
+<div class="mu">Send a pack to a classmate by Bluetooth or Nearby Share. It uses no mobile data.</div>
+<div class="lbl">CHOOSE A PACK TO SEND</div>
+<div id="shl" style="display:flex;flex-direction:column;gap:10px"></div>
+<button class="btn am" onclick="shareAll()">Send all packs on this phone</button>
+<div class="lbl">RECEIVE A PACK</div>
+<div class="card" style="display:flex;flex-direction:column;gap:10px"><div>Got a pack file from a classmate? Tap Import and choose the file.</div>
+<label class="btn" style="display:flex;align-items:center;justify-content:center;cursor:pointer">Import a pack file<input type="file" accept=".txt,.json,.sabipack,text/plain,application/json" style="display:none" onchange="importPack(this)"></label>
+<div class="mu" id="imsg" role="status"></div></div>
+<div class="card info" style="font-size:14px"><b>How it works:</b> Send opens your phone’s share menu. Pick Bluetooth or Nearby Share. On the other phone, save the file, open SabiPack, go to Share and tap Import.</div>
+<div class="card" style="font-size:14px"><b>Classroom hotspot:</b> one device serving a whole class over local Wi-Fi is planned for later. It is not built yet.</div>
 </section>
 
 <section class="scr" id="s-ussd">
@@ -195,15 +199,7 @@ function qz(){qi=0;score=0;weak=[];done=false;$('#chat').innerHTML='';add('Welco
 function rep(v){v=String(v).trim().toUpperCase();$('#ri').value='';if(done||!v)return;const i='ABC'.indexOf(v[0]);if(i<0||v.length>1){add(v,1);add('Please reply with A, B or C.');return}
 add(v,1);const q=Q[qi];if(i===q[2]){score++;add('Correct!')}else{weak.push(q[3]);add('Not quite. Answer: '+'ABC'[q[2]]+') '+q[1][q[2]]+'. Noted as a weak spot: '+q[3]+'.')}
 qi++;if(qi<Q.length){setTimeout(ask,600)}else{done=true;$('#qr').innerHTML='';setTimeout(()=>add('Quiz done: '+score+'/'+Q.length+'. '+(weak.length?'Tomorrow’s pack adds '+weak.length*2+' lessons on: '+weak.join(', ')+'.':'No weak spots. Tomorrow’s pack moves to Lesson 4.')),600)}}
-const D=[{n:'Classmate 1',s:'Ready to receive',p:0},{n:'Classmate 2',s:'Ready to receive',p:0},{n:'Classmate 3',s:'Has this pack',p:100,x:1}];
-function share(){$('#mth').innerHTML=['Bluetooth','Nearby Share','File transfer'].map(m=>'<button class="'+(m===mth?'on':'')+'" onclick="mth=\''+m+'\';share()">'+m+'</button>').join('');
-$('#dv').innerHTML=D.map((d,i)=>'<div class="card row"><span class="av">C'+(i+1)+'</span><span style="flex:1"><b>'+d.n+'</b><br><span class="mu">'+(d.p>0&&d.p<100?'Sending via '+mth+'… '+d.p+'%':d.p===100?(d.x?d.s:'Received'):d.s)+'</span>'+(d.p>0&&d.p<100?'<div class="pb" style="margin-top:6px"><b style="width:'+d.p+'%;background:var(--g)"></b></div>':'')+'</span>'+(d.p===0?'<button class="btn" onclick="send('+i+')">Send</button>':d.p===100?'<span class="chip">Done</span>':'')+'</div>').join('');
-$('#sc').innerHTML='<b>One download, many learners.</b> Packs shared this session: '+shared+'. Each one used 0 MB of data.'}
-function send(i){const d=D[i];if(d.p>0)return;d.p=1;const t=setInterval(()=>{d.p=Math.min(100,d.p+8+Math.floor(Math.random()*10));if(d.p>=100){clearInterval(t);shared++;toast(d.n+' received the pack.')}share()},350);share()}
-let hot=0,joined=0,ht=null,us='menu';
-function hs(){$('#hs').innerHTML=hot?'<b>Classroom hotspot is on</b><div class="mu">Network: SabiPack-Class<br>Students open sabipack.local in their browser.</div><div style="margin:8px 0"><b>'+joined+'</b> of 30 students joined · Data used: 0 MB</div><button class="btn" onclick="hotOff()">Stop hotspot</button>':'<b>Classroom hotspot</b><div class="mu" style="margin:4px 0 10px">One device with the pack serves a whole class over local Wi-Fi. No internet needed.</div><button class="btn" onclick="hotOn()">Start hotspot</button><div class="mu" style="font-size:12px;margin-top:8px">Simulated in this demo. The real version runs a small local server on a teacher’s laptop or phone.</div>'}
-function hotOn(){hot=1;joined=0;ht=setInterval(()=>{joined=Math.min(30,joined+1+Math.floor(Math.random()*3));hs()},900);hs();toast('Hotspot on (simulated).')}
-function hotOff(){hot=0;clearInterval(ht);hs()}
+let us='menu';
 const UM='SabiPack · JAMB Biology\n1. Today’s question\n2. My weak spots\n3. Exam countdown\n4. Revision tip\n0. Exit';
 function udial(){us='menu';$('#u-out').textContent=UM}
 function ussd(v){v=String(v).trim();$('#u-in').value='';if(!v)return;let o='';
@@ -230,7 +226,7 @@ const TS=[[null,'Hi, I’m Sabi! Let me show you around. It takes six quick step
 ['#net','This shows if you are online. SabiPack works the same offline. Tap it to try airplane mode.',null],
 ['[data-t=home]','Learn: your lessons and packs. They work offline, even with the screen off.','home'],
 ['[data-t=prac]','Practice: quick quiz questions, like SMS. They find your weak spots.','prac'],
-['[data-t=share]','Share: send a pack to a classmate or start a classroom hotspot. No data used.','share'],
+['[data-t=share]','Share: send a pack to a classmate by Bluetooth or Nearby Share, or import one you received. No data used.','share'],
 ['[data-t=ussd]','USSD: no data on your phone? Dial a code and learn on any phone.','ussd']];
 function tour(i){ti=i;const t=TS[i];$('#tr').hidden=false;if(t[2])go(t[2]);const P=$('.phone').getBoundingClientRect(),s=$('#tr-s'),c=$('#tr-c');
 if(t[0]){const r=$(t[0]).getBoundingClientRect();Object.assign(s.style,{left:(r.left-P.left-4)+'px',top:(r.top-P.top-4)+'px',width:(r.width+8)+'px',height:(r.height+8)+'px'});
@@ -262,17 +258,17 @@ d.questions.forEach((q,i)=>{const k=el('div','','card');k.append(el('b','','' ))
 q.options.forEach((o,j)=>{const b=el('button','ABCD'[j]+') '+o,'opt');b.onclick=()=>{k.querySelectorAll('.opt').forEach((x,n)=>{x.disabled=true;if(n===q.answer_index)x.classList.add('ok')});if(j!==q.answer_index)b.classList.add('no');w.textContent=(j===q.answer_index?'Correct. ':'Not quite. ')+q.explanation};k.append(b)});k.append(w);R.append(k)});
 const A=el('div','','card');A.style.cssText='display:flex;flex-direction:column;gap:10px';
 const sv=el('button',d.saved?'Saved \u2713':'Save for offline','btn');sv.onclick=()=>{if(!d.saved){d.saved=true;mine.unshift({id:d.id,lesson:d.lesson,questions:d.questions,meta:d.meta});saveMine();home();sv.textContent='Saved \u2713';toast('Saved. This pack now works offline.')}};
-if(!d.builtin)A.append(sv);const sh=el('button','Share with class','btn am');sh.onclick=()=>{go('share');toast('Sharing is a preview for now.')};A.append(sh);
+if(!d.builtin)A.append(sv);const sh=el('button','Send to a classmate','btn am');sh.onclick=()=>sharePacks([d],d.lesson.title);A.append(sh);
 if(d.saved&&!d.builtin){const dl=el('button','Delete this pack','btn ghost');dl.onclick=()=>{mine=mine.filter(x=>x.id!==d.id);saveMine();home();nreset();go('home')};A.append(dl)}
 const nw=el('button','Make another','btn ghost');nw.style.alignSelf='flex-start';nw.onclick=nreset;A.append(nw);R.append(A);$('#s-notes').scrollTop=0}
 function openMine(i){cur=Object.assign({saved:true},mine[i]);showPack()}
 function nreset(){$('#nhead').style.display='flex';$('#nt1').hidden=false;$('#nres').hidden=true;$('#nprog').hidden=true;$('#nf').textContent='PDF and Word files are coming next.'}
-function renderMine(){const c=$('#np');c.innerHTML='';mine.forEach((p,i)=>{const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.lesson.title),document.createElement('br'),el('span','From your notes \u00b7 Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>openMine(i);c.append(b)})}
-function home(){renderSubj();renderMine();$('#mnl').style.display=mine.length?'block':'none';let id=null;try{id=localStorage.getItem('sabipack.last')}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;const pk=id&&bio.packs[id];$('#hl').textContent=localStorage.getItem('sabipack.last')?'CONTINUE':'START HERE';if(pk)$('#ht').textContent=pk.lesson.title}
+function renderMine(){const c=$('#np');c.innerHTML='';mine.forEach((p,i)=>{const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.lesson.title),document.createElement('br'),el('span',(p.imported?'Imported':'From your notes')+' \u00b7 Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>openMine(i);c.append(b)})}
+function home(){renderSubj();renderMine();renderShare();$('#mnl').style.display=mine.length?'block':'none';let id=null;try{id=localStorage.getItem('sabipack.last')}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;const pk=id&&bio.packs[id];$('#hl').textContent=localStorage.getItem('sabipack.last')?'CONTINUE':'START HERE';if(pk)$('#ht').textContent=pk.lesson.title}
 let bio={index:[],packs:{}};
 try{bio=JSON.parse(localStorage.getItem('sabipack.bio'))||bio}catch(e){}
 async function loadBio(){try{const ix=await (await fetch('/packs/index.json')).json();const packs={};for(const p of ix){const r=await fetch('/packs/'+p.id+'.json');if(r.ok)packs[p.id]=await r.json()}bio={index:ix,packs};try{localStorage.setItem('sabipack.bio',JSON.stringify(bio))}catch(e){}home()}catch(e){}}
-const SUBJ=[['Biology','B',1],['Chemistry','C',0],['Physics','P',0],['Mathematics','M',0]];
+const SUBJ=[['Biology','B',1],['Chemistry','C',0],['Physics','P',0],['Mathematics','M',0],['English','E',0],['Economics','Ec',0]];
 function renderSubj(){const c=$('#subj');c.innerHTML='';SUBJ.forEach(([n,l,on])=>{const b=el('button','','pk');b.style.cssText='display:flex;flex-direction:column;align-items:flex-start;gap:8px;opacity:'+(on?1:.55);const m=el('span',on?(bio.index.length+' topics \u00b7 offline'):'Coming soon','mu');m.style.fontSize='13px';b.append(el('span',l,'av'),el('b',n),m);b.onclick=()=>{if(on)openSubject(n);else toast(n+' is coming soon.')};c.append(b)})}
 function openSubject(n){go('subject');$('#sj-t').textContent=n;$('#sj-s').textContent=bio.index.length+' topics \u00b7 work without internet';renderTopics()}
 function renderTopics(){const c=$('#tl');c.innerHTML='';bio.index.forEach(p=>{const pk=bio.packs[p.id];if(!pk)return;const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.title),document.createElement('br'),el('span',p.topic,'mu'));b.append(s2,el('span',pk.lesson.sections?'Full lesson':'Short lesson','chip'));b.onclick=()=>openBio(p.id);c.append(b)});if(!c.children.length)c.append(el('div','Topics appear here after the app loads them once with data.','mu'))}
@@ -286,11 +282,30 @@ if(x.compare){const c=mk('overflow-x:auto');c.append(hd(x.compare.title));const 
 if(x.example){const c=mk();c.append(el('div','EVERYDAY EXAMPLE','lbl'),el('div',x.example));R.append(c)}
 if(x.key_terms){const c=mk();c.append(el('div','KEY TERMS','lbl'));x.key_terms.forEach(k=>{const r=el('div');r.append(el('b',k[0]+': '),document.createTextNode(k[1]));c.append(r)});R.append(c)}
 if(x.exam_trap){const c=mk('background:var(--am);border-color:var(--am);color:#14221C');const l2=el('div','JAMB TRAP','lbl');l2.style.color='#14221C';c.append(l2,el('div',x.exam_trap));R.append(c)}}
+const safe=t=>String(t||'pack').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'pack';
+const out=p=>({lesson:p.lesson,questions:p.questions,meta:p.meta||{}});
+async function sharePacks(list,name){const data=JSON.stringify({format:'sabipack',version:1,exported:new Date().toISOString(),packs:list.map(out)});const fname=safe(name)+'.sabipack.txt';
+try{const file=new File([data],fname,{type:'text/plain'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'SabiPack: '+name,text:'A study pack from SabiPack. Open SabiPack, go to Share and tap Import.'});return}}catch(e){if(e&&e.name==='AbortError')return}
+try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'text/plain'}));a.download=fname;document.body.append(a);a.click();a.remove();toast('Saved as a file. Send it by Bluetooth or Nearby Share from your Files app.')}catch(e){toast('Sharing is not available on this phone.')}}
+function allPacks(){return[...bio.index.filter(p=>bio.packs[p.id]).map(p=>Object.assign({title:p.title,sub:'JAMB Biology'},bio.packs[p.id])),...mine.map(p=>Object.assign({title:p.lesson.title,sub:p.imported?'Imported pack':'Your notes'},p))]}
+function shareAll(){const l=allPacks();if(!l.length){toast('No packs to send yet.');return}sharePacks(l,'SabiPack-packs')}
+function renderShare(){const c=$('#shl');if(!c)return;c.innerHTML='';allPacks().forEach(p=>{const r=el('div','','card row');const s2=el('span');s2.append(el('b',p.title),document.createElement('br'),el('span',p.sub,'mu'));const b=el('button','Send','btn');b.onclick=()=>sharePacks([p],p.title);r.append(s2,b);c.append(r)});if(!c.children.length)c.append(el('div','Packs appear here once the app has loaded them with data.','mu'))}
+const str=(v,n)=>typeof v==='string'&&v.length>0&&v.length<=(n||3000);
+function cleanPack(p){const l=p&&p.lesson;if(!l||!str(l.title,120)||!str(l.body,3000))throw 0;const qs=p.questions;if(!Array.isArray(qs)||!qs.length||qs.length>12)throw 0;
+const questions=qs.map(q=>{if(!str(q.stem,400)||!Array.isArray(q.options)||q.options.length!==4||!q.options.every(o=>str(o,200))||!Number.isInteger(q.answer_index)||q.answer_index<0||q.answer_index>3||!str(q.explanation,600))throw 0;return{stem:q.stem,options:q.options.slice(),answer_index:q.answer_index,explanation:q.explanation,objective_hint:str(q.objective_hint,200)?q.objective_hint:''}});
+const lesson={title:l.title,body:l.body,audio_script:str(l.audio_script,3000)?l.audio_script:l.body};
+if(str(l.big_idea,600))lesson.big_idea=l.big_idea;if(str(l.example,1200))lesson.example=l.example;if(str(l.exam_trap,1200))lesson.exam_trap=l.exam_trap;
+if(Array.isArray(l.sections)&&l.sections.length<=12&&l.sections.every(x=>str(x.heading,120)&&(str(x.text,2000)||(Array.isArray(x.items)&&x.items.every(i=>Array.isArray(i)&&str(i[0],120)&&str(i[1],800))))))lesson.sections=l.sections.map(x=>({heading:x.heading,text:str(x.text,2000)?x.text:undefined,items:Array.isArray(x.items)?x.items.map(i=>[i[0],i[1]]):undefined}));
+if(Array.isArray(l.key_terms)&&l.key_terms.length<=20&&l.key_terms.every(k=>Array.isArray(k)&&str(k[0],120)&&str(k[1],500)))lesson.key_terms=l.key_terms.map(k=>[k[0],k[1]]);
+const m=l.compare;if(m&&str(m.title,120)&&Array.isArray(m.headers)&&Array.isArray(m.rows)&&m.rows.length<=20&&m.headers.every(h=>typeof h==='string')&&m.rows.every(r=>Array.isArray(r)&&r.every(v=>typeof v==='string'&&v.length<300)))lesson.compare={title:m.title,headers:m.headers,rows:m.rows};
+return{id:Date.now()+Math.random(),lesson,questions,imported:true,meta:{status:'draft',note:'Imported from a classmate. Check it before use.'}}}
+function importPack(inp){const f=inp.files[0];inp.value='';const say=t=>{$('#imsg').textContent=t};if(!f)return;if(f.size>300000){say('That file is too big to be a SabiPack pack.');return}
+const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||o.format!=='sabipack'||!Array.isArray(o.packs)||!o.packs.length||o.packs.length>40)throw 0;const add=o.packs.map(cleanPack);mine=[...add,...mine];saveMine();home();say('Imported '+add.length+' pack'+(add.length>1?'s':'')+'. Find '+(add.length>1?'them':'it')+' on Home under My notes.');toast('Pack imported.')}catch(e){say('That file is not a SabiPack pack.')}};r.onerror=()=>say('Could not read that file.');r.readAsText(f)}
 function netUi(){$('#net').classList.toggle('off',off);$('#nt').textContent=off?'Offline':'Online'}
 window.addEventListener('offline',()=>{off=true;netUi();toast('You are offline. Saved packs still work.')});
 window.addEventListener('online',()=>{off=false;netUi();toast('Back online.')});
 off=!navigator.onLine;netUi();
-lg();ui();qc();home();qz();share();hs();udial();
+lg();ui();qc();home();qz();udial();
 let seen=false;try{seen=!!localStorage.getItem('sabipack.tour')}catch(e){}
 if(!seen)setTimeout(()=>tour(0),400);
 loadBio();
