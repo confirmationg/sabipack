@@ -51,6 +51,7 @@ sabipack/
 | GROQ_API_KEY | Try the AI, Pack Maker |
 | GROQ_MODEL | Try the AI, Pack Maker (current model ID from console.groq.com/docs/models) |
 | GROQ_VISION_MODEL | Reading photos of notes: a vision model ID from console.groq.com/docs/vision |
+| GROQ_VISION_REASONING_EFFORT | Optional. Only if the vision model is slow or returns nothing. Use a value listed in Groq's docs for that model |
 | TURSO_DATABASE_URL, TURSO_AUTH_TOKEN | Accounts (database). Without them the app still works; accounts are switched off |
 | AUTH_SECRET | Accounts: a long random secret (32+ characters) used to sign sign-in tokens |
 | MAKER_PASSCODE | Pack Maker only (your private password) |
