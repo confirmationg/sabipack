@@ -3,6 +3,9 @@
  "private": true,
  "type": "module",
  "scripts": {
-  "test": "node scripts/test-validate.mjs && node scripts/test-api.mjs && node scripts/test-try.mjs && node scripts/test-packs.mjs"
+  "test": "node scripts/test-validate.mjs && node scripts/test-api.mjs && node scripts/test-try.mjs && node scripts/test-packs.mjs && node scripts/test-extract.mjs && node scripts/test-read-notes.mjs && node scripts/test-account.mjs"
+ },
+ "dependencies": {
+  "@libsql/client": "^0.14.0"
  }
 }
