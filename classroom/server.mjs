@@ -11,7 +11,7 @@ const PUBLIC = path.join(here, '..', 'public');
 const EXTRA = path.join(here, 'packs'); // teacher drops exported .sabipack.txt files here
 const PORT = Number(process.env.PORT || process.argv[2] || 8080);
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain; charset=utf-8' };
+  '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8' };
 
 // Counts devices in memory only. Nothing is written to disk and no addresses are kept.
 const devices = new Set();
@@ -76,12 +76,28 @@ const server = http.createServer((req, res) => {
   send(200, MIME[path.extname(file).toLowerCase()] || 'application/octet-stream', fs.readFileSync(file));
 });
 
+// Some phones (for example Android in Termux) do not allow listing network addresses, so this must not crash.
+function lanAddresses() {
+  try { return Object.values(os.networkInterfaces()).flat().filter(i => i && i.family === 'IPv4' && !i.internal).map(i => i.address); }
+  catch { return []; }
+}
+
+server.on('error', e => {
+  console.log(e.code === 'EADDRINUSE' ? `\nPort ${PORT} is already in use. Close the other program or run with a different port, for example:  PORT=9090 node classroom/server.mjs\n` : `\nCould not start: ${e.message}\n`);
+  process.exit(1);
+});
+
 server.listen(PORT, '0.0.0.0', () => {
-  const addrs = Object.values(os.networkInterfaces()).flat().filter(i => i && i.family === 'IPv4' && !i.internal).map(i => i.address);
+  const addrs = lanAddresses();
   console.log('\nSabiPack classroom server is running.\n');
   console.log('1. Turn on this device\'s Wi-Fi hotspot, or connect it to the classroom Wi-Fi router.');
-  console.log('2. Students join that Wi-Fi and open one of these addresses in their browser:');
-  (addrs.length ? addrs : ['(no network found yet)']).forEach(a => console.log(`     http://${a}:${PORT}`));
-  console.log(`3. Class packs page: /classroom   (teacher packs go in classroom/packs)\n`);
-  console.log('No internet is needed. Press Ctrl+C to stop.\n');
+  if (addrs.length) {
+    console.log('2. Students join that Wi-Fi and open one of these addresses in their browser:');
+    addrs.forEach(a => console.log(`     http://${a}:${PORT}`));
+  } else {
+    console.log('2. This device could not list its own address. Open its hotspot or Wi-Fi settings, find the IP address');
+    console.log(`   (for a phone hotspot it is often 192.168.x.1), and tell students to open  http://THAT-ADDRESS:${PORT}`);
+  }
+  console.log('3. Class packs page: /classroom   (teacher packs go in classroom/packs)\n');
+  console.log('No internet is needed. Keep this window open. Press Ctrl+C to stop.\n');
 });
