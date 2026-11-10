@@ -1,10 +1,15 @@
 // Optional cloud accounts: email + password, plus a small backup of subjects and saved packs.
 // No email is sent, so there is no email check and no "forgot password". Guests can still use everything.
 import crypto from 'node:crypto';
-import { createClient } from '@libsql/client';
-
 let db, ready;
-const getDb = () => db || (process.env.TURSO_DATABASE_URL ? (db = createClient({ url: process.env.TURSO_DATABASE_URL, authToken: process.env.TURSO_AUTH_TOKEN })) : null);
+// On Vercel the pure-JavaScript web client is used (no native files). A local test file database uses the full client.
+async function getDb() {
+  if (db) return db;
+  const url = process.env.TURSO_DATABASE_URL;
+  if (!url) return null;
+  const { createClient } = await (url.startsWith('file:') ? import('@libsql/client') : import('@libsql/client/web'));
+  return (db = createClient({ url, authToken: process.env.TURSO_AUTH_TOKEN }));
+}
 const init = d => ready || (ready = d.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE NOT NULL, name TEXT NOT NULL, salt TEXT NOT NULL, hash TEXT NOT NULL, data TEXT, fails INTEGER DEFAULT 0, locked_until INTEGER DEFAULT 0, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL)'));
 const scrypt = (pw, salt) => new Promise((res, rej) => crypto.scrypt(pw, salt, 64, (e, k) => (e ? rej(e) : res(k))));
 const b64 = s => Buffer.from(s).toString('base64url');
@@ -22,7 +27,9 @@ const MAX_DATA = 250000, DAY = 86400000;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Use POST.' });
-  const secret = process.env.AUTH_SECRET, d = getDb();
+  const secret = process.env.AUTH_SECRET;
+  let d = null;
+  try { d = await getDb(); } catch { d = null; }
   if (!d || !secret || secret.length < 32) return res.status(503).json({ error: 'Accounts are not switched on yet. You can still use SabiPack without one.' });
   try { await init(d); } catch { ready = null; return res.status(503).json({ error: 'The account service is not available right now.' }); }
   const b = req.body || {}, now = Date.now();
