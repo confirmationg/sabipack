@@ -70,6 +70,9 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 .ag{fill:var(--g)}.ap{fill:var(--ink)}.as{fill:var(--bg)}.ags{stroke:var(--g);fill:none;stroke-width:2.5;stroke-linecap:round}
 .bar button svg{transition:transform .2s}.bar button.on svg{transform:scale(1.18)}
 .sj{min-height:44px;padding:0 14px;border:1px solid var(--bd);border-radius:999px;background:var(--card);font-weight:500;font-size:14px}.sj[aria-pressed="true"]{background:var(--g);color:var(--ong);border-color:var(--g);font-weight:700}
+.who{background:none;border:0;padding:0;text-align:left;min-height:44px;display:flex;flex-direction:column;justify-content:center;max-width:46%;overflow:hidden;color:var(--ink)}
+.who .logo{font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#gh{font-size:11px;letter-spacing:.06em;font-weight:700;color:var(--mu);text-transform:uppercase;white-space:nowrap}
 .toast{position:absolute;left:18px;right:18px;bottom:76px;background:var(--dk);color:var(--od);padding:12px 14px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
 .toast.on{opacity:1}
 #tr-s{position:absolute;border-radius:14px;box-shadow:0 0 0 9999px rgba(0,0,0,.68);pointer-events:none;transition:all .25s}
@@ -78,7 +81,7 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 </head>
 <body>
 <div class="phone">
-<header class="hd"><span class="logo">SabiPack</span><span style="display:flex;gap:8px"><button class="net off" onclick="tour(0)" aria-label="Show the app tour">Help</button><button class="net" id="net" onclick="tog()" aria-label="Toggle airplane mode"><i></i><span id="nt">Online</span></button></span></header>
+<header class="hd"><button class="who" id="who" onclick="go('acct')" aria-label="Your account"><span id="gh">SabiPack</span><span class="logo" id="greet">Welcome</span></button><span style="display:flex;gap:8px"><button class="net off" onclick="tour(0)" aria-label="Show the app tour">Help</button><button class="net" id="net" onclick="tog()" aria-label="Toggle airplane mode"><i></i><span id="nt">Online</span></button></span></header>
 <main>
 <section class="scr on" id="s-home">
 <h1>Learn anywhere.<br>No data needed.</h1>
@@ -90,6 +93,30 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <div class="lbl" id="mnl" style="display:none">MY NOTES</div>
 <div id="np" style="display:flex;flex-direction:column;gap:14px"></div>
 <button class="btn ghost" onclick="go('lesson')" style="align-self:flex-start">Hear a lesson in local languages (demo)</button>
+</section>
+
+<section class="scr" id="s-welcome"><div id="wl" style="display:flex;flex-direction:column;gap:14px"></div></section>
+
+<section class="scr" id="s-acct"><div id="ac" style="display:flex;flex-direction:column;gap:14px"></div>
+<button class="btn ghost" onclick="go('home')" style="align-self:flex-start">‹ Home</button></section>
+
+<section class="scr" id="s-host">
+<div class="row"><button class="btn ghost" onclick="go('share')">‹ Share</button><span class="chip">Teacher</span></div>
+<h2>Host a class</h2>
+<div class="mu">One device serves the app and its packs to a whole class over local Wi-Fi. No internet needed in the room.</div>
+<div class="card" style="display:flex;flex-direction:column;gap:8px;font-size:14px"><b>From a laptop</b>
+<div>1. Install Node.js once. Copy the SabiPack project folder to the laptop.</div>
+<div>2. Turn on the laptop’s hotspot, or join the classroom router.</div>
+<div>3. Run <b>node classroom/server.mjs</b> and write the address it prints on the board.</div></div>
+<div class="card" style="display:flex;flex-direction:column;gap:8px;font-size:14px"><b>From an Android phone (Termux)</b>
+<div>1. Install <b>Termux</b> from F-Droid (the Play Store version is out of date).</div>
+<div>2. Connect to the internet once, then paste this in Termux:</div>
+<div id="hcmd" style="font-family:ui-monospace,monospace;font-size:12px;word-break:break-all;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px"></div>
+<button class="btn am" onclick="copyHost()">Copy the command</button>
+<div>3. Turn on the phone’s hotspot. Students join it and open the address Termux shows. If none is shown, use the hotspot address in your phone settings (often 192.168.x.1) followed by :8080.</div>
+<div>4. Keep Termux open while the class is using it.</div></div>
+<div class="card info" style="font-size:13px"><b>Honest notes:</b> a phone’s browser cannot run a server by itself, which is why Termux is needed. Tested on a computer. Not yet tested on a real phone. Phone hotspots limit how many devices can join.</div>
+<div class="card" style="font-size:14px"><b>No hotspot?</b> Use <b>Share</b> to send a pack by Bluetooth or Nearby Share. That works on any phone.</div>
 </section>
 
 <section class="scr" id="s-pick">
@@ -141,10 +168,8 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <div class="mu" id="imsg" role="status"></div></div>
 <div class="card info" style="font-size:14px"><b>How it works:</b> Send opens your phone’s share menu. Pick Bluetooth or Nearby Share. On the other phone, save the file, open SabiPack, go to Share and tap Import.</div>
 <div class="card" style="font-size:14px;display:flex;flex-direction:column;gap:8px"><b>Classroom hotspot</b>
-<div>One computer with the SabiPack classroom kit can serve a whole class over local Wi-Fi, with no internet.</div>
-<div><b>Teacher:</b> run the kit on a laptop and turn on its hotspot. It prints an address to write on the board.</div>
-<div><b>Students:</b> join that Wi-Fi and open the address. Packs save on each phone and keep working offline.</div>
-<div class="mu" style="font-size:12px">The kit is the classroom folder in the project. Tested on a computer, not yet with a real class.</div></div>
+<div>Serve a whole class from one laptop or Android phone over local Wi-Fi, with no internet.</div>
+<button class="btn" onclick="go('host')">Host a class (teacher)</button></div>
 </section>
 
 <section class="scr" id="s-ussd">
@@ -158,14 +183,16 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <section class="scr" id="s-notes">
 <div class="row"><button class="btn ghost" id="nb" onclick="go('home')">‹ Home</button><span class="chip" id="nchip">AI</span></div>
 <div id="nhead" style="display:flex;flex-direction:column;gap:14px"><h2>My notes</h2>
-<div class="mu">Paste notes or open a .txt file. The AI makes a lesson and quiz you can save and use offline.</div>
-<div class="card info" style="font-size:14px"><b>Before you add notes:</b> use only notes you have permission to use, and leave out names and personal details.</div></div>
+<div class="mu">Paste notes, add a PDF, Word or text file, or take a photo of handwritten notes. The AI makes a lesson and quiz you can save and use offline.</div>
+<div class="card info" style="font-size:14px"><b>Before you add notes:</b> use only notes you have permission to use, and leave out names and personal details. Files are read on your phone and only the text is sent. A photo is sent to the AI so it can read the writing.</div></div>
 <div id="nt1"><div style="display:flex;flex-direction:column;gap:10px">
 <select id="nsub" class="in" aria-label="Subject for this pack"></select>
 <textarea id="ntx" class="in" style="min-height:150px;padding:12px;font:inherit" aria-label="Your notes" placeholder="Paste notes here (400 to 3000 characters)"></textarea>
-<div class="row" style="gap:10px"><label class="btn am" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer">Open .txt file<input type="file" accept=".txt,text/plain" style="display:none" onchange="nfile(this)"></label><button class="btn am" style="flex:1" onclick="nsample()">Sample notes</button></div>
+<div class="row" style="gap:10px"><label class="btn am" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;text-align:center">PDF, Word or text file<input type="file" accept=".pdf,.docx,.doc,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" style="display:none" onchange="nfile(this)"></label><label class="btn am" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;text-align:center">Photo of notes<input type="file" accept="image/*" multiple style="display:none" onchange="nphoto(this)"></label></div>
+<div class="row" id="npp" style="display:none;gap:10px"><button class="btn ghost" onclick="npart(-1)">‹ Previous part</button><span class="mu" id="npl"></span><button class="btn ghost" onclick="npart(1)">Next part ›</button></div>
+<button class="btn ghost" onclick="nsample()" style="align-self:flex-start">Use sample notes</button>
 <button class="btn" onclick="nrun()">Make my pack</button>
-<div class="mu" id="nf" style="font-size:13px">PDF and Word files are coming next.</div>
+<div class="mu" id="nf" style="font-size:13px" role="status">Add a file or photo, or paste your notes above.</div>
 </div></div>
 <div id="nprog" class="card" hidden></div>
 <div id="nres" hidden></div>
@@ -193,7 +220,7 @@ const Q=[['Which organelle releases energy?',['Nucleus','Mitochondrion','Ribosom
 ['Where is most of the cell’s DNA found?',['Nucleus','Cell wall','Vacuole'],0,'DNA']];
 function toast(t){const e=$('#ts');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2600)}
 function go(n){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id==='s-'+(n==='lesson'?'lesson':n)));
-document.querySelectorAll('#bar button').forEach(b=>b.classList.toggle('on',b.dataset.t===(n==='lesson'||n==='notes'||n==='subject'||n==='pick'?'home':n)));if(n!=='lesson')stop()}
+document.querySelectorAll('#bar button').forEach(b=>b.classList.toggle('on',b.dataset.t===(n==='lesson'||n==='notes'||n==='subject'||n==='pick'||n==='welcome'||n==='acct'||n==='host'?'home':n)));if(n!=='lesson')stop()}
 function tog(){off=!off;$('#net').classList.toggle('off',off);$('#nt').textContent=off?'Offline':'Online';toast(off?'Airplane mode on. Lessons and quizzes still work.':'Back online.')}
 function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function ui(){$('#pl').classList.toggle('playing',playing);$('#pp').innerHTML=playing?'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>':'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>';$('#pp').setAttribute('aria-label',playing?'Pause audio':'Play audio')}
@@ -235,7 +262,7 @@ ussd:'<rect class="ap" x="42" y="28" width="18" height="32" rx="4"/><rect class=
 function av(k,s){return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 64 64" aria-hidden="true" style="flex:none">'+A.b+A[k]+'</svg>'}
 const TM={home:'learn',prac:'prac',share:'share',ussd:'ussd'};
 document.querySelectorAll('#bar button').forEach(b=>b.insertAdjacentHTML('afterbegin',av(TM[b.dataset.t],30)));
-const G={home:['learn','Welcome back! Ready to sabi something new today?'],lesson:['learn','Tap play and listen. You can even learn with the screen off.'],prac:['prac','Quick questions by SMS. Let’s find your weak spots.'],share:['share','Good packs travel! Share with a classmate or your whole class.'],ussd:['ussd','No data? No problem. Dial and learn on any phone.'],pick:['learn','Which subjects are you studying? Pick them and I\u2019ll set up your Home.'],subject:['learn','Pick a topic. Everything here works offline.'],notes:['learn','Got notes? I’ll turn them into a pack for your class.']};
+const G={home:['learn','Welcome back! Ready to sabi something new today?'],lesson:['learn','Tap play and listen. You can even learn with the screen off.'],prac:['prac','Quick questions by SMS. Let’s find your weak spots.'],share:['share','Good packs travel! Share with a classmate or your whole class.'],ussd:['ussd','No data? No problem. Dial and learn on any phone.'],acct:['learn','This is your space. Your name and subjects live here.'],host:['share','Run a class from one device. No internet needed in the room.'],pick:['learn','Which subjects are you studying? Pick them and I\u2019ll set up your Home.'],subject:['learn','Pick a topic. Everything here works offline.'],notes:['learn','Got notes? I’ll turn them into a pack for your class.']};
 Object.keys(G).forEach(k=>$('#s-'+k).insertAdjacentHTML('afterbegin','<div class="guide">'+av(G[k][0],56)+'<div class="sp">'+G[k][1]+'</div></div>'));
 let ti=0;
 const TS=[[null,'Hi, I’m Sabi! Let me show you around. It takes six quick steps.',null],
@@ -254,11 +281,33 @@ function tend(){$('#tr').hidden=true;try{localStorage.setItem('sabipack.tour','1
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#tr').hidden)tend()});
 const LS='sabipack.packs';
 function loadMine(){try{return JSON.parse(localStorage.getItem(LS)||'[]')}catch(e){return[]}}
-function saveMine(){try{localStorage.setItem(LS,JSON.stringify(mine))}catch(e){toast('Could not save on this phone (storage full or blocked).')}}
+function saveMine(){try{localStorage.setItem(LS,JSON.stringify(mine))}catch(e){toast('Could not save on this phone (storage full or blocked).')}scheduleSync()}
 let mine=loadMine(),cur=null;
 const el=(t,x,c)=>{const e=document.createElement(t);if(x)e.textContent=x;if(c)e.className=c;return e};
-function nsample(){$('#ntx').value='A cell is the basic unit of life. Every living thing is made of cells. The nucleus is like the control room of the cell. It holds the DNA and directs the cell\u2019s activities. The cell membrane is a thin layer around the cell that controls what enters and leaves. Mitochondria are the cell\u2019s power stations. They release energy from food through respiration. Plant cells also have a cell wall that gives them shape and strength, chloroplasts where photosynthesis happens, and a large vacuole that stores water and nutrients. Animal cells do not have cell walls or chloroplasts.'}
-function nfile(i){const f=i.files[0];if(!f)return;if(f.size>200000){toast('That file is too big. Paste the key part instead.');return}const r=new FileReader();r.onload=()=>{const t=String(r.result);$('#ntx').value=t.slice(0,3000);$('#nf').textContent='Loaded '+f.name+(t.length>3000?' (first 3000 characters used)':'')};r.readAsText(f)}
+function nsample(){parts=[];pi=0;$('#npp').style.display='none';$('#ntx').value='A cell is the basic unit of life. Every living thing is made of cells. The nucleus is like the control room of the cell. It holds the DNA and directs the cell\u2019s activities. The cell membrane is a thin layer around the cell that controls what enters and leaves. Mitochondria are the cell\u2019s power stations. They release energy from food through respiration. Plant cells also have a cell wall that gives them shape and strength, chloroplasts where photosynthesis happens, and a large vacuole that stores water and nutrients. Animal cells do not have cell walls or chloroplasts.'}
+let parts=[],pi=0,XM=null;
+async function ext(){return XM||(XM=await import('/extract.mjs'))}
+async function loadPdfjs(){const m=await import('/vendor/pdf.min.mjs');m.GlobalWorkerOptions.workerSrc='/vendor/pdf.worker.min.mjs';return m}
+async function loadUnzip(){return (await import('/vendor/fflate.mjs')).unzipSync}
+function showPart(msg){$('#ntx').value=parts[pi]||'';$('#npp').style.display=parts.length>1?'flex':'none';$('#npl').textContent='Part '+(pi+1)+' of '+parts.length;if(msg)$('#nf').textContent=msg}
+function setParts(X,text,msg){parts=X.chunkText(text);pi=0;if(!parts.length)throw new Error('NO_TEXT');showPart(msg+(parts.length>1?' It has '+parts.length+' parts. Make one pack per part.':''))}
+function npart(d){parts[pi]=$('#ntx').value;pi=Math.max(0,Math.min(parts.length-1,pi+d));showPart('Check the text, then tap Make my pack.')}
+async function nfile(i){const f=i.files[0];i.value='';if(!f)return;const n=f.name.toLowerCase(),say=t=>{$('#nf').textContent=t};
+try{
+if(n.endsWith('.txt')||f.type==='text/plain'){if(f.size>400000)return say('That file is too big. Paste the key part instead.');const X=await ext();setParts(X,await f.text(),'Text file loaded. Check it, then tap Make my pack.')}
+else if(n.endsWith('.docx')){if(f.size>8e6)return say('That file is too big (over 8 MB).');say('Reading the Word file on your phone…');const X=await ext(),un=await loadUnzip();const t=X.docxText(new Uint8Array(await f.arrayBuffer()),un);if(!t.trim())throw new Error('NO_TEXT');setParts(X,t,'Word file read on your phone. Check it, then tap Make my pack.')}
+else if(n.endsWith('.pdf')||f.type==='application/pdf'){if(f.size>15e6)return say('That PDF is too big (over 15 MB).');say('Reading the PDF on your phone… the first time, this loads a small reader (up to about 2 MB), then it is saved.');const X=await ext(),pj=await loadPdfjs();const r=await X.pdfText(new Uint8Array(await f.arrayBuffer()),pj);setParts(X,r.text,'PDF read on your phone ('+r.read+' of '+r.pages+' pages). Check it, then tap Make my pack.')}
+else if(n.endsWith('.doc'))say('Old .doc files are not supported. In Word, choose Save As .docx or PDF, then try again.');
+else say('Choose a PDF, Word (.docx) or text file, or use Photo of notes.')
+}catch(e){say(e.message==='NO_TEXT'?'No text found. If this is scanned or handwritten, use Photo of notes.':e.message&&e.message.includes('Word')?e.message:'Could not read that file. Try another one, or paste the text.')}}
+async function shrink(file){const url=URL.createObjectURL(file);try{const img=await new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=url});const sc=Math.min(1,1400/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);return c.toDataURL('image/jpeg',0.72)}finally{URL.revokeObjectURL(url)}}
+async function nphoto(i){const all=[...i.files];i.value='';if(!all.length)return;const say=t=>{$('#nf').textContent=t};
+if(off){say('Reading handwriting needs data once. Go online first, or type your notes.');return}
+const fs=all.slice(0,3);try{say('Preparing '+fs.length+' photo'+(fs.length>1?'s':'')+(all.length>3?' (the first 3 of '+all.length+')':'')+'…');const imgs=[];for(const f of fs)imgs.push(await shrink(f));
+const kb=Math.round(imgs.reduce((a,x)=>a+x.length*0.75,0)/1024);say('Sending about '+kb+' KB to the AI to read the writing…');
+const r=await fetch('/api/read-notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({images:imgs})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Could not read the photo.');
+const X=await ext();setParts(X,d.text,'The AI read your writing. It can make mistakes, so check the text and fix it before you tap Make my pack.')}
+catch(e){say(e.message==='Failed to fetch'?'No connection. Try again when you have data, or type your notes.':e.message==='NO_TEXT'?'No readable text found in the photo.':e.message||'Could not read the photo.')}}
 async function nrun(){const t=$('#ntx').value.trim();if(t.length<400){toast('Add at least a few sentences (400 characters).');return}
 if(off){toast('Making a pack needs data once. Go online first.');return}
 $('#nt1').hidden=true;$('#nres').hidden=true;const p=$('#nprog');p.hidden=false;p.innerHTML='<b>The AI is writing your pack\u2026</b><div class="mu" style="margin-top:6px">Only the text is sent, not a file. This can take a few seconds.</div>';
@@ -278,7 +327,7 @@ if(!d.builtin)A.append(sv);const sh=el('button','Send to a classmate','btn am');
 if(d.saved&&!d.builtin){const dl=el('button','Delete this pack','btn ghost');dl.onclick=()=>{mine=mine.filter(x=>x.id!==d.id);saveMine();home();nreset();go('home')};A.append(dl)}
 const nw=el('button','Make another','btn ghost');nw.style.alignSelf='flex-start';nw.onclick=nreset;A.append(nw);R.append(A);$('#s-notes').scrollTop=0}
 function openMine(i){cur=Object.assign({saved:true},mine[i]);showPack()}
-function nreset(){$('#nhead').style.display='flex';$('#nt1').hidden=false;$('#nres').hidden=true;$('#nprog').hidden=true;$('#nf').textContent='PDF and Word files are coming next.'}
+function nreset(){$('#nhead').style.display='flex';$('#nt1').hidden=false;$('#nres').hidden=true;$('#nprog').hidden=true;$('#nf').textContent='Add a file or photo, or paste your notes above.'}
 function renderMine(){const c=$('#np');c.innerHTML='';mine.forEach((p,i)=>{const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.lesson.title),document.createElement('br'),el('span',(p.subject?p.subject+' \u00b7 ':'')+(p.imported?'Imported':'From your notes')+' \u00b7 Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>openMine(i);c.append(b)})}
 const LAN=location.protocol==='http:'&&location.hostname!=='localhost';
 function home(){$('#cw').style.display=LAN?'block':'none';renderSubj();renderMine();renderShare();fillNsub();$('#mnl').style.display=mine.length?'block':'none';const live=chosen&&chosen.includes('Biology');let id=null,had=false;try{id=localStorage.getItem('sabipack.last');had=!!id}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;const pk=id&&bio.packs[id];
@@ -327,17 +376,61 @@ function renderPick(){const c=$('#pk-l');c.innerHTML='';CAT.forEach(([g,list])=>
 function cnt(){$('#pk-ok').textContent=sel.size?'Continue ('+sel.size+')':'Continue'}
 function pickOpen(){sel=new Set(chosen||[]);renderPick();go('pick')}
 function pickCancel(){go('home')}
-function pickDone(){if(!sel.size){toast('Pick at least one subject.');return}chosen=[...sel];try{localStorage.setItem(SK,JSON.stringify(chosen))}catch(e){}home();go('home');if(!seen)setTimeout(()=>tour(0),300)}
+function pickDone(){if(!sel.size){toast('Pick at least one subject.');return}chosen=[...sel];try{localStorage.setItem(SK,JSON.stringify(chosen))}catch(e){}scheduleSync();home();go('home');if(!seen)setTimeout(()=>tour(0),300)}
 function fillNsub(){const s=$('#nsub');if(!s)return;const keep=s.value;s.innerHTML='';const o=el('option','No subject');o.value='';s.append(o);(chosen||[]).forEach(n=>{const x=el('option',n);x.value=n;s.append(x)});if([...s.options].some(o=>o.value===keep))s.value=keep}
 function notesFor(n){go('notes');nreset();fillNsub();if(n&&[...$('#nsub').options].some(o=>o.value===n))$('#nsub').value=n}
-const _go=go;go=function(n){$('#bar').style.display=n==='pick'?'none':'';_go(n)};
+const _go=go;go=function(n){$('#bar').style.display=(n==='pick'||n==='welcome')?'none':'';_go(n);if(n==='acct')renderAcct();if(n==='host')hostCmd()};
+const PK='sabipack.profile',TK='sabipack.token';
+let profile=null,token=null;try{profile=JSON.parse(localStorage.getItem(PK)||'null');token=localStorage.getItem(TK)}catch(e){}
+function setProfile(p){profile=p;try{localStorage.setItem(PK,JSON.stringify(p))}catch(e){}greet()}
+function setToken(t){token=t;try{t?localStorage.setItem(TK,t):localStorage.removeItem(TK)}catch(e){}}
+function greetParts(dt){dt=dt||new Date();const h=dt.getHours();let g;if(h>=5&&h<12)g='Good morning';else if(h>=12&&h<17)g='Good afternoon';else if(h>=17&&h<22)g='Good evening';else g=['Burning the midnight oil','Night owl hours','Still up'][dt.getDate()%3];return[g,profile&&profile.name?profile.name:'Welcome']}
+function greet(){const g=greetParts();$('#gh').textContent=g[0];$('#greet').textContent=g[1]}
+async function acct(body){const r=await fetch('/api/account',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(d.error||'Something went wrong.');return d}
+let syncT=null;
+function scheduleSync(){if(!token)return;clearTimeout(syncT);syncT=setTimeout(syncUp,1500)}
+async function syncUp(){if(!token||off)return false;try{let last=null;try{last=localStorage.getItem('sabipack.last')}catch(e){}await acct({action:'save',token,name:profile&&profile.name,data:{subjects:chosen||[],packs:mine,last}});return true}catch(e){if(/Too (much|many)/.test(e.message))toast(e.message);if(/sign in again/i.test(e.message)){setToken(null);toast('Please sign in again to keep backing up.')}return false}}
+function restore(d){if(!d||typeof d!=='object')return;if(Array.isArray(d.subjects)&&d.subjects.length){chosen=d.subjects.filter(x=>typeof x==='string'&&x.length<80).slice(0,40);try{localStorage.setItem(SK,JSON.stringify(chosen))}catch(e){}}
+if(Array.isArray(d.packs)){const have=new Set(mine.map(p=>p.id));const add=[];d.packs.forEach(p=>{try{const c=cleanPack(p);c.id=p.id!=null?p.id:c.id;c.imported=!!p.imported;if(have.has(c.id))return;add.push(c)}catch(e){}});mine=[...add,...mine];try{localStorage.setItem(LS,JSON.stringify(mine))}catch(e){}}
+if(typeof d.last==='string'){try{localStorage.setItem('sabipack.last',d.last)}catch(e){}}}
+function afterAuth(data,name){restore(data);if(data)scheduleSync();else scheduleSync();toast(name?'Welcome, '+name+'!':'Welcome!');if(!chosen){renderPick();go('pick')}else{home();go('home');if(!seen)setTimeout(()=>tour(0),300)}}
+function guestGo(name){setProfile({name:String(name||'').trim().slice(0,40),guest:true});afterAuth(null,String(name||'').trim())}
+function renderWelcome(mode,msg){go('welcome');const c=$('#wl');c.innerHTML='';const add=(...n)=>c.append(...n);
+const inp=(id,type,ph,ac)=>{const i=el('input');i.id=id;i.type=type;i.placeholder=ph;i.className='in';i.autocomplete=ac;i.setAttribute('aria-label',ph);return i};
+const m=el('div',msg||'','mu');m.id='wmsg';m.setAttribute('role','status');
+const fail=e=>{m.textContent=e.message==='Failed to fetch'?'No connection. Try again when you have data, or continue without an account.':e.message};
+if(mode==='home'){const t=el('div');t.innerHTML=av('learn',72);const b1=el('button','Create an account','btn');b1.onclick=()=>renderWelcome('signup');const b2=el('button','Sign in','btn am');b2.onclick=()=>renderWelcome('login');
+const nm=inp('gname','text','What should we call you? (optional)','given-name');nm.maxLength=40;const b3=el('button','Continue without an account','btn ghost');b3.onclick=()=>guestGo(nm.value);
+add(t,el('h1','Welcome to SabiPack'),el('div','Learn offline, even with no data. Make an account to keep your subjects and packs if you change phones, or carry on without one.','mu'),b1,b2,el('div','OR','lbl'),nm,b3,m)}
+else if(mode==='signup'){const n=inp('wn','text','Your name','given-name');n.maxLength=40;const e=inp('we','email','Email','email');const p=inp('wp','password','Password (at least 8 characters)','new-password');const b=el('button','Create account','btn');
+b.onclick=async()=>{if(off){m.textContent='Creating an account needs data once. Go online first, or continue without an account.';return}b.disabled=true;m.textContent='Creating your account…';try{const r=await acct({action:'signup',name:n.value,email:e.value,password:p.value});setToken(r.token);setProfile({name:r.user.name,email:r.user.email,guest:false});afterAuth(null,r.user.name)}catch(x){fail(x)}b.disabled=false};
+const bk=el('button','Back','btn ghost');bk.onclick=()=>renderWelcome('home');
+add(el('h1','Create your account'),n,e,p,b,bk,el('div','We keep your email, name, subjects and saved packs so you can sign in on another phone. Your email is not checked, and there is no forgot-password option yet, so remember your password. A parent or teacher is welcome to help you sign up.','mu'),m)}
+else{const e=inp('le','email','Email','email');const p=inp('lp','password','Password','current-password');const b=el('button','Sign in','btn');
+b.onclick=async()=>{if(off){m.textContent='Signing in needs data once. Go online first, or continue without an account.';return}b.disabled=true;m.textContent='Signing in…';try{const r=await acct({action:'login',email:e.value,password:p.value});setToken(r.token);setProfile({name:r.user.name,email:r.user.email,guest:false});afterAuth(r.data,r.user.name)}catch(x){fail(x)}b.disabled=false};
+const bk=el('button','Back','btn ghost');bk.onclick=()=>renderWelcome('home');add(el('h1','Sign in'),e,p,b,bk,m)}}
+function renderAcct(){const c=$('#ac');c.innerHTML='';const add=(...n)=>c.append(...n);const signed=!!token;
+const card=el('div','','card');card.style.cssText='display:flex;flex-direction:column;gap:6px';card.append(el('b',profile&&profile.name||'Guest'),el('div',signed?(profile.email||''):'Guest on this phone. Nothing is backed up.','mu'));
+add(el('h2','Your account'),card);
+const ni=el('input');ni.className='in';ni.id='an';ni.value=profile&&profile.name||'';ni.maxLength=40;ni.placeholder='Your name';ni.setAttribute('aria-label','Your name');
+const sn=el('button','Save name','btn am');sn.onclick=()=>{setProfile(Object.assign({guest:true},profile||{},{name:ni.value.trim().slice(0,40)}));scheduleSync();toast('Saved.');renderAcct()};add(ni,sn);
+if(signed){const bu=el('button','Back up now','btn');bu.onclick=async()=>{if(off){toast('Go online to back up.');return}toast(await syncUp()?'Backed up.':'Could not back up. Try again.')};
+const so=el('button','Sign out','btn am');so.onclick=()=>{setToken(null);setProfile({name:profile.name,guest:true});toast('Signed out. Your packs stay on this phone.');renderAcct()};add(bu,so);
+const dp=el('input');dp.type='password';dp.className='in';dp.id='adp';dp.placeholder='Your password, to confirm';dp.style.display='none';const dl=el('button','Delete my account','btn ghost');
+dl.onclick=async()=>{if(dp.style.display==='none'){dp.style.display='block';dl.textContent='Confirm: delete my account';return}try{await acct({action:'delete',token,password:dp.value});setToken(null);setProfile({name:profile.name,guest:true});toast('Account deleted.');renderAcct()}catch(e){toast(e.message)}};add(dp,dl)}
+else{const b1=el('button','Create an account','btn');b1.onclick=()=>renderWelcome('signup');const b2=el('button','Sign in','btn am');b2.onclick=()=>renderWelcome('login');add(b1,b2)}
+const cs=el('button','Change my subjects','btn ghost');cs.onclick=pickOpen;
+const rm=el('button','Remove my data from this phone','btn ghost');rm.onclick=()=>{if(rm.dataset.s!=='1'){rm.dataset.s='1';rm.textContent='Tap again to confirm (packs not backed up will be lost)';return}try{Object.keys(localStorage).filter(k=>k.startsWith('sabipack.')).forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()};add(cs,rm)}
+function hostCmd(){const u=location.protocol==='https:'?location.origin:'https://YOUR-SABIPACK-SITE';$('#hcmd').textContent='pkg install -y nodejs curl unzip && curl -L -o kit.zip '+u+'/classroom-kit.zip && unzip -o kit.zip && node classroom/server.mjs'}
+function copyHost(){const t=$('#hcmd').textContent;try{navigator.clipboard.writeText(t).then(()=>toast('Copied. Paste it in Termux.'),()=>toast('Press and hold the command to copy it.'))}catch(e){toast('Press and hold the command to copy it.')}}
 function netUi(){$('#net').classList.toggle('off',off);$('#nt').textContent=off?'Offline':'Online'}
 window.addEventListener('offline',()=>{off=true;netUi();toast('You are offline. Saved packs still work.')});
 window.addEventListener('online',()=>{off=false;netUi();toast('Back online.')});
 off=!navigator.onLine;netUi();
 lg();ui();qc();home();qz();udial();
 let seen=false;try{seen=!!localStorage.getItem('sabipack.tour')}catch(e){}
-if(!chosen){renderPick();go('pick')}else if(!seen)setTimeout(()=>tour(0),400);
+greet();setInterval(greet,60000);document.addEventListener('visibilitychange',greet);
+if(!profile){renderWelcome('home')}else if(!chosen){renderPick();go('pick')}else if(!seen)setTimeout(()=>tour(0),400);
 loadBio();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 $('#wv').innerHTML='<i></i>'.repeat(16);document.querySelectorAll('#wv i').forEach((e,i)=>e.style.animationDelay=(i*0.07)+'s');
