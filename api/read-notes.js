@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
-      body: JSON.stringify({ model, temperature: 0, max_tokens: 4000,
+      body: JSON.stringify({ model, temperature: 0, max_tokens: 8000, ...(process.env.GROQ_VISION_REASONING_EFFORT ? { reasoning_effort: process.env.GROQ_VISION_REASONING_EFFORT } : {}),
         messages: [{ role: 'user', content: [{ type: 'text', text: PROMPT }, ...images.map(url => ({ type: 'image_url', image_url: { url } }))] }] }),
     });
     if (!r.ok) return res.status(502).json({ error: 'The AI could not read the photo right now. Please try again.' });
