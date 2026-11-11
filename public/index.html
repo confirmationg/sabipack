@@ -124,7 +124,7 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 </head>
 <body>
 <div class="phone">
-<header class="hd"><button class="who" id="who" onclick="go('acct')" aria-label="Your account"><span id="gh">SabiPack</span><span class="logo" id="greet">Welcome</span></button><span style="display:flex;gap:8px"><button class="net off" onclick="tour(0)" aria-label="Show the app tour">Help</button><button class="net" id="net" onclick="tog()" aria-label="Toggle airplane mode"><i></i><span id="nt">Online</span></button></span></header>
+<header class="hd"><button class="who" id="who" onclick="go('acct')" aria-label="Your account"><span id="gh">SabiPack</span><span class="logo" id="greet">Welcome</span></button><span style="display:flex;gap:8px"><button class="net off" onclick="tour(0)" aria-label="Show the app tour">Help</button><a class="net" id="teacher-link" href="/classroom/teacher" style="display:none;text-decoration:none" aria-label="Open teacher dashboard">Teacher</a><button class="net" id="net" onclick="tog()" aria-label="Toggle airplane mode"><i></i><span id="nt">Online</span></button></span></header>
 <main>
 <section class="scr on" id="s-home">
 <div class="dash-intro"><div><div class="dash-kicker">Your learning space</div><h1>Learn anywhere.<br>No data needed.</h1><div class="mu" style="margin-top:7px">Your lessons, your packs, your progress — all in one place.</div></div><span class="chip">Offline-first</span></div>
@@ -165,18 +165,13 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <div class="row"><button class="btn ghost" onclick="go('share')">‹ Share</button><span class="chip">Teacher</span></div>
 <h2>Host a class</h2>
 <div class="mu">One device serves the app and its packs to a whole class over local Wi-Fi. No internet needed in the room.</div>
-<div class="card" style="display:flex;flex-direction:column;gap:8px;font-size:14px"><b>From a laptop</b>
-<div>1. Install Node.js once. Copy the SabiPack project folder to the laptop.</div>
-<div>2. Turn on the laptop’s hotspot, or join the classroom router.</div>
-<div>3. Run <b>node classroom/server.mjs</b> and write the address it prints on the board.</div></div>
-<div class="card" style="display:flex;flex-direction:column;gap:8px;font-size:14px"><b>From an Android phone (Termux)</b>
-<div>1. Install <b>Termux</b> from F-Droid (the Play Store version is out of date).</div>
-<div>2. Connect to the internet once, then paste this in Termux:</div>
-<div id="hcmd" style="font-family:ui-monospace,monospace;font-size:12px;word-break:break-all;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px"></div>
-<button class="btn am" onclick="copyHost()">Copy the command</button>
-<div>3. Turn on the phone’s hotspot. Students join it and open the address Termux shows. If none is shown, use the hotspot address in your phone settings (often 192.168.x.1) followed by :8080.</div>
-<div>4. Keep Termux open while the class is using it.</div></div>
-<div class="card info" style="font-size:13px"><b>Honest notes:</b> a phone’s browser cannot run a server by itself, which is why Termux is needed. Tested on a computer. Not yet tested on a real phone. Phone hotspots limit how many devices can join.</div>
+<div class="card" style="display:flex;flex-direction:column;gap:10px;font-size:14px"><b>Host from a Windows laptop</b>
+<div>1. Install Node.js LTS once on the laptop.</div>
+<div>2. Extract the SabiPack project folder and double-click <b>START_SABIPACK_CLASSROOM.bat</b>.</div>
+<div>3. SabiPack opens the Teacher Dashboard automatically. Turn on Windows Mobile Hotspot or connect the laptop to the classroom Wi-Fi.</div>
+<div>4. Give students the classroom address shown on the Teacher Dashboard. Keep the black server window open during the lesson.</div>
+<a class="btn" href="/classroom/teacher" style="text-align:center;text-decoration:none">Open Teacher Dashboard</a></div>
+<div class="card info" style="font-size:13px"><b>For this hackathon build:</b> classroom hosting is designed for a Windows laptop or computer. Students must join the same Wi-Fi network or laptop hotspot. The local classroom works without mobile data; AI lesson generation still needs internet.</div>
 <div class="card" style="font-size:14px"><b>No hotspot?</b> Use <b>Share</b> to send a pack by Bluetooth or Nearby Share. That works on any phone.</div>
 </section>
 
@@ -229,7 +224,7 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <div class="mu" id="imsg" role="status"></div></div>
 <div class="card info" style="font-size:14px"><b>How it works:</b> Send opens your phone’s share menu. Pick Bluetooth or Nearby Share. On the other phone, save the file, open SabiPack, go to Share and tap Import.</div>
 <div class="card" style="font-size:14px;display:flex;flex-direction:column;gap:8px"><b>Classroom hotspot</b>
-<div>Serve a whole class from one laptop or Android phone over local Wi-Fi, with no internet.</div>
+<div>Serve a whole class from a Windows laptop over local Wi-Fi, with no mobile data.</div>
 <button class="btn" onclick="go('host')">Host a class (teacher)</button></div>
 </section>
 
@@ -488,8 +483,6 @@ dl.onclick=async()=>{if(dp.style.display==='none'){dp.style.display='block';dl.t
 else{const b1=el('button','Create an account','btn');b1.onclick=()=>renderWelcome('signup');const b2=el('button','Sign in','btn am');b2.onclick=()=>renderWelcome('login');add(b1,b2)}
 const cs=el('button','Change my subjects','btn ghost');cs.onclick=pickOpen;
 const rm=el('button','Remove my data from this phone','btn ghost');rm.onclick=()=>{if(rm.dataset.s!=='1'){rm.dataset.s='1';rm.textContent='Tap again to confirm (packs not backed up will be lost)';return}try{Object.keys(localStorage).filter(k=>k.startsWith('sabipack.')).forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()};add(cs,rm)}
-function hostCmd(){const u=location.protocol==='https:'?location.origin:'https://YOUR-SABIPACK-SITE';$('#hcmd').textContent='pkg install -y nodejs curl unzip && curl -L -o kit.zip '+u+'/classroom-kit.zip && unzip -o kit.zip && node classroom/server.mjs'}
-function copyHost(){const t=$('#hcmd').textContent;try{navigator.clipboard.writeText(t).then(()=>toast('Copied. Paste it in Termux.'),()=>toast('Press and hold the command to copy it.'))}catch(e){toast('Press and hold the command to copy it.')}}
 function noteOf(d){const m=d.meta||{};return(m.note||'Check this pack before use.')+(m.data_kb?' Data used to make it: about '+m.data_kb+' KB.':'')}
 const DT={flow:[2,8],cycle:[3,6],parts:[2,8]};
 function cleanDiag(g){if(!g||typeof g!=='object'||!DT[g.type])return null;const r=DT[g.type];if(!Array.isArray(g.steps)||g.steps.length<r[0]||g.steps.length>r[1])return null;const steps=[];for(const s of g.steps){if(!s||!str(s.label,40))return null;steps.push(str(s.note,90)?{label:s.label,note:s.note}:{label:s.label})}
@@ -529,6 +522,7 @@ let seen=false;try{seen=!!localStorage.getItem('sabipack.tour')}catch(e){}
 greet();setInterval(greet,60000);document.addEventListener('visibilitychange',greet);
 if(!profile){renderWelcome('home')}else if(!chosen){renderPick();go('pick')}else if(!seen)setTimeout(()=>tour(0),400);
 loadBio();
+fetch('/classroom/api/addresses').then(r=>{if(r.ok){const t=document.getElementById('teacher-link');if(t)t.style.display='inline-flex'}}).catch(()=>{});
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 $('#wv').innerHTML='<i></i>'.repeat(16);document.querySelectorAll('#wv i').forEach((e,i)=>e.style.animationDelay=(i*0.07)+'s');
 </script>

@@ -90,3 +90,12 @@ Never put keys in files or in GitHub.
 
 ## Tests
 `npm test` runs the format, server-endpoint and pack checks. It does not test the real Groq call or real phones.
+
+
+## Windows classroom quick start
+1. Install Node.js LTS once: https://nodejs.org/
+2. Extract this project folder.
+3. Double-click `START_SABIPACK_CLASSROOM.bat`.
+4. The Teacher Dashboard opens automatically. Turn on Windows Mobile Hotspot or join classroom Wi-Fi.
+5. Copy the student access address displayed on the dashboard and share it with the class.
+See `classroom/README.md` for details.
