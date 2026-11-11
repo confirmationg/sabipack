@@ -1,0 +1,32 @@
+SABIPACK LOCAL TEACHER ACCESS + ASSESSMENTS
+
+TEACHER
+1. Start the local classroom server.
+2. Find the six-digit PIN printed in the server terminal. It is also saved at:
+   classroom/uploads/TEACHER-LOGIN-PIN.txt
+3. Open http://localhost:8080/classroom/teacher on the server laptop.
+4. Enter the PIN.
+5. Upload lesson materials or create a test in Assessment centre.
+
+CREATE A TEST
+Use one question per line:
+Question | Option 1 | Option 2 | Option 3 | Option 4 | Correct option number
+
+Example:
+The functional unit of the kidney is | Neuron | Nephron | Alveolus | Osteon | 2
+
+Rules: 3 to 50 questions; exactly four options; correct option is 1, 2, 3 or 4; duration 1 to 180 minutes.
+
+STUDENTS
+1. Connect to the same Wi-Fi router or teacher laptop hotspot.
+2. Open http://TEACHER-LAPTOP-IP:8080/classroom/tests
+3. Enter name and student ID.
+4. Start the test and submit before the server timer expires.
+5. Results are stored on the teacher's classroom computer.
+
+SECURITY
+- Students do not need the teacher PIN.
+- Keep the teacher PIN private.
+- Teacher upload, delete, assessment creation and results endpoints require a teacher session.
+- Results and assessments are stored in classroom/uploads on the server device.
+- The first release is a prototype MCQ assessment workflow, not a high-stakes exam platform.
