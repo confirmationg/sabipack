@@ -14,25 +14,23 @@ A laptop-hosted classroom is local-network access, not worldwide hosting. A pers
 
 ### First-time setup
 
-1. Open SabiPack → Teacher and download **Classroom Setup for Windows**.
-2. Extract the setup ZIP and connect the laptop to the internet for this one-time installation.
-3. Double-click `Install_SabiPack_Classroom.bat`. It downloads the official portable Node.js 26.13.0 runtime, installs the local classroom files, registers the `sabipack-classroom://` launch protocol and creates a desktop shortcut. No separate Node.js installation is required.
-4. Open SabiPack → Teacher → **Start My Local Classroom**. The registered helper starts the local server and opens the Teacher Dashboard.
-5. Keep the black server window open while teaching. Closing it stops the classroom server.
-
-The setup package supports 64-bit Windows. Internet is needed only for the first-time runtime download; after setup, local classroom hosting works without internet.
+1. Install Node.js LTS on the Windows laptop from https://nodejs.org/.
+2. Extract the SabiPack project ZIP.
+3. Open the extracted `sabipack` project folder.
+4. From the extracted project root, double-click `Install_SabiPack_Classroom.bat` once. It installs the helper and registers the `sabipack-classroom://` protocol for the current Windows user.
+5. Open SabiPack → Teacher → **Start My Local Classroom**. The registered helper starts the local server and opens the Teacher Dashboard.
+6. Keep the black server window open while teaching. Closing it stops the classroom server.
 
 The launcher uses port 8080 when available. If another program is already using that port, it automatically tries 8081, then the next available port up to 8090. Use the address opened by the launcher; do not assume it is always 8080.
 
 ### Each classroom session
 
-1. Turn on Windows Mobile Hotspot or connect the laptop to the school's Wi-Fi.
-2. Open SabiPack → Teacher and click **Start My Local Classroom** (or use the desktop shortcut).
-3. If Windows Firewall asks, allow Node.js on **Private networks** so students on the same Wi-Fi/hotspot can connect.
-4. On the Teacher Dashboard, enter a resource title, choose a PDF/PPT/PPTX/TXT file, and click **Publish to students**.
-5. Give students the student access address displayed on the dashboard. Students must join the same Wi-Fi/hotspot.
-6. Students open the address in their phone browser and download the teacher's materials or available built-in packs.
-7. Keep the server window open until the class is finished. Press Ctrl+C in that window to stop it.
+1. Double-click `START_SABIPACK_CLASSROOM.bat`.
+2. On the Teacher Dashboard, enter a resource title, choose a PDF/PPT/PPTX/TXT file, and click **Publish to students**.
+3. Turn on Windows Mobile Hotspot or connect the laptop to the school's Wi-Fi.
+4. Give students the student access address displayed on the dashboard. Students must join the same Wi-Fi/hotspot.
+5. Students open the address in their phone browser and download the teacher's materials or available built-in packs.
+6. Keep the server window open until the class is finished. Press Ctrl+C in that window to stop it.
 
 ## 3. Understanding the Teacher Dashboard
 
@@ -116,14 +114,15 @@ The Teacher Dashboard and student classroom page now use SabiPack's light brand 
 
 USSD is not operational in this build. A live service requires a mobile network operator or authorised USSD aggregator, approved shortcode allocation, gateway credentials, and a secure backend integration. The app labels this section as Planned and does not claim that a real dial session is available.
 
-## 11. One-time Windows teacher setup package
+## 11. One-time Windows teacher helper installation
 
-1. Download the dedicated Classroom Setup ZIP from the Teacher page on the deployed SabiPack app.
-2. Extract it and run `Install_SabiPack_Classroom.bat` while connected to the internet.
-3. The installer downloads the official portable Node.js 26.13.0 Windows x64 runtime, copies the classroom application into `%LOCALAPPDATA%\SabiPack\app`, registers the `sabipack-classroom://` protocol and creates a desktop shortcut.
-4. Return to the deployed SabiPack app, open Teacher, enable Windows Mobile Hotspot or join the classroom router, and click **Start My Local Classroom**.
+1. Install Node.js LTS.
+2. Extract the SabiPack project ZIP.
+3. From the extracted project root, run `Install_SabiPack_Classroom.bat` once. It copies the local classroom runtime to `%LOCALAPPDATA%\\SabiPack\\app` and registers the `sabipack-classroom://` Windows protocol for the current user.
+4. Open SabiPack → Teacher → Start My Local Classroom. The protocol launches the installed helper, which starts the local server and opens the Teacher Dashboard.
+5. Turn on Windows Mobile Hotspot or connect the laptop to the classroom router before starting. The browser cannot silently toggle Windows Hotspot.
 
-The package is designed for 64-bit Windows. Internet is required once to download the runtime; local file serving works offline after installation. Windows Hotspot must be enabled manually. The installer and protocol must still be rehearsed on the actual submission laptop; they have not been physically verified in this development environment.
+The installer/protocol implementation is included in this source package. It has not been executed on a real Windows machine in this environment; verify the one-time install, browser protocol prompt and launch on the target Windows laptop. The local server itself uses Node.js built-in modules and does not need npm dependencies to serve files.
 
 ## 12. Offline AI roadmap (not implemented in this submission)
 

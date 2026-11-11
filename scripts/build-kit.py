@@ -9,6 +9,6 @@ with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
     for d, _, files in os.walk(os.path.join(root, 'public')):
         for f in files:
             p = os.path.join(d, f)
-            if p == out or f.endswith('.map') or os.path.relpath(p, os.path.join(root, 'public')).startswith('downloads' + os.sep): continue
+            if p == out or f.endswith('.map'): continue
             z.write(p, os.path.relpath(p, root))
 print('built', out, os.path.getsize(out) // 1024, 'KB')
