@@ -13,7 +13,7 @@ sabipack/
     try.html           Simple page where anyone can try the AI with their own notes
     maker.html         Private Pack Maker (passcode) for making packs from a source text
     sw.js              Lets the app open with no internet
-    extract.mjs        Reads text out of PDF and Word files, on the phone
+    extract.mjs        Reads text out of PDF, Word and PowerPoint files, on the phone
     vendor/            PDF and Word reader libraries (pdf.js, fflate), bundled
     classroom-kit.zip  What a teacher downloads to host a class from a phone (rebuild with scripts/build-kit.py)
     packs/             The built-in JAMB Biology packs (index.json + one file per pack)
@@ -44,7 +44,7 @@ sabipack/
 - A student opens the site. The app loads the Biology packs once, saves them on the phone, and works offline after that.
 - "Bring your own notes" sends only text to `api/try.js`, which asks Groq to write a lesson and quiz. The result is saved on the phone.
 - "Share" sends a pack as a file by Bluetooth or Nearby Share. The other phone imports it.
-- In a classroom, `classroom/server.mjs` serves everything over local Wi-Fi with no internet.
+- In a classroom, `classroom/server.mjs` serves the app, teacher-published resources and packs over local Wi-Fi with no internet. Students can download PDF/TXT/PPT/PPTX materials from `/classroom`; teachers manage uploads at `/classroom/teacher`.
 
 ## Environment variables (set in Vercel > Settings > Environment Variables, then redeploy)
 | Name | Needed for |
@@ -65,12 +65,12 @@ Never put keys in files or in GitHub.
 - Ask the AI: type a topic, get a layered lesson with quiz and simple drawn diagrams (flow, cycle, parts); save it, work offline, share it
 - Optional accounts (email and password) with a small backup of subjects and packs, or carry on as a guest; a time-of-day greeting with the student's name
 - Subject picker (all Nigerian exam subjects hidden until chosen), changeable any time
-- Notes to pack from pasted text, PDF, Word (.docx) and text files (read on the phone), and photos of handwritten notes (read by the AI vision model, then checked by the student)
+- Notes to pack from pasted text, PDF, Word (.docx), PowerPoint (.pptx) and text files (read on the phone), and photos of handwritten notes (read by the AI vision model, then checked by the student)
 - Biology packs: one full layered lesson with diagrams (Cell structure) and two short lessons, with quizzes
 - Packs made from notes are saved offline and tagged by subject
 - Audio using the phone's own voice
 - Sharing and importing packs as files
-- Classroom server for local Wi-Fi: laptop route tested on a computer; phone route (Termux) NOT yet tested on a real phone
+- Classroom server for local Wi-Fi, with a teacher upload dashboard at `/classroom/teacher`; PDF/TXT open in browser and PPT/PPTX download; laptop route tested on a computer; phone route (Termux) NOT yet tested on a real phone
 - First-run tour, installable app, opens offline after the first visit
 
 ## Previews (not real yet) and not built
@@ -84,9 +84,9 @@ Never put keys in files or in GitHub.
 
 ## Accuracy and privacy
 - Built-in packs are labelled draft until reviewed. The developer reviewed the Cell, Transport and Heredity questions as accurate; the new layered Cell lesson text is still marked draft.
-- AI-made packs are always labelled draft. Nothing here has been tested with students yet.
+- AI-made packs are always labelled draft. Nothing here has been tested with students yet. The teacher dashboard and student classroom pages have been visually upgraded; the full student-device workflow still needs field testing.
 - Accounts are optional. Guests keep everything on their own phone. With an account, the email, name, subjects and saved packs are stored in the database so they can be restored on another phone; the password is stored only as a salted scrypt hash, and users can delete their account. The email is not verified. There is no age gate; the sign-up screen only says a parent or teacher is welcome to help.
-- When using the AI, only the notes text is sent. PDF and Word files are read on the phone. A photo of notes is sent (shrunk) to the AI vision model so it can read the writing, and the student checks the text before using it.
+- When using the AI, only the notes text is sent. PDF, Word and PowerPoint (.pptx) files are read on the phone for text extraction. A photo of notes is sent (shrunk) to the AI vision model so it can read the writing, and the student checks the text before using it.
 
 ## Tests
 `npm test` runs the format, server-endpoint and pack checks. It does not test the real Groq call or real phones.
