@@ -9,15 +9,17 @@ echo       SabiPack - Start your classroom
 echo  ==========================================
 echo.
 
-where node >nul 2>nul
-if errorlevel 1 (
-  echo Node.js is not installed on this computer.
-  echo Please install the free Node.js LTS version from:
-  echo https://nodejs.org/
-  echo Choose the LTS download, install it, then double-click this file again.
+REM Prefer the portable Node.js runtime installed by the SabiPack setup package.
+set "NODE_EXE=%LOCALAPPDATA%\SabiPack\runtime\node.exe"
+if not exist "%NODE_EXE%" set "NODE_EXE="
+if not defined NODE_EXE (
+  for /f "delims=" %%N in ('where node 2^>nul') do if not defined NODE_EXE set "NODE_EXE=%%N"
+)
+if not defined NODE_EXE (
+  echo SabiPack's local Node.js runtime was not found.
+  echo Please run Install_SabiPack_Classroom.bat from the setup package while online.
   echo.
   pause
-  start "" "https://nodejs.org/"
   exit /b 1
 )
 
@@ -35,7 +37,7 @@ set /p PORT=<"%TEMP%\sabipack-port.txt"
 if not defined PORT set PORT=8080
 
 echo Starting SabiPack classroom on port %PORT%...
-start "SabiPack Classroom Server" cmd /k "cd /d ""%CD%"" && set PORT=%PORT% && node classroom\server.mjs"
+start "SabiPack Classroom Server" cmd /k "cd /d ""%CD%"" && set PORT=%PORT% && ""%NODE_EXE%"" classroom\server.mjs"
 
 echo Waiting for SabiPack to start...
 powershell -NoProfile -ExecutionPolicy Bypass -Command "$u='http://127.0.0.1:%PORT%/classroom/teacher'; $ready=$false; for($i=0;$i -lt 30;$i++){try{$r=Invoke-WebRequest -UseBasicParsing $u -TimeoutSec 2; if($r.StatusCode -eq 200){$ready=$true;break}}catch{}; Start-Sleep -Seconds 1}; if($ready){Start-Process $u; exit 0}else{Write-Host 'SabiPack did not respond. Check the SabiPack Classroom Server window.'; exit 1}"

@@ -1,0 +1,47 @@
+SABIPACK — GITHUB UPDATE PACKAGE
+
+This ZIP is the COMPLETE updated project. It is not the teacher installer.
+
+IMPORTANT
+- Extract this ZIP.
+- The files inside it are already arranged at the repository root (package.json,
+  public/, api/, classroom/, lib/, scripts/, etc.).
+- Copy/replace these extracted files into the root of your existing cloned
+  SabiPack repository folder.
+- Do not delete or commit your private .env files, database files, node_modules,
+  or classroom/uploads data. This package intentionally excludes local secrets
+  and generated classroom uploads.
+- Commit and push the updated project to the GitHub repository connected to
+  Vercel. Wait for the Vercel deployment to finish.
+
+AFTER DEPLOYMENT — VERIFY THE WEBSITE DOWNLOAD
+1. Open https://sabipack.vercel.app/teacher.html
+2. Select “Download Classroom Setup”.
+3. Confirm that the browser downloads
+   SabiPack-Classroom-Setup-Windows.zip.
+4. You can also test the direct public URL:
+   https://sabipack.vercel.app/downloads/SabiPack-Classroom-Setup-Windows.zip
+
+WHAT A TEACHER OR JUDGE DOES
+1. Visits https://sabipack.vercel.app/
+2. Opens Teacher.
+3. Downloads and extracts the Windows setup ZIP.
+4. Runs Install_SabiPack_Classroom.bat while connected to the internet.
+5. Opens SabiPack > Teacher and selects Start My Local Classroom.
+6. Turns on Windows Mobile Hotspot or joins a classroom router.
+7. Students join that same Wi-Fi network and open the local address shown.
+
+LIMITATIONS TO STATE HONESTLY
+- The Windows installer is a ZIP with a one-click .bat/.ps1 setup, not a signed
+  .exe or .msi installer.
+- First-time setup needs internet to download the official portable Node.js
+  runtime.
+- Local classroom resource sharing works over the same Wi-Fi/hotspot without
+  internet after setup.
+- Groq AI generation still needs internet.
+- Offline AI and USSD are planned, not implemented.
+- Physical Windows installation and a full Android-to-Windows hotspot session
+  still need to be tested on real devices.
+
+Do not submit this instruction file as the project report. Use the separate
+SabiPack_Hackathon_Submission_Report_FINAL.docx.
