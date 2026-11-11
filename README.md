@@ -153,3 +153,22 @@ generation still requires internet in this submission build.
 ## Direct teacher-note to student-pack workflow
 
 In a local classroom, students can tap **Create My Pack** beside a teacher-published PDF, PPTX or text resource. The local server supplies the file to the SabiPack app, which opens Pack Studio with the document loaded for review and pack creation. Manual download and import remain available as a fallback. New AI-generated lesson/quiz creation still requires the online Groq API in this build; saved packs can be studied offline. Older `.ppt` files must be converted to `.pptx` before Pack Studio can extract their text.
+
+
+## Local teacher access and assessments (updated build)
+
+When the local classroom server starts for the first time, it creates a private six-digit teacher PIN. The PIN is printed in the server terminal and saved in `classroom/uploads/TEACHER-LOGIN-PIN.txt`. Keep this PIN with the teacher/device administrator; do not share it with students. Open `/classroom/teacher` and enter the PIN to unlock the teacher workspace. The PIN remains the same across server restarts unless the local `classroom/uploads/teacher-auth.json` file is deliberately removed (the server will then generate a new PIN on next start).
+
+Students use `/classroom` to access published materials and `/classroom/tests` to take published assessments. Students do not need the teacher PIN. Publishing, deleting resources, creating assessments and viewing assessment results require teacher authentication.
+
+### Create a local assessment
+1. Open the teacher workspace and sign in with the PIN.
+2. In **Assessment centre**, enter a test title and duration.
+3. Enter at least three questions, one per line, in this format:
+   `Question | Option 1 | Option 2 | Option 3 | Option 4 | Correct option number`
+4. Use correct option numbers 1 to 4. A test can contain 3–50 questions.
+5. Select **Publish assessment**.
+6. Students connect to the same Wi-Fi/hotspot, open `/classroom/tests`, enter their name and student ID, and start the test.
+7. The server times the attempt, automatically marks objective answers and stores the result locally. The teacher can refresh **Student results** in the authenticated dashboard.
+
+This first assessment release supports multiple-choice questions only. Student IDs are entered by students and are not validated against a school enrolment database. The browser cannot prevent students using other apps or communicating, so this is a classroom assessment demonstration, not a secure high-stakes examination system. Teacher sessions are held in server memory and will require signing in again after a server restart.
