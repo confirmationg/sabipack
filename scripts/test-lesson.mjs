@@ -1,5 +1,6 @@
 import assert from 'node:assert';
 import { validateLesson, diagramErrors } from '../lib/validate.mjs';
+import { normalizeLesson, buildLessonPrompt } from '../lib/lesson.mjs';
 Object.assign(process.env, { GROQ_API_KEY: 'k', GROQ_MODEL: 'm' });
 const q = i => ({ stem: 'Which statement about osmosis number ' + i + ' is true?', options: ['A1', 'B1', 'C1', 'D1'], answer_index: 1, explanation: 'Because of the lesson.', objective_hint: 'osmosis' });
 const lesson = () => ({ lesson: {
@@ -10,6 +11,13 @@ const lesson = () => ({ lesson: {
   diagrams: [{ type: 'flow', title: 'Water into a root', steps: [{ label: 'Soil water' }, { label: 'Root hair cell', note: 'osmosis' }, { label: 'Xylem' }] }] },
   questions: [1, 2, 3, 4, 5].map(q) });
 assert.deepEqual(validateLesson(lesson()), []);
+// Older/model-generated responses may nest the quiz inside lesson; normalize it
+// into the top-level shape required by validateLesson and the student app.
+const nestedQuiz = lesson(); nestedQuiz.lesson.questions = nestedQuiz.questions; delete nestedQuiz.questions;
+const normalizedNested = normalizeLesson(nestedQuiz);
+assert.equal(normalizedNested.questions.length, 5);
+assert.equal(Object.hasOwn(normalizedNested.lesson, 'questions'), false);
+assert.match(buildLessonPrompt('Osmosis', 'Biology'), /TWO top-level keys: "lesson" and "questions"/);
 const bad = lesson(); bad.lesson.sections = [{ heading: 'x' }]; assert.ok(validateLesson(bad).some(x => x.includes('2-8 sections')));
 const bad2 = lesson(); bad2.lesson.sections = [{ heading: 'x' }, { heading: 'Fine heading' }]; assert.ok(validateLesson(bad2).length >= 3, 'short heading and missing text are caught');
 assert.ok(diagramErrors({ type: 'cycle', steps: [{ label: 'a' }, { label: 'b' }] }).length, 'cycle needs 3');
