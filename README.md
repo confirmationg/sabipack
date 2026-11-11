@@ -94,11 +94,11 @@ Never put keys in files or in GitHub.
 
 
 ## Windows classroom quick start
-1. Install Node.js LTS once: https://nodejs.org/
-2. Extract this project folder.
-3. From the extracted project root, double-click `Install_SabiPack_Classroom.bat` once to install the helper and register the `sabipack-classroom://` launch protocol.
-4. Open SabiPack → Teacher → **Start My Local Classroom**. The helper starts the local server and opens the Teacher Dashboard.
-5. Turn on Windows Mobile Hotspot or join classroom Wi-Fi, then copy the student access address displayed on the dashboard.
+1. Download the dedicated **SabiPack Classroom Setup for Windows** ZIP from the Teacher page and extract it.
+2. Double-click `Install_SabiPack_Classroom.bat` once while connected to the internet. The installer downloads the official portable Node.js LTS runtime and installs the classroom files; teachers do not need to install Node.js separately.
+3. Open SabiPack → Teacher → **Start My Local Classroom**. The helper starts the local server and opens the Teacher Dashboard.
+4. Turn on Windows Mobile Hotspot or join classroom Wi-Fi, then copy the student access address displayed on the dashboard.
+5. At school, the installed local classroom server works without internet. Groq AI generation still requires internet in this build.
 See `classroom/README.md` for details.
 
 ## Windows teacher classroom
@@ -128,3 +128,28 @@ The helper's protocol registration and installer are included in this project. T
 ## Hackathon report
 
 See `SabiPack_Hackathon_Project_Report_Godwin_Obadiah.docx` for the feature-status matrix, architecture, offline AI roadmap, limitations and verification record for this submission package.
+
+## Self-service Windows classroom download (website deployment)
+
+The Teacher page contains a public download link to
+`/downloads/SabiPack-Classroom-Setup-Windows.zip`. The file is stored in
+`public/downloads/`, so Vercel serves it as a static download from:
+
+`https://sabipack.vercel.app/downloads/SabiPack-Classroom-Setup-Windows.zip`
+
+To publish this workflow, commit and push the complete project contents to the
+connected GitHub repository and allow Vercel to deploy. After deployment, open
+the Teacher page and test the download URL above in a private/incognito browser
+window. Do not upload the setup ZIP as a separate Vercel project or send it
+manually to individual teachers.
+
+The downloaded ZIP contains a one-time Windows setup script and the local
+classroom app. It downloads the official portable Node.js runtime during setup;
+therefore the first installation needs internet. Once installed, local classroom
+resource serving over the same Wi-Fi/hotspot works without internet. Groq AI
+generation still requires internet in this submission build.
+
+
+## Direct teacher-note to student-pack workflow
+
+In a local classroom, students can tap **Create My Pack** beside a teacher-published PDF, PPTX or text resource. The local server supplies the file to the SabiPack app, which opens Pack Studio with the document loaded for review and pack creation. Manual download and import remain available as a fallback. New AI-generated lesson/quiz creation still requires the online Groq API in this build; saved packs can be studied offline. Older `.ppt` files must be converted to `.pptx` before Pack Studio can extract their text.
