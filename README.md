@@ -73,9 +73,10 @@ Never put keys in files or in GitHub.
 - Classroom server for local Wi-Fi, with a teacher upload dashboard at `/classroom/teacher`; PDF/TXT open in browser and PPT/PPTX download; laptop route tested on a computer; phone route (Termux) NOT yet tested on a real phone
 - First-run tour, installable app, opens offline after the first visit
 
-## Previews (not real yet) and not built
-- Previews: Practice tab (SMS-style quiz inside the app), USSD menu simulation
-- Not built: Smart Revision, real SMS and USSD, email checking and forgot-password for accounts, other subjects' lessons, local-language voices (the local-language text in the audio demo is demo text only)
+## Implemented, planned and not built
+- Implemented: subject-based Practice using built-in Biology sample questions and quizzes from saved/imported packs; answer feedback, scores and local topic-level progress.
+- Planned: USSD, pending an authorised telecom/aggregator integration and shortcode approval; offline AI generation on teacher laptops and student phones.
+- Not built: real SMS delivery, Smart Revision automation, email verification and forgot-password for accounts, a full question bank and lesson library for every subject, and production-quality local-language voices (the local-language text in the audio demo is demo text only).
 
 ## Pre-existing work and AI tools (required disclosure)
 - Made before 7 Nov 2026: everything in `pre-hackathon/`. The app in `public/index.html` was adapted from that prototype during the hackathon.
@@ -95,13 +96,35 @@ Never put keys in files or in GitHub.
 ## Windows classroom quick start
 1. Install Node.js LTS once: https://nodejs.org/
 2. Extract this project folder.
-3. Double-click `START_SABIPACK_CLASSROOM.bat`.
-4. The Teacher Dashboard opens automatically. Turn on Windows Mobile Hotspot or join classroom Wi-Fi.
-5. Copy the student access address displayed on the dashboard and share it with the class.
+3. From the extracted project root, double-click `Install_SabiPack_Classroom.bat` once to install the helper and register the `sabipack-classroom://` launch protocol.
+4. Open SabiPack → Teacher → **Start My Local Classroom**. The helper starts the local server and opens the Teacher Dashboard.
+5. Turn on Windows Mobile Hotspot or join classroom Wi-Fi, then copy the student access address displayed on the dashboard.
 See `classroom/README.md` for details.
 
 ## Windows teacher classroom
 
 For a guided setup and explanation of the local classroom, built-in packs, teacher uploads, AI API connection, and hackathon demo flow, see [SABIPACK_HACKATHON_GUIDE.md](SABIPACK_HACKATHON_GUIDE.md).
 
-Double-click `START_SABIPACK_CLASSROOM.bat` on Windows. The launcher selects an available port starting at 8080. Optional AI proxy configuration is documented in `classroom/settings.example.bat`.
+The helper calls `START_SABIPACK_CLASSROOM.bat`, which selects an available port starting at 8080. Optional AI proxy configuration is documented in `classroom/settings.example.bat`.
+
+## Student Practice
+
+The bottom navigation includes **Learn, Practice, Share and USSD**. Practice lets a learner choose a subject and answer questions from the built-in Biology sample bank and from quizzes inside saved/imported SabiPack lessons. Answers receive immediate feedback. Question totals, accuracy and topic-level results are stored locally in the browser so the learner can identify topics to revisit. Practice is available offline once the relevant pack is on the device. A subject without an available question bank or saved pack will ask the learner to create/import a pack first; this build does not claim a complete question bank for every listed subject.
+
+## USSD status
+
+USSD is a planned channel, not a live feature in this build. A working deployment requires a partnership with a mobile network operator or authorised USSD aggregator, shortcode allocation/approval, gateway credentials, and secure backend integration. The app intentionally does not present a simulated dial session as a live USSD service.
+
+## One-time Windows teacher helper setup
+
+1. Install Node.js LTS on the teacher's Windows laptop.
+2. Extract the SabiPack project ZIP.
+3. From the extracted project folder, double-click `Install_SabiPack_Classroom.bat` once. It copies the classroom runtime into `%LOCALAPPDATA%\\SabiPack\\app` and registers the `sabipack-classroom://` protocol for the current Windows user.
+4. Open SabiPack and choose **Teacher**. After setup, click **Start My Local Classroom** to start the helper and open the local Teacher Dashboard.
+5. Turn on Windows Mobile Hotspot or connect the laptop to the classroom Wi-Fi before starting. Windows does not permit the browser to enable Hotspot silently.
+
+The helper's protocol registration and installer are included in this project. The installer and protocol launch must still be tested on the actual Windows submission laptop before claiming they have been verified on that device. The local server uses Node.js built-in modules and does not need npm packages to serve the classroom.
+
+## Hackathon report
+
+See `SabiPack_Hackathon_Project_Report_Godwin_Obadiah.docx` for the feature-status matrix, architecture, offline AI roadmap, limitations and verification record for this submission package.

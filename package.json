@@ -1,11 +1,11 @@
 {
- "name": "sabipack",
- "private": true,
- "type": "module",
- "scripts": {
-  "test": "node scripts/test-validate.mjs && node scripts/test-api.mjs && node scripts/test-try.mjs && node scripts/test-packs.mjs && node scripts/test-extract.mjs && node scripts/test-read-notes.mjs && node scripts/test-account.mjs && node scripts/test-lesson.mjs"
- },
- "dependencies": {
-  "@libsql/client": "^0.14.0"
- }
+  "name": "sabipack",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/test-validate.mjs && node scripts/test-api.mjs && node scripts/test-try.mjs && node scripts/test-packs.mjs && node scripts/test-practice.mjs && node scripts/test-extract.mjs && node scripts/test-read-notes.mjs && node scripts/test-account.mjs && node scripts/test-lesson.mjs"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0"
+  }
 }

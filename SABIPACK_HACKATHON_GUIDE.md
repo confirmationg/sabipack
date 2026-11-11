@@ -17,8 +17,8 @@ A laptop-hosted classroom is local-network access, not worldwide hosting. A pers
 1. Install Node.js LTS on the Windows laptop from https://nodejs.org/.
 2. Extract the SabiPack project ZIP.
 3. Open the extracted `sabipack` project folder.
-4. If this is the first run, double-click `START_SABIPACK_CLASSROOM.bat`. It installs project dependencies once, then starts the local classroom server.
-5. The launcher opens the Teacher Dashboard in the browser.
+4. From the extracted project root, double-click `Install_SabiPack_Classroom.bat` once. It installs the helper and registers the `sabipack-classroom://` protocol for the current Windows user.
+5. Open SabiPack → Teacher → **Start My Local Classroom**. The registered helper starts the local server and opens the Teacher Dashboard.
 6. Keep the black server window open while teaching. Closing it stops the classroom server.
 
 The launcher uses port 8080 when available. If another program is already using that port, it automatically tries 8081, then the next available port up to 8090. Use the address opened by the launcher; do not assume it is always 8080.
@@ -97,3 +97,41 @@ The Teacher Dashboard and student classroom page now use SabiPack's light brand 
 - AI generation and photo reading require an internet connection and a configured deployed API.
 - The classroom upload formats are PDF, PPT, PPTX and TXT. PPT/PPTX are downloadable resources; browser preview depends on the student's device/software.
 - QR-code generation is not part of this update; the dashboard provides copyable student addresses.
+
+## 10. Practice, progress and USSD status
+
+### Practice (implemented in this build)
+
+- The bottom navigation presents four primary areas: Learn, Practice, Share and USSD.
+- Learners choose a subject in Practice.
+- The app uses the built-in Biology sample questions and questions contained in saved or imported SabiPack quizzes for the selected subject.
+- Learners receive immediate right/wrong feedback and explanations.
+- Results are stored locally on the device. The screen shows completed attempts, answered questions, accuracy, and topics with less than 70% correct answers.
+- Practice works offline for questions already stored in the app or in saved packs.
+- Important scope limit: this build does not contain a complete preloaded question bank for every subject. Where a subject has no questions yet, learners must create or import a pack with a quiz.
+
+### USSD (planned; not implemented)
+
+USSD is not operational in this build. A live service requires a mobile network operator or authorised USSD aggregator, approved shortcode allocation, gateway credentials, and a secure backend integration. The app labels this section as Planned and does not claim that a real dial session is available.
+
+## 11. One-time Windows teacher helper installation
+
+1. Install Node.js LTS.
+2. Extract the SabiPack project ZIP.
+3. From the extracted project root, run `Install_SabiPack_Classroom.bat` once. It copies the local classroom runtime to `%LOCALAPPDATA%\\SabiPack\\app` and registers the `sabipack-classroom://` Windows protocol for the current user.
+4. Open SabiPack → Teacher → Start My Local Classroom. The protocol launches the installed helper, which starts the local server and opens the Teacher Dashboard.
+5. Turn on Windows Mobile Hotspot or connect the laptop to the classroom router before starting. The browser cannot silently toggle Windows Hotspot.
+
+The installer/protocol implementation is included in this source package. It has not been executed on a real Windows machine in this environment; verify the one-time install, browser protocol prompt and launch on the target Windows laptop. The local server itself uses Node.js built-in modules and does not need npm dependencies to serve files.
+
+## 12. Offline AI roadmap (not implemented in this submission)
+
+Because of the hackathon submission time constraint, offline AI is a planned development item, not a completed feature. Current AI note-to-lesson generation uses the online Groq API and needs an internet connection. The proposed staged method is:
+
+1. **Teacher laptop:** bundle a local inference runtime such as Ollama or llama.cpp with a suitably small quantized language model; the teacher downloads the model once while online.
+2. **Provider adapter:** add a local generation provider that implements the same structured SabiPack lesson-and-quiz schema as the current Groq provider, allowing the app to switch providers without changing pack validation or the student workflow.
+3. **Document pipeline:** extract PDF/PPTX/text, detect headings and chapters, chunk long documents, generate section-by-section, validate each result, and save a `.sabipack` pack locally.
+4. **Student devices:** evaluate a mobile inference runtime such as llama.cpp or another Android-compatible runtime, taking device RAM, storage, battery and model size into account.
+5. **Validation and governance:** test factual quality against teacher-reviewed answers; check model and runtime licences; keep source documents and student data local by default; disclose model limitations; and provide a fallback when device hardware is insufficient.
+
+This staged plan is future work. No offline model is bundled or invoked by this build.

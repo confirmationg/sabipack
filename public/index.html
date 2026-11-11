@@ -124,7 +124,7 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 </head>
 <body>
 <div class="phone">
-<header class="hd"><button class="who" id="who" onclick="go('acct')" aria-label="Your account"><span id="gh">SabiPack</span><span class="logo" id="greet">Welcome</span></button><span style="display:flex;gap:8px"><button class="net off" onclick="tour(0)" aria-label="Show the app tour">Help</button><a class="net" id="teacher-link" href="/classroom/teacher" style="display:none;text-decoration:none" aria-label="Open teacher dashboard">Teacher</a><button class="net" id="net" onclick="tog()" aria-label="Toggle airplane mode"><i></i><span id="nt">Online</span></button></span></header>
+<header class="hd"><button class="who" id="who" onclick="go('acct')" aria-label="Your account"><span id="gh">SabiPack</span><span class="logo" id="greet">Welcome</span></button><span style="display:flex;gap:8px"><button class="net off" onclick="tour(0)" aria-label="Show the app tour">Help</button><a class="net" id="teacher-link" href="/teacher.html" style="text-decoration:none" aria-label="Open teacher workspace and setup">Teacher</a><button class="net" id="net" onclick="tog()" aria-label="Toggle airplane mode"><i></i><span id="nt">Online</span></button></span></header>
 <main>
 <section class="scr on" id="s-home">
 <div class="dash-intro"><div><div class="dash-kicker">Your learning space</div><h1>Learn anywhere.<br>No data needed.</h1><div class="mu" style="margin-top:7px">Your lessons, your packs, your progress — all in one place.</div></div><span class="chip">Offline-first</span></div>
@@ -204,12 +204,12 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 </section>
 
 <section class="scr" id="s-prac">
-<div class="row"><h2>Pulse</h2><span class="chip">Preview</span></div>
-<div class="mu">Daily practice by text message. Answer by typing A, B or C, or tap a button.</div>
-<div class="chat" id="chat"></div>
-<div class="qr" id="qr"></div>
-<div class="row"><input class="in" id="ri" aria-label="Type your reply" placeholder="Reply by SMS" onkeydown="if(event.key==='Enter')rep(this.value)"><button class="btn" onclick="rep($('#ri').value)">Send</button></div>
-<button class="btn ghost" onclick="qz()" style="align-self:flex-start">Restart quiz</button>
+<div class="row"><div><div class="dash-kicker">BUILD CONFIDENCE</div><h2>Practice</h2></div><span class="chip">Works offline</span></div>
+<div class="mu">Choose a subject and practise with questions from your saved SabiPack lessons. Your results stay on this phone and help you spot topics to revise.</div>
+<div class="card" style="display:flex;flex-direction:column;gap:9px"><label class="lbl" for="practice-subject">CHOOSE A SUBJECT</label><select class="in" id="practice-subject" aria-label="Choose a practice subject" onchange="practiceSubjectChanged()"></select><div class="dash-stats"><div class="dash-stat"><strong id="pr-attempts">0</strong><span>Attempts</span></div><div class="dash-stat"><strong id="pr-accuracy">—</strong><span>Accuracy</span></div><div class="dash-stat"><strong id="pr-answered">0</strong><span>Questions answered</span></div></div><button class="btn" id="practice-start" onclick="startPractice()">Start practice</button></div>
+<div class="card" id="practice-weak"><div class="row"><b>Topics to improve</b><span class="chip">Your progress</span></div><div class="mu" id="practice-weak-list" style="margin-top:9px">Complete a practice session to see your weak topics here.</div></div>
+<div id="practice-session" hidden style="display:flex;flex-direction:column;gap:12px"><div class="row"><span class="chip" id="practice-counter">Question 1</span><span class="mu" id="practice-score">0 correct</span></div><div class="pb"><b id="practice-progress"></b></div><div class="card"><div class="lbl" id="practice-topic">TOPIC</div><h3 id="practice-stem" style="font-size:18px;line-height:1.35;margin:9px 0"></h3><div id="practice-options"></div><div id="practice-feedback" class="mu" role="status" style="margin-top:12px"></div></div><button class="btn" id="practice-next" onclick="nextPractice()" disabled>Next question</button></div>
+<div id="practice-result" hidden class="hero"><div class="dash-kicker" style="color:#c8f0d8">SESSION COMPLETE</div><h2 id="practice-result-score">Good work!</h2><p id="practice-result-note">Your results have been saved on this phone.</p><button class="btn" onclick="startPractice()">Practise again</button></div>
 </section>
 
 <section class="scr" id="s-share">
@@ -229,11 +229,9 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 </section>
 
 <section class="scr" id="s-ussd">
-<div class="row"><h2>USSD</h2><span class="chip">Preview</span></div>
-<div class="mu">Works on any phone with no data. Simulated here: a real shortcode needs approval from a telecom provider.</div>
-<div class="card" style="font-family:ui-monospace,monospace;white-space:pre-wrap;min-height:190px" id="u-out"></div>
-<div class="row"><input class="in" id="u-in" inputmode="numeric" aria-label="Enter a number" placeholder="Enter a number" onkeydown="if(event.key==='Enter')ussd(this.value)"><button class="btn" onclick="ussd($('#u-in').value)">Send</button></div>
-<button class="btn ghost" onclick="udial()" style="align-self:flex-start">Dial again</button>
+<div class="row"><h2>USSD learning</h2><span class="chip">Planned</span></div>
+<div class="hero"><div class="dash-kicker" style="color:#c8f0d8">LEARN ON BASIC PHONES</div><h2>Learning without a smartphone or mobile data.</h2><p>USSD is part of the SabiPack roadmap, but it is not active in this build.</p></div>
+<div class="card" style="display:flex;flex-direction:column;gap:9px"><b>What is needed before launch?</b><div class="mu">SabiPack must partner with a mobile network operator or an authorised USSD aggregator, obtain a shortcode, and connect a secure USSD gateway to the learning service.</div><div class="mu">Until that integration is approved and tested, this section is informational only. No shortcode is available and no USSD session can be started from this app.</div></div>
 </section>
 
 <section class="scr" id="s-notes">
@@ -266,7 +264,7 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 </div>
 <script>
 const $=s=>document.querySelector(s);
-let off=false,data=0,lang='pid',playing=false,tm=null,chem=0,mth='Bluetooth',shared=0,qi=0,score=0,weak=[],done=false;
+let off=false,data=0,lang='pid',playing=false,tm=null,chem=0,mth='Bluetooth',shared=0;
 const L={pid:['Pidgin','en-NG','Mitochondria na di part for di cell wey dey release energy from di food wey you chop. Na di cell power house.'],
 ha:['Hausa','ha','Mitochondria ita ce sashin tantanin halitta da ke fitar da kuzari daga abinci. Ita ce cibiyar wutar lantarki ta tantanin halitta.'],
 yo:['Yoruba','yo','Mitochondria ni apakan sẹẹli ti o n tu agbara jade lati inu ounjẹ. Ó dà bí ile-iṣẹ agbara ti sẹẹli.'],
@@ -276,7 +274,7 @@ const Q=[['Which organelle releases energy?',['Nucleus','Mitochondrion','Ribosom
 ['Water moves into a cell through its membrane. This is called?',['Diffusion','Osmosis','Respiration'],1,'osmosis'],
 ['Where is most of the cell’s DNA found?',['Nucleus','Cell wall','Vacuole'],0,'DNA']];
 function toast(t){const e=$('#ts');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2600)}
-function go(n){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id==='s-'+(n==='lesson'?'lesson':n)));
+function go(n){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id==='s-'+(n==='lesson'?'lesson':n)));if(n==='prac')practiceHome();
 document.querySelectorAll('#bar button').forEach(b=>b.classList.toggle('on',b.dataset.t===(n==='lesson'||n==='notes'||n==='subject'||n==='pick'||n==='welcome'||n==='acct'||n==='host'||n==='ask'?'home':n)));if(n!=='lesson')stop()}
 function tog(){off=!off;$('#net').classList.toggle('off',off);$('#nt').textContent=off?'Offline':'Online';toast(off?'Airplane mode on. Lessons and quizzes still work.':'Back online.')}
 function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
@@ -293,24 +291,6 @@ function ans(b,i){document.querySelectorAll('#qc .opt').forEach((o,j)=>{o.classL
 function home(){$('#np').innerHTML=mine.map(()=>'<div class="card row"><span><b>Cell structure (class notes)</b><br><span class="mu">From your notes · Draft · Ready offline</span></span><span class="chip">Ready</span></div>').join('');$('#used').innerHTML='<b>Data used today: '+data.toFixed(1)+' MB.</b> Your Biology pack runs fully offline, audio included.';
 $('#chem').innerHTML='<span><b>JAMB Chemistry</b><br><span class="mu">3.8 MB · '+(chem===2?'Ready offline':chem===1?'Downloading…':'One-time download needed')+'</span></span>'+(chem===2?'<span class="chip">Ready</span>':'<button class="btn am" onclick="getC()" style="min-width:64px">'+(chem===1?'…':'Get')+'</button>')}
 function getC(){if(chem===1)return;if(off){toast('No connection. Switch back to Online to download this pack once.');return}chem=1;home();toast('Downloading Chemistry pack…');setTimeout(()=>{chem=2;data+=3.8;home();toast('Chemistry pack saved. It now works offline.')},2200)}
-function add(t,me){const c=$('#chat'),d=document.createElement('div');d.className='b'+(me?' me':'');d.innerHTML=t;c.appendChild(d);$('#s-prac').scrollTop=1e5}
-function ask(){const q=Q[qi];add('<b>SabiPack · Q'+(qi+1)+' of '+Q.length+'</b><br>'+q[0]+'<br>'+q[1].map((o,i)=>'ABC'[i]+') '+o).join('<br>')+'<br>Reply A, B or C.');$('#qr').innerHTML=q[1].map((o,i)=>'<button class="btn" onclick="rep(\''+'ABC'[i]+'\')">'+'ABC'[i]+'</button>').join('')}
-function qz(){qi=0;score=0;weak=[];done=false;$('#chat').innerHTML='';add('Welcome back! 3 quick questions, sent by SMS.');ask()}
-function rep(v){v=String(v).trim().toUpperCase();$('#ri').value='';if(done||!v)return;const i='ABC'.indexOf(v[0]);if(i<0||v.length>1){add(v,1);add('Please reply with A, B or C.');return}
-add(v,1);const q=Q[qi];if(i===q[2]){score++;add('Correct!')}else{weak.push(q[3]);add('Not quite. Answer: '+'ABC'[q[2]]+') '+q[1][q[2]]+'. Noted as a weak spot: '+q[3]+'.')}
-qi++;if(qi<Q.length){setTimeout(ask,600)}else{done=true;$('#qr').innerHTML='';setTimeout(()=>add('Quiz done: '+score+'/'+Q.length+'. '+(weak.length?'Tomorrow’s pack adds '+weak.length*2+' lessons on: '+weak.join(', ')+'.':'No weak spots. Tomorrow’s pack moves to Lesson 4.')),600)}}
-let us='menu';
-const UM='SabiPack · JAMB Biology\n1. Today’s question\n2. My weak spots\n3. Exam countdown\n4. Revision tip\n0. Exit';
-function udial(){us='menu';$('#u-out').textContent=UM}
-function ussd(v){v=String(v).trim();$('#u-in').value='';if(!v)return;let o='';
-if(v==='0'&&us==='menu'&&$('#u-out').textContent!==UM){o=UM}else if(v==='0'){o='Session ended. Tap Dial again to restart.'}
-else if(us==='q'){us='menu';o=(v==='2'?'Correct! Mitochondria release energy.':'Not quite. Answer: 2. Mitochondrion.')+'\n\n0. Back to menu'}
-else if(v==='1'){us='q';o='Q: Which organelle releases energy?\n1. Nucleus\n2. Mitochondrion\n3. Ribosome\nReply 1, 2 or 3'}
-else if(v==='2'){const w=[...new Set(weak)];o=w.length?'Your weak spots:\n'+w.map((x,i)=>(i+1)+'. '+x).join('\n')+'\nNext pack adds lessons on these.\n\n0. Back to menu':'No weak spots yet. Take the Pulse quiz first.\n\n0. Back to menu'}
-else if(v==='3'){o='Demo: 120 days to your exam.\nPlan: a short revision most days.\n\n0. Back to menu'}
-else if(v==='4'){o='Revise your weak topics first. Ten minutes a day beats two hours once.\n\n0. Back to menu'}
-else{o='Invalid choice.\n\n0. Back to menu'}
-$('#u-out').textContent=o}
 const A={b:'<circle cx="32" cy="36" r="22" fill="#F2B84B"/><circle cx="24" cy="33" r="5" fill="#fff"/><circle cx="40" cy="33" r="5" fill="#fff"/><circle cx="25" cy="34" r="2.5" fill="#14221C"/><circle cx="41" cy="34" r="2.5" fill="#14221C"/><path d="M24 44q8 7 16 0" fill="none" stroke="#14221C" stroke-width="2.5" stroke-linecap="round"/>',
 learn:'<path class="ag" d="M32 6L10 16l22 10 22-10z"/><path class="ag" d="M18 22v6c0 4 28 4 28 0v-6l-14 6z"/>',
 prac:'<rect class="ag" x="38" y="2" width="24" height="17" rx="6"/><path class="ag" d="M44 18l-3 7 8-7z"/><circle class="as" cx="46" cy="10.5" r="2"/><circle class="as" cx="50" cy="10.5" r="2"/><circle class="as" cx="54" cy="10.5" r="2"/>',
@@ -319,16 +299,16 @@ ussd:'<rect class="ap" x="42" y="28" width="18" height="32" rx="4"/><rect class=
 function av(k,s){return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 64 64" aria-hidden="true" style="flex:none">'+A.b+A[k]+'</svg>'}
 const TM={home:'learn',prac:'prac',share:'share',ussd:'ussd'};
 document.querySelectorAll('#bar button').forEach(b=>b.insertAdjacentHTML('afterbegin',av(TM[b.dataset.t],30)));
-const G={home:['learn','Welcome back! Ready to sabi something new today?'],lesson:['learn','Tap play and listen. You can even learn with the screen off.'],prac:['prac','Quick questions by SMS. Let’s find your weak spots.'],share:['share','Good packs travel! Share with a classmate or your whole class.'],ussd:['ussd','No data? No problem. Dial and learn on any phone.'],ask:['learn','Type any topic and I\u2019ll write a lesson. Save it and it works with no data.'],acct:['learn','This is your space. Your name and subjects live here.'],host:['share','Run a class from one device. No internet needed in the room.'],pick:['learn','Which subjects are you studying? Pick them and I\u2019ll set up your Home.'],subject:['learn','Pick a topic. Everything here works offline.'],notes:['learn','Got notes? I’ll turn them into a pack for your class.']};
+const G={home:['learn','Welcome back! Ready to sabi something new today?'],lesson:['learn','Tap play and listen. You can even learn with the screen off.'],prac:['prac','Choose a subject, practise lesson questions and see which topics need more revision.'],share:['share','Good packs travel! Share with a classmate or your whole class.'],ussd:['ussd','USSD is planned. A telecom provider integration and shortcode are still required.'],ask:['learn','Type any topic and I\u2019ll write a lesson. Save it and it works with no data.'],acct:['learn','This is your space. Your name and subjects live here.'],host:['share','Run a class from one device. No internet needed in the room.'],pick:['learn','Which subjects are you studying? Pick them and I\u2019ll set up your Home.'],subject:['learn','Pick a topic. Everything here works offline.'],notes:['learn','Got notes? I’ll turn them into a pack for your class.']};
 Object.keys(G).forEach(k=>$('#s-'+k).insertAdjacentHTML('afterbegin','<div class="guide">'+av(G[k][0],56)+'<div class="sp">'+G[k][1]+'</div></div>'));
 let ti=0;
 const TS=[[null,'Hi, I’m Sabi! Let me show you around. It takes six quick steps.',null],
 ['#net','This shows if you are online. SabiPack works the same offline. Tap it to try airplane mode.',null],
 ['#teacher-link','Teacher: open your classroom workspace here. On a Windows laptop, start the classroom launcher first. From the dashboard you can publish materials and share the student access address.',null],
 ['[data-t=home]','Learn: your chosen subjects and packs. They work offline, even with the screen off.','home'],
-['[data-t=prac]','Practice: quick quiz questions, like SMS. They find your weak spots.','prac'],
+['[data-t=prac]','Practice: choose a subject, answer questions from saved packs and review topics that need work.','prac'],
 ['[data-t=share]','Share: send a pack to a classmate by Bluetooth or Nearby Share, or import one you received. No data used.','share'],
-['[data-t=ussd]','USSD: no data on your phone? Dial a code and learn on any phone.','ussd']];
+['[data-t=ussd]','USSD is planned, not active yet. A telecom partner and approved shortcode are required.','ussd']];
 function tour(i){ti=i;const t=TS[i];$('#tr').hidden=false;if(t[2])go(t[2]);if(t[0]==='#teacher-link')$('#teacher-link').style.display='inline-flex';const P=$('.phone').getBoundingClientRect(),s=$('#tr-s'),c=$('#tr-c');
 if(t[0]){const r=$(t[0]).getBoundingClientRect();Object.assign(s.style,{left:(r.left-P.left-4)+'px',top:(r.top-P.top-4)+'px',width:(r.width+8)+'px',height:(r.height+8)+'px'});
 const low=r.top-P.top>P.height/2;c.style.top=low?'auto':(r.bottom-P.top+14)+'px';c.style.bottom=low?(P.bottom-r.top+14)+'px':'auto'}
@@ -396,7 +376,7 @@ function home(){$('#cw').style.display=LAN?'block':'none';renderSubj();renderMin
 if(live&&pk){$('#hl').textContent=had?'CONTINUE':'START HERE';$('#ht').textContent=pk.lesson.title;$('#hs2').textContent='Biology \u00b7 works offline'}else{$('#hl').textContent='START HERE';$('#ht').textContent='Ask the AI for a lesson';$('#hs2').textContent='Type any topic \u00b7 works offline once saved'}}
 let bio={index:[],packs:{}};
 try{bio=JSON.parse(localStorage.getItem('sabipack.bio'))||bio}catch(e){}
-async function loadBio(){try{const ix=await (await fetch('/packs/index.json')).json();const packs={};for(const p of ix){const r=await fetch('/packs/'+p.id+'.json');if(r.ok)packs[p.id]=await r.json()}bio={index:ix,packs};try{localStorage.setItem('sabipack.bio',JSON.stringify(bio))}catch(e){}home()}catch(e){}}
+async function loadBio(){try{const ix=await (await fetch('/packs/index.json')).json();const packs={};for(const p of ix){const r=await fetch('/packs/'+p.id+'.json');if(r.ok)packs[p.id]=await r.json()}bio={index:ix,packs};try{localStorage.setItem('sabipack.bio',JSON.stringify(bio))}catch(e){}home();practiceHome()}catch(e){}}
 const SUBJ=[['Biology','B',1],['Chemistry','C',0],['Physics','P',0],['Mathematics','M',0],['English','E',0],['Economics','Ec',0]];
 function renderSubj(){const c=$('#subj');c.innerHTML='';(chosen||[]).forEach(n=>{const live=n==='Biology';const b=el('button','','pk');b.style.cssText='display:flex;flex-direction:column;align-items:flex-start;gap:8px';const cnt=mine.filter(p=>p.subject===n).length;const m=el('span',live?(bio.index.length+' topics \u00b7 offline'):(cnt?cnt+' of your packs':'Add packs from notes'),'mu');m.style.fontSize='13px';b.append(el('span',n.slice(0,2).toUpperCase(),'av'),el('b',n),m);b.onclick=()=>openSubject(n);c.append(b)});if(!c.children.length)c.append(el('div','No subjects chosen yet. Tap Change.','mu'))}
 function openSubject(n){go('subject');$('#sj-t').textContent=n;const live=n==='Biology';const mp=mine.filter(p=>p.subject===n);$('#sj-s').textContent=live?bio.index.length+' topics \u00b7 work without internet':'Your own packs, made from notes or imported';renderTopics(live);
@@ -435,6 +415,20 @@ function importPack(inp){const f=inp.files[0];inp.value='';const say=t=>{$('#ims
 const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||o.format!=='sabipack'||!Array.isArray(o.packs)||!o.packs.length||o.packs.length>40)throw 0;const add=o.packs.map(cleanPack);mine=[...add,...mine];saveMine();home();say('Imported '+add.length+' pack'+(add.length>1?'s':'')+'. Find '+(add.length>1?'them':'it')+' on Home under My notes.');toast('Pack imported.')}catch(e){say('That file is not a SabiPack pack.')}};r.onerror=()=>say('Could not read that file.');r.readAsText(f)}
 const CAT=[['Core',['English Language','Mathematics']],['Sciences',['Biology','Chemistry','Physics','Agricultural Science','Further Mathematics','Geography','Computer Studies']],['Arts',['Literature in English','Government','Christian Religious Knowledge (CRK)','Islamic Religious Knowledge (IRK)','History','Yoruba','Hausa','Igbo','French']],['Commercial',['Economics','Commerce','Financial Accounting']],['General',['Social Studies','Civic Education']]];
 const SK='sabipack.subjects';let chosen=null;try{chosen=JSON.parse(localStorage.getItem(SK)||'null')}catch(e){}if(!Array.isArray(chosen))chosen=null;let sel=new Set(chosen||[]);
+const PRACTICE_KEY='sabipack.practice.v1';
+let practiceQuestions=[],practiceIndex=0,practiceScore=0,practiceLocked=false,practiceSubject='';
+function practiceStats(){try{return JSON.parse(localStorage.getItem(PRACTICE_KEY)||'{}')}catch(e){return{}}}
+function savePracticeStats(x){try{localStorage.setItem(PRACTICE_KEY,JSON.stringify(x))}catch(e){toast('Practice progress could not be saved on this phone.')}}
+function practiceSubjects(){const names=new Set([...(chosen||[]),...mine.map(p=>p.subject).filter(Boolean)]);if(bio&&bio.index&&bio.index.length)names.add('Biology');return [...names].sort((a,b)=>a.localeCompare(b))}
+function practiceHome(reset){const sel=$('#practice-subject');if(!sel)return;const names=practiceSubjects();const prior=sel.value||practiceSubject;sel.innerHTML='';names.forEach(n=>{const o=el('option',n);o.value=n;sel.append(o)});if(names.includes(prior))sel.value=prior;else if(names.length)sel.value=names[0];practiceSubject=sel.value||'';const st=practiceStats(),s=st[practiceSubject]||{attempts:0,correct:0,total:0,topics:{}};$('#pr-attempts').textContent=s.attempts||0;$('#pr-answered').textContent=s.total||0;$('#pr-accuracy').textContent=s.total?Math.round(100*s.correct/s.total)+'%':'—';renderPracticeWeak(s);if(reset){$('#practice-session').hidden=true;$('#practice-result').hidden=true;}$('#practice-start').disabled=!practiceSubject;$('#practice-start').textContent='Start '+(practiceSubject||'')+' practice'}
+function practiceSubjectChanged(){practiceSubject=$('#practice-subject').value;practiceHome(true)}
+function renderPracticeWeak(s){const c=$('#practice-weak-list');if(!c)return;const rows=Object.entries(s.topics||{}).filter(([k,v])=>v.total>=1&&v.correct/v.total<.7).sort((a,b)=>(a[1].correct/a[1].total)-(b[1].correct/b[1].total));c.innerHTML='';if(!rows.length){c.textContent=s.total?'No clear weak topic yet. Keep practising to build a more useful picture.':'Your topic analysis will appear after you answer some questions.';return}rows.slice(0,8).forEach(([topic,v])=>{const r=el('div','','row');r.style.cssText='padding:8px 0;border-top:1px solid var(--bd)';const left=el('span');left.append(el('b',topic),el('div',v.correct+'/'+v.total+' correct','mu'));const badge=el('span',Math.round(v.correct/v.total*100)+'%','chip');r.append(left,badge);c.append(r)})}
+function getPracticeQuestions(subject){const out=[];if(subject==='Biology'){Q.forEach(q=>out.push({stem:q[0],options:q[1],answer_index:q[2],explanation:'Review this concept in your Biology lesson.',topic:q[3]||'Biology'}))}allPacks().filter(p=>(p.subject||(/Biology/i.test(p.sub||'')?'Biology':''))===subject).forEach(p=>(p.questions||[]).forEach(q=>out.push({stem:q.stem,options:q.options,answer_index:q.answer_index,explanation:q.explanation||'Review the related lesson.',topic:q.objective_hint||p.lesson.title||'General revision'})));const seen=new Set();return out.filter(q=>{const k=q.stem+'|'+q.options.join('|');if(seen.has(k))return false;seen.add(k);return true})}
+function startPractice(){practiceSubject=$('#practice-subject').value;practiceQuestions=getPracticeQuestions(practiceSubject);if(!practiceQuestions.length){toast('No practice questions for this subject yet. Create or import a pack with a quiz first.');const p=mine.find(x=>x.subject===practiceSubject);if(!p&&practiceSubject)askFor(practiceSubject);return}practiceIndex=0;practiceScore=0;practiceLocked=false;$('#practice-result').hidden=true;$('#practice-session').hidden=false;showPracticeQuestion()}
+function showPracticeQuestion(){const q=practiceQuestions[practiceIndex];practiceLocked=false;$('#practice-counter').textContent='Question '+(practiceIndex+1)+' of '+practiceQuestions.length;$('#practice-score').textContent=practiceScore+' correct';$('#practice-progress').style.width=(practiceIndex/practiceQuestions.length*100)+'%';$('#practice-topic').textContent=(q.topic||practiceSubject).toUpperCase();$('#practice-stem').textContent=q.stem;$('#practice-feedback').textContent='Choose the best answer.';$('#practice-options').innerHTML='';q.options.forEach((o,i)=>{const b=el('button','');b.className='opt';b.textContent='ABCD'[i]+') '+o;b.onclick=()=>answerPractice(i,b);$('#practice-options').append(b)});$('#practice-next').disabled=true;$('#practice-next').textContent=practiceIndex===practiceQuestions.length-1?'See my results':'Next question'}
+function answerPractice(i,button){if(practiceLocked)return;practiceLocked=true;const q=practiceQuestions[practiceIndex],correct=i===q.answer_index;const opts=[...$('#practice-options').children];opts.forEach((b,j)=>{b.disabled=true;if(j===q.answer_index)b.classList.add('ok');if(j===i&&!correct)b.classList.add('no')});if(correct)practiceScore++;const stats=practiceStats(),s=stats[practiceSubject]||{attempts:0,correct:0,total:0,topics:{}};s.total++;if(correct)s.correct++;const topic=q.topic||practiceSubject;s.topics[topic]=s.topics[topic]||{correct:0,total:0};s.topics[topic].total++;if(correct)s.topics[topic].correct++;stats[practiceSubject]=s;savePracticeStats(stats);$('#practice-feedback').textContent=(correct?'Correct. ':'Not quite. Correct answer: '+q.options[q.answer_index]+'. ')+(q.explanation||'');$('#practice-next').disabled=false;$('#practice-score').textContent=practiceScore+' correct'}
+function nextPractice(){if(!practiceLocked)return;practiceIndex++;if(practiceIndex<practiceQuestions.length){showPracticeQuestion();return}const stats=practiceStats(),s=stats[practiceSubject]||{attempts:0,correct:0,total:0,topics:{}};s.attempts++;stats[practiceSubject]=s;savePracticeStats(stats);$('#practice-session').hidden=true;$('#practice-result').hidden=false;$('#practice-result-score').textContent=practiceScore+' / '+practiceQuestions.length+' correct';const pct=Math.round(practiceScore/practiceQuestions.length*100);$('#practice-result-note').textContent=pct>=80?'Excellent work. Keep revising to maintain this progress.':pct>=50?'Good effort. Check your topic analysis and practise again.':'Keep going. Review the lesson notes for the topics you missed, then try again.';$('#practice-progress').style.width='100%';practiceHome();$('#practice-result').hidden=false;$('#practice-session').hidden=true;$('#practice-result-score').textContent=practiceScore+' / '+practiceQuestions.length+' correct';$('#practice-result-note').textContent='You scored '+pct+'%. Your results and topic progress have been saved on this phone.'}
+
 function renderPick(){const c=$('#pk-l');c.innerHTML='';CAT.forEach(([g,list])=>{const w=el('div');w.append(el('div',g.toUpperCase(),'lbl'));const r=el('div');r.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin-top:8px';list.forEach(n=>{const b=el('button',n,'sj');b.setAttribute('aria-pressed',String(sel.has(n)));b.onclick=()=>{sel.has(n)?sel.delete(n):sel.add(n);b.setAttribute('aria-pressed',String(sel.has(n)));cnt()};r.append(b)});w.append(r);c.append(w)});$('#pk-c').style.display=chosen?'inline-block':'none';cnt()}
 function cnt(){$('#pk-ok').textContent=sel.size?'Continue ('+sel.size+')':'Continue'}
 function pickOpen(){sel=new Set(chosen||[]);renderPick();go('pick')}
@@ -518,12 +512,12 @@ function netUi(){$('#net').classList.toggle('off',off);$('#nt').textContent=off?
 window.addEventListener('offline',()=>{off=true;netUi();toast('You are offline. Saved packs still work.')});
 window.addEventListener('online',()=>{off=false;netUi();toast('Back online.')});
 off=!navigator.onLine;netUi();
-lg();ui();qc();home();qz();udial();
+lg();ui();home();practiceHome(true);
 let seen=false;try{seen=!!localStorage.getItem('sabipack.tour')}catch(e){}
 greet();setInterval(greet,60000);document.addEventListener('visibilitychange',greet);
 if(!profile){renderWelcome('home')}else if(!chosen){renderPick();go('pick')}else if(!seen)setTimeout(()=>tour(0),400);
 loadBio();
-fetch('/classroom/api/addresses').then(r=>{if(r.ok){const t=document.getElementById('teacher-link');if(t)t.style.display='inline-flex'}}).catch(()=>{});
+
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 $('#wv').innerHTML='<i></i>'.repeat(16);document.querySelectorAll('#wv i').forEach((e,i)=>e.style.animationDelay=(i*0.07)+'s');
 </script>

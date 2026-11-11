@@ -21,16 +21,8 @@ if errorlevel 1 (
   exit /b 1
 )
 
-if not exist "node_modules\@libsql\client" (
-  echo First-time setup: installing SabiPack components. Internet is needed once.
-  call npm install
-  if errorlevel 1 (
-    echo.
-    echo Setup did not complete. Check your internet connection and try again.
-    pause
-    exit /b 1
-  )
-)
+REM The local classroom server uses Node.js built-in modules only.
+REM No npm install or internet connection is required to host files over local Wi-Fi.
 
 REM Optional settings: copy classroom\settings.example.bat to classroom\settings.bat
 REM and add your deployed SabiPack website address there for local AI requests.
