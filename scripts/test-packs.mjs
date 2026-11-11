@@ -8,6 +8,7 @@ for (const p of idx) {
   const pk = JSON.parse(fs.readFileSync(`public/packs/${p.id}.json`, 'utf8'));
   assert.deepEqual(validatePack(pk), [], p.id);
   assert.ok(ids.has(pk.subtopic_id), 'unknown syllabus id ' + p.id);
-  assert.equal(pk.meta.status, 'draft');
+  assert.ok(['draft','reviewed'].includes(pk.meta.status));
+  if (pk.lesson.sections) for (const sec of pk.lesson.sections) assert.ok(sec.heading && (sec.text || (sec.items && sec.items.length)), 'section ' + sec.heading);
 }
 console.log('pack tests passed (' + idx.length + ' packs)');
