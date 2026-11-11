@@ -77,6 +77,49 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 .toast.on{opacity:1}
 #tr-s{position:absolute;border-radius:14px;box-shadow:0 0 0 9999px rgba(0,0,0,.68);pointer-events:none;transition:all .25s}
 @media(prefers-reduced-motion:reduce){#tr-s{transition:none}}
+
+/* SabiPack product polish: responsive student workspace and clearer learning actions */
+.dash-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:4px 0 2px}
+.dash-kicker{font-size:11px;font-weight:800;letter-spacing:.13em;color:var(--g);text-transform:uppercase}
+.dash-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.dash-stat{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;min-width:0}
+.dash-stat strong{display:block;font:700 23px 'Bricolage Grotesque',sans-serif;color:var(--g)}
+.dash-stat span{display:block;color:var(--mu);font-size:11px;line-height:1.25;margin-top:3px}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quick-card{min-height:112px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:14px;background:var(--card);border:1px solid var(--bd);border-radius:16px}
+.quick-card b{font-size:15px}.quick-card small{font-size:12px;color:var(--mu);line-height:1.35}.quick-icon{width:34px;height:34px;border-radius:11px;background:var(--lg);color:var(--ct);display:grid;place-items:center;font-size:18px;font-weight:800}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.section-head .lbl{color:var(--ink)}
+.workflow{display:grid;gap:8px}
+.workflow-step{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid var(--bd);border-radius:13px;background:var(--card);font-size:13px}
+.workflow-step i{font-style:normal;width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:var(--lg);color:var(--ct);font-weight:800;flex:none}
+#s-notes .step-head{display:flex;gap:8px;flex-wrap:wrap}
+#s-notes .step-head span{font-size:11px;font-weight:700;color:var(--mu);background:var(--bg);border:1px solid var(--bd);padding:7px 10px;border-radius:999px}
+#s-notes .step-head span:first-child{background:var(--lg);color:var(--ct);border-color:var(--lg)}
+#s-share .share-hero{background:linear-gradient(135deg,var(--g),#064b32);color:white;border-radius:18px;padding:17px;display:flex;flex-direction:column;gap:7px}
+#s-share .share-hero p{margin:0;color:#e3f5ea;font-size:13px}
+#s-share .share-card{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--bd);padding:12px;border-radius:14px}
+#s-share .share-card .share-symbol{width:40px;height:40px;border-radius:12px;background:var(--lg);display:grid;place-items:center;color:var(--ct);font-weight:800;flex:none}
+#s-share .share-card .btn{margin-left:auto;flex:none}
+@media(min-width:700px){
+ body{display:block}.phone{width:100%;height:100%;max-width:none;margin:0;border:0;border-radius:0;overflow:auto}
+ .hd{padding:18px max(28px,calc((100% - 1120px)/2)) 8px;border-bottom:1px solid var(--bd);background:var(--card)}
+ main{width:100%;max-width:1120px;margin:0 auto;overflow:visible;min-height:0}
+ .scr{padding:26px 28px;gap:18px;overflow:visible}
+ #s-home{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.8fr);align-content:start;gap:16px}
+ #s-home>.dash-intro,#s-home>.dash-stats,#s-home>#cw,#s-home>.hero,#s-home>.section-head,#s-home>#subj,#s-home>.quick-grid,#s-home>#mnl,#s-home>#np,#s-home>.btn.ghost{grid-column:1/-1}
+ #s-home>.hero{padding:24px;min-height:150px;justify-content:center}
+ #s-home>#subj{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+ .dash-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+ .dash-stat{padding:16px}.dash-stat strong{font-size:28px}
+ .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+ .quick-card{min-height:130px;padding:18px}
+ #s-home>#np{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));}
+ #s-share,#s-notes,#s-ask,#s-host,#s-pick,#s-subject,#s-acct,#s-welcome{max-width:900px;width:100%;margin:0 auto}
+ .bar{position:sticky;bottom:0;z-index:5;justify-content:center}.bar button{max-width:180px;min-height:66px}
+}
+@media(max-width:360px){.dash-stats{gap:6px}.dash-stat{padding:9px}.dash-stat strong{font-size:20px}.dash-stat span{font-size:10px}.quick-card{padding:11px}}
+
 </style>
 </head>
 <body>
@@ -84,13 +127,19 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 <header class="hd"><button class="who" id="who" onclick="go('acct')" aria-label="Your account"><span id="gh">SabiPack</span><span class="logo" id="greet">Welcome</span></button><span style="display:flex;gap:8px"><button class="net off" onclick="tour(0)" aria-label="Show the app tour">Help</button><button class="net" id="net" onclick="tog()" aria-label="Toggle airplane mode"><i></i><span id="nt">Online</span></button></span></header>
 <main>
 <section class="scr on" id="s-home">
-<h1>Learn anywhere.<br>No data needed.</h1>
+<div class="dash-intro"><div><div class="dash-kicker">Your learning space</div><h1>Learn anywhere.<br>No data needed.</h1><div class="mu" style="margin-top:7px">Your lessons, your packs, your progress — all in one place.</div></div><span class="chip">Offline-first</span></div>
+<div class="dash-stats" aria-label="Your learning summary"><div class="dash-stat"><strong id="ds-packs">0</strong><span>Saved learning packs</span></div><div class="dash-stat"><strong id="ds-subjects">0</strong><span>Selected subjects</span></div><div class="dash-stat"><strong id="ds-topics">0</strong><span>Ready-to-study packs</span></div></div>
 <div class="card info" id="cw" style="display:none;font-size:14px"><b>Classroom Wi-Fi:</b> you are using your teacher’s server. No internet needed. Packs you open are saved on your phone.</div>
 <div class="hero"><div class="lbl" style="color:inherit" id="hl">START HERE</div><h2 id="ht">Cell structure and function</h2><div id="hs2">Biology · works offline</div><button class="btn" onclick="resume()">Open</button></div>
-<div class="row"><div class="lbl">YOUR SUBJECTS</div><button class="btn ghost" onclick="pickOpen()">Change</button></div>
+<div class="section-head"><div class="lbl">YOUR SUBJECTS</div><button class="btn ghost" onclick="pickOpen()">Manage subjects</button></div>
 <div id="subj" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
-<button class="pk row" onclick="go('ask')"><span><b>Ask the AI for a lesson</b><br><span class="mu">Type a topic. Uses a little data once.</span></span><span class="chip">AI</span></button>
-<button class="pk row" onclick="go('notes')"><span><b>Bring your own notes</b><br><span class="mu">Turn a teacher’s notes into a pack</span></span><span class="chip">AI</span></button>
+<div class="section-head"><div class="lbl">QUICK ACTIONS</div><span class="mu" style="font-size:12px">Create · learn · connect</span></div>
+<div class="quick-grid">
+<button class="quick-card" onclick="go('notes')"><span class="quick-icon">✦</span><b>Create a learning pack</b><small>Import notes, make a lesson and quiz, then save offline.</small></button>
+<button class="quick-card" onclick="go('ask')"><span class="quick-icon">AI</span><b>Generate a lesson</b><small>Explore a topic with an AI-assisted lesson and quiz.</small></button>
+<button class="quick-card" onclick="go('share')"><span class="quick-icon">↗</span><b>Share with classmates</b><small>Send or receive SabiPack files locally.</small></button>
+<button class="quick-card" onclick="classroomAccess()"><span class="quick-icon">⌂</span><b>Open classroom hub</b><small>Join your teacher’s Wi-Fi to access class materials.</small></button>
+</div>
 <div class="lbl" id="mnl" style="display:none">MY NOTES</div>
 <div id="np" style="display:flex;flex-direction:column;gap:14px"></div>
 <button class="btn ghost" onclick="go('lesson')" style="align-self:flex-start">Hear a lesson in local languages (demo)</button>
@@ -170,12 +219,12 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 
 <section class="scr" id="s-share">
 <div class="row"><h2>Share a pack</h2><span class="chip">No data</span></div>
-<div class="mu">Send a pack to a classmate by Bluetooth or Nearby Share. It uses no mobile data.</div>
-<div class="lbl">CHOOSE A PACK TO SEND</div>
+<div class="share-hero"><div class="dash-kicker" style="color:#c8f0d8">KNOWLEDGE TRAVELS</div><h2>Good packs are meant to be shared.</h2><p>Send a saved learning pack to a classmate or import one you receive. Bluetooth and Nearby Share can work without mobile data.</p></div>
+<div class="section-head"><div class="lbl">YOUR SHAREABLE PACKS</div><span class="chip">Local sharing</span></div>
 <div id="shl" style="display:flex;flex-direction:column;gap:10px"></div>
 <button class="btn am" onclick="shareAll()">Send all packs on this phone</button>
-<div class="lbl">RECEIVE A PACK</div>
-<div class="card" style="display:flex;flex-direction:column;gap:10px"><div>Got a pack file from a classmate? Tap Import and choose the file.</div>
+<div class="section-head"><div class="lbl">RECEIVE A PACK</div><span class="mu" style="font-size:12px">Import a classmate’s file</span></div>
+<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><b>Someone shared a SabiPack with you?</b><br><span class="mu">Choose the received pack file to add it to your own library.</span></div>
 <label class="btn" style="display:flex;align-items:center;justify-content:center;cursor:pointer">Import a pack file<input type="file" accept=".txt,.json,.sabipack,text/plain,application/json" style="display:none" onchange="importPack(this)"></label>
 <div class="mu" id="imsg" role="status"></div></div>
 <div class="card info" style="font-size:14px"><b>How it works:</b> Send opens your phone’s share menu. Pick Bluetooth or Nearby Share. On the other phone, save the file, open SabiPack, go to Share and tap Import.</div>
@@ -194,13 +243,14 @@ main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 
 <section class="scr" id="s-notes">
 <div class="row"><button class="btn ghost" id="nb" onclick="go('home')">‹ Home</button><span class="chip" id="nchip">AI</span></div>
-<div id="nhead" style="display:flex;flex-direction:column;gap:14px"><h2>My notes</h2>
-<div class="mu">Paste notes, add a PDF, Word or text file, or take a photo of handwritten notes. The AI makes a lesson and quiz you can save and use offline.</div>
+<div id="nhead" style="display:flex;flex-direction:column;gap:14px"><div class="dash-kicker">Pack studio</div><h2>Turn your notes into a learning pack</h2>
+<div class="mu">Bring your class notes, review the extracted text, create an AI-assisted lesson and quiz, then save your pack for offline study or sharing.</div>
+<div class="step-head"><span>1 · Add notes</span><span>2 · Review text</span><span>3 · Create pack</span><span>4 · Save & share</span></div>
 <div class="card info" style="font-size:14px"><b>Before you add notes:</b> use only notes you have permission to use, and leave out names and personal details. Files are read on your phone and only the text is sent. A photo is sent to the AI so it can read the writing.</div></div>
 <div id="nt1"><div style="display:flex;flex-direction:column;gap:10px">
 <select id="nsub" class="in" aria-label="Subject for this pack"></select>
 <textarea id="ntx" class="in" style="min-height:150px;padding:12px;font:inherit" aria-label="Your notes" placeholder="Paste notes here (400 to 3000 characters)"></textarea>
-<div class="row" style="gap:10px"><label class="btn am" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;text-align:center">PDF, Word or text file<input type="file" accept=".pdf,.docx,.doc,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" style="display:none" onchange="nfile(this)"></label><label class="btn am" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;text-align:center">Photo of notes<input type="file" accept="image/*" multiple style="display:none" onchange="nphoto(this)"></label></div>
+<div class="row" style="gap:10px"><label class="btn am" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;text-align:center">PDF, Word, PowerPoint or text file<input type="file" accept=".pdf,.docx,.doc,.pptx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain" style="display:none" onchange="nfile(this)"></label><label class="btn am" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;text-align:center">Photo of notes<input type="file" accept="image/*" multiple style="display:none" onchange="nphoto(this)"></label></div>
 <div class="row" id="npp" style="display:none;gap:10px"><button class="btn ghost" onclick="npart(-1)">‹ Previous part</button><span class="mu" id="npl"></span><button class="btn ghost" onclick="npart(1)">Next part ›</button></div>
 <button class="btn ghost" onclick="nsample()" style="align-self:flex-start">Use sample notes</button>
 <button class="btn" onclick="nrun()">Make my pack</button>
@@ -301,6 +351,7 @@ let parts=[],pi=0,XM=null;
 async function ext(){return XM||(XM=await import('/extract.mjs'))}
 async function loadPdfjs(){const m=await import('/vendor/pdf.min.mjs');m.GlobalWorkerOptions.workerSrc='/vendor/pdf.worker.min.mjs';return m}
 async function loadUnzip(){return (await import('/vendor/fflate.mjs')).unzipSync}
+function pptxText(bytes,unzip){const files=unzip(bytes),names=Object.keys(files).filter(n=>/^ppt\/slides\/slide\d+\.xml$/i.test(n)).sort((a,b)=>Number(a.match(/slide(\d+)/i)[1])-Number(b.match(/slide(\d+)/i)[1]));if(!names.length)throw new Error('No readable slide text found in this PowerPoint.');const dec=new TextDecoder(),out=[];for(const name of names){const xml=dec.decode(files[name]),doc=new DOMParser().parseFromString(xml,'application/xml');if(doc.querySelector('parsererror'))continue;const lines=[...doc.getElementsByTagNameNS('*','t')].map(n=>n.textContent.trim()).filter(Boolean);if(lines.length)out.push(lines.join(' '))}const text=out.join('\n\n');if(!text.trim())throw new Error('No readable slide text found in this PowerPoint.');return text}
 function showPart(msg){$('#ntx').value=parts[pi]||'';$('#npp').style.display=parts.length>1?'flex':'none';$('#npl').textContent='Part '+(pi+1)+' of '+parts.length;if(msg)$('#nf').textContent=msg}
 function setParts(X,text,msg){parts=X.chunkText(text);pi=0;if(!parts.length)throw new Error('NO_TEXT');showPart(msg+(parts.length>1?' It has '+parts.length+' parts. Make one pack per part.':''))}
 function npart(d){parts[pi]=$('#ntx').value;pi=Math.max(0,Math.min(parts.length-1,pi+d));showPart('Check the text, then tap Make my pack.')}
@@ -308,9 +359,11 @@ async function nfile(i){const f=i.files[0];i.value='';if(!f)return;const n=f.nam
 try{
 if(n.endsWith('.txt')||f.type==='text/plain'){if(f.size>400000)return say('That file is too big. Paste the key part instead.');const X=await ext();setParts(X,await f.text(),'Text file loaded. Check it, then tap Make my pack.')}
 else if(n.endsWith('.docx')){if(f.size>8e6)return say('That file is too big (over 8 MB).');say('Reading the Word file on your phone…');const X=await ext(),un=await loadUnzip();const t=X.docxText(new Uint8Array(await f.arrayBuffer()),un);if(!t.trim())throw new Error('NO_TEXT');setParts(X,t,'Word file read on your phone. Check it, then tap Make my pack.')}
+else if(n.endsWith('.pptx')){if(f.size>15e6)return say('That PowerPoint is too big (over 15 MB).');say('Reading slide text on your phone…');const un=await loadUnzip(),t=pptxText(new Uint8Array(await f.arrayBuffer()),un),X=await ext();setParts(X,t,'PowerPoint slide text extracted on your phone. Review it, then tap Make my pack.')}
 else if(n.endsWith('.pdf')||f.type==='application/pdf'){if(f.size>15e6)return say('That PDF is too big (over 15 MB).');say('Reading the PDF on your phone… the first time, this loads a small reader (up to about 2 MB), then it is saved.');const X=await ext(),pj=await loadPdfjs();const r=await X.pdfText(new Uint8Array(await f.arrayBuffer()),pj);setParts(X,r.text,'PDF read on your phone ('+r.read+' of '+r.pages+' pages). Check it, then tap Make my pack.')}
 else if(n.endsWith('.doc'))say('Old .doc files are not supported. In Word, choose Save As .docx or PDF, then try again.');
-else say('Choose a PDF, Word (.docx) or text file, or use Photo of notes.')
+else if(n.endsWith('.ppt'))say('Older .ppt files cannot be converted here yet. Open in PowerPoint and Save As .pptx, then try again.');
+else say('Choose a PDF, Word (.docx), PowerPoint (.pptx) or text file, or use Photo of notes.')
 }catch(e){say(e.message==='NO_TEXT'?'No text found. If this is scanned or handwritten, use Photo of notes.':e.message&&e.message.includes('Word')?e.message:'Could not read that file. Try another one, or paste the text.')}}
 async function shrink(file){const url=URL.createObjectURL(file);try{const img=await new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=url});const sc=Math.min(1,1400/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);return c.toDataURL('image/jpeg',0.72)}finally{URL.revokeObjectURL(url)}}
 async function nphoto(i){const all=[...i.files];i.value='';if(!all.length)return;const say=t=>{$('#nf').textContent=t};
@@ -342,7 +395,8 @@ function openMine(i){cur=Object.assign({saved:true},mine[i]);showPack()}
 function nreset(){$('#nhead').style.display='flex';$('#nt1').hidden=false;$('#nres').hidden=true;$('#nprog').hidden=true;$('#nf').textContent='Add a file or photo, or paste your notes above.'}
 function renderMine(){const c=$('#np');c.innerHTML='';mine.forEach((p,i)=>{const b=el('button','','pk row');const s2=el('span');s2.append(el('b',p.lesson.title),document.createElement('br'),el('span',(p.subject?p.subject+' \u00b7 ':'')+(p.imported?'Imported':'From your notes')+' \u00b7 Draft \u00b7 Ready offline','mu'));b.append(s2,el('span','Open','chip'));b.onclick=()=>openMine(i);c.append(b)})}
 const LAN=location.protocol==='http:'&&location.hostname!=='localhost';
-function home(){$('#cw').style.display=LAN?'block':'none';renderSubj();renderMine();renderShare();fillNsub();fillAsub();$('#mnl').style.display=mine.length?'block':'none';const live=chosen&&chosen.includes('Biology');let id=null,had=false;try{id=localStorage.getItem('sabipack.last');had=!!id}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;const pk=id&&bio.packs[id];
+function classroomAccess(){if(LAN){location.href='/classroom';return}toast('Join your teacher’s Wi-Fi, then open the classroom address shared by your teacher.');}
+function home(){$('#cw').style.display=LAN?'block':'none';renderSubj();renderMine();renderShare();fillNsub();fillAsub();$('#mnl').style.display=mine.length?'block':'none';const statP=$('#ds-packs'),statS=$('#ds-subjects'),statT=$('#ds-topics');if(statP)statP.textContent=mine.length;if(statS)statS.textContent=(chosen||[]).length;if(statT)statT.textContent=(bio.index||[]).filter(p=>bio.packs[p.id]).length;const live=chosen&&chosen.includes('Biology');let id=null,had=false;try{id=localStorage.getItem('sabipack.last');had=!!id}catch(e){}if(!id||!bio.packs[id])id=(bio.index[0]||{}).id;const pk=id&&bio.packs[id];
 if(live&&pk){$('#hl').textContent=had?'CONTINUE':'START HERE';$('#ht').textContent=pk.lesson.title;$('#hs2').textContent='Biology \u00b7 works offline'}else{$('#hl').textContent='START HERE';$('#ht').textContent='Ask the AI for a lesson';$('#hs2').textContent='Type any topic \u00b7 works offline once saved'}}
 let bio={index:[],packs:{}};
 try{bio=JSON.parse(localStorage.getItem('sabipack.bio'))||bio}catch(e){}
@@ -370,7 +424,7 @@ try{const file=new File([data],fname,{type:'text/plain'});if(navigator.canShare&
 try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'text/plain'}));a.download=fname;document.body.append(a);a.click();a.remove();toast('Saved as a file. Send it by Bluetooth or Nearby Share from your Files app.')}catch(e){toast('Sharing is not available on this phone.')}}
 function allPacks(){return[...bio.index.filter(p=>bio.packs[p.id]).map(p=>Object.assign({title:p.title,sub:'JAMB Biology'},bio.packs[p.id])),...mine.map(p=>Object.assign({title:p.lesson.title,sub:p.imported?'Imported pack':'Your notes'},p))]}
 function shareAll(){const l=allPacks();if(!l.length){toast('No packs to send yet.');return}sharePacks(l,'SabiPack-packs')}
-function renderShare(){const c=$('#shl');if(!c)return;c.innerHTML='';allPacks().forEach(p=>{const r=el('div','','card row');const s2=el('span');s2.append(el('b',p.title),document.createElement('br'),el('span',p.sub,'mu'));const b=el('button','Send','btn');b.onclick=()=>sharePacks([p],p.title);r.append(s2,b);c.append(r)});if(!c.children.length)c.append(el('div','Packs appear here once the app has loaded them with data.','mu'))}
+function renderShare(){const c=$('#shl');if(!c)return;c.innerHTML='';allPacks().forEach(p=>{const r=el('div','','share-card');const ic=el('div','PK','share-symbol');const s2=el('div');s2.style.minWidth='0';s2.append(el('b',p.title),document.createElement('br'),el('span',p.sub,'mu'));const b=el('button','Send','btn');b.onclick=()=>sharePacks([p],p.title);r.append(ic,s2,b);c.append(r)});if(!c.children.length)c.append(el('div','No packs yet. Create or download a learning pack first, then it will appear here ready to share.','mu'))}
 const str=(v,n)=>typeof v==='string'&&v.length>0&&v.length<=(n||3000);
 function cleanPack(p){const l=p&&p.lesson;if(!l||!str(l.title,120)||!str(l.body,3000))throw 0;const qs=p.questions;if(!Array.isArray(qs)||!qs.length||qs.length>12)throw 0;
 const questions=qs.map(q=>{if(!str(q.stem,400)||!Array.isArray(q.options)||q.options.length!==4||!q.options.every(o=>str(o,200))||!Number.isInteger(q.answer_index)||q.answer_index<0||q.answer_index>3||!str(q.explanation,600))throw 0;return{stem:q.stem,options:q.options.slice(),answer_index:q.answer_index,explanation:q.explanation,objective_hint:str(q.objective_hint,200)?q.objective_hint:''}});
