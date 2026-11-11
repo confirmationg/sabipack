@@ -22,6 +22,7 @@ sabipack/
   api/               Small server programs that run on Vercel
     try.js             Public "Try the AI" (no passcode)
     generate.js        Private Pack Maker (needs MAKER_PASSCODE)
+    lesson.js          Ask the AI: a typed topic becomes a lesson, quiz and simple diagrams
     read-notes.js      Reads handwritten or printed notes from photos (vision model)
     account.js         Optional email accounts and small backup of subjects and packs
   lib/               Shared code
@@ -61,6 +62,7 @@ sabipack/
 Never put keys in files or in GitHub.
 
 ## What is real today
+- Ask the AI: type a topic, get a layered lesson with quiz and simple drawn diagrams (flow, cycle, parts); save it, work offline, share it
 - Optional accounts (email and password) with a small backup of subjects and packs, or carry on as a guest; a time-of-day greeting with the student's name
 - Subject picker (all Nigerian exam subjects hidden until chosen), changeable any time
 - Notes to pack from pasted text, PDF, Word (.docx) and text files (read on the phone), and photos of handwritten notes (read by the AI vision model, then checked by the student)
