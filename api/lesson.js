@@ -16,5 +16,5 @@ export default async function handler(req, res) {
     const out = await generateLesson({ topic, subject, key, model });
     if (out.error) return res.status(422).json({ error: 'That topic is not suitable for a school lesson. Try a school topic.' });
     return res.status(200).json({ ...out, meta: { status: 'draft', model, generated_at: new Date().toISOString() } });
-  } catch { return res.status(502).json({ error: 'The AI could not write a good lesson this time. Please try again.' }); }
+  } catch (e) { return res.status(502).json({ error: 'The AI could not write a good lesson this time. Please try again.', detail: String(e && e.message || '').slice(0, 220) }); }
 }
