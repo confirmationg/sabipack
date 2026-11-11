@@ -398,7 +398,7 @@ let profile=null,token=null;try{profile=JSON.parse(localStorage.getItem(PK)||'nu
 function setProfile(p){profile=p;try{localStorage.setItem(PK,JSON.stringify(p))}catch(e){}greet()}
 function setToken(t){token=t;try{t?localStorage.setItem(TK,t):localStorage.removeItem(TK)}catch(e){}}
 function greetParts(dt){dt=dt||new Date();const h=dt.getHours();let g;if(h>=5&&h<12)g='Good morning';else if(h>=12&&h<17)g='Good afternoon';else if(h>=17&&h<22)g='Good evening';else g=['Burning the midnight oil','Night owl hours','Still up'][dt.getDate()%3];return[g,profile&&profile.name?profile.name:'Welcome']}
-function greet(){const g=greetParts();$('#gh').textContent=g[0];$('#greet').textContent=g[1]}
+function greet(){const g=greetParts();$('#gh').textContent=g[0];$('#greet').textContent=String(g[1]).split(' ')[0]}
 async function acct(body){const r=await fetch('/api/account',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(d.error||'Something went wrong.');return d}
 let syncT=null;
 function scheduleSync(){if(!token)return;clearTimeout(syncT);syncT=setTimeout(syncUp,1500)}
@@ -463,9 +463,9 @@ function fillAsub(){const s=$('#asub');if(!s)return;const keep=s.value;s.innerHT
 function askFor(n){go('ask');fillAsub();if(n&&[...$('#asub').options].some(o=>o.value===n))$('#asub').value=n}
 async function askRun(){const t=$('#aq').value.trim(),p=$('#ap'),b=$('#ago');if(t.length<3){toast('Type a topic first.');return}if(off){toast('The AI needs data once. Go online first.');return}
 b.disabled=true;p.hidden=false;p.textContent='The AI is writing your lesson\u2026 this can take up to a minute.';
-try{const r=await fetch('/api/lesson',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({topic:t,subject:$('#asub').value})});const txt=await r.text();let d={};try{d=JSON.parse(txt)}catch(e){}if(!r.ok)throw new Error(d.error||'Something went wrong. Please try again.');
+try{const r=await fetch('/api/lesson',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({topic:t,subject:$('#asub').value})});const txt=await r.text();let d={};try{d=JSON.parse(txt)}catch(e){}if(!r.ok){const er=new Error(d.error||'Something went wrong. Please try again.');er.detail=d.detail;throw er}
 const c=cleanPack({lesson:d.lesson,questions:d.questions,subject:$('#asub').value});c.imported=false;c.meta={status:'draft',note:'Written by AI from the topic you typed. It has not been checked. Compare it with your textbook or ask your teacher.',data_kb:Math.max(1,Math.round(txt.length/1024)),topic:t};cur=c;p.hidden=true;showPack();toast('Done. Save it to use it with no data.')}
-catch(e){p.hidden=true;const m=e&&e.message;toast(m==='Failed to fetch'?'No connection. Try again when you have data.':m||'The lesson was not usable. Please try again.')}b.disabled=false}
+catch(e){const m=e&&e.message,msg=m==='Failed to fetch'?'No connection. Try again when you have data.':m||'The lesson was not usable. Please try again.';p.hidden=false;p.textContent=msg+(e&&e.detail?' Details: '+e.detail:'');toast(msg)}b.disabled=false}
 function netUi(){$('#net').classList.toggle('off',off);$('#nt').textContent=off?'Offline':'Online'}
 window.addEventListener('offline',()=>{off=true;netUi();toast('You are offline. Saved packs still work.')});
 window.addEventListener('online',()=>{off=false;netUi();toast('Back online.')});
