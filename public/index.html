@@ -324,11 +324,12 @@ Object.keys(G).forEach(k=>$('#s-'+k).insertAdjacentHTML('afterbegin','<div class
 let ti=0;
 const TS=[[null,'Hi, I’m Sabi! Let me show you around. It takes six quick steps.',null],
 ['#net','This shows if you are online. SabiPack works the same offline. Tap it to try airplane mode.',null],
+['#teacher-link','Teacher: open your classroom workspace here. On a Windows laptop, start the classroom launcher first. From the dashboard you can publish materials and share the student access address.',null],
 ['[data-t=home]','Learn: your chosen subjects and packs. They work offline, even with the screen off.','home'],
 ['[data-t=prac]','Practice: quick quiz questions, like SMS. They find your weak spots.','prac'],
 ['[data-t=share]','Share: send a pack to a classmate by Bluetooth or Nearby Share, or import one you received. No data used.','share'],
 ['[data-t=ussd]','USSD: no data on your phone? Dial a code and learn on any phone.','ussd']];
-function tour(i){ti=i;const t=TS[i];$('#tr').hidden=false;if(t[2])go(t[2]);const P=$('.phone').getBoundingClientRect(),s=$('#tr-s'),c=$('#tr-c');
+function tour(i){ti=i;const t=TS[i];$('#tr').hidden=false;if(t[2])go(t[2]);if(t[0]==='#teacher-link')$('#teacher-link').style.display='inline-flex';const P=$('.phone').getBoundingClientRect(),s=$('#tr-s'),c=$('#tr-c');
 if(t[0]){const r=$(t[0]).getBoundingClientRect();Object.assign(s.style,{left:(r.left-P.left-4)+'px',top:(r.top-P.top-4)+'px',width:(r.width+8)+'px',height:(r.height+8)+'px'});
 const low=r.top-P.top>P.height/2;c.style.top=low?'auto':(r.bottom-P.top+14)+'px';c.style.bottom=low?(P.bottom-r.top+14)+'px':'auto'}
 else{Object.assign(s.style,{left:'50%',top:'45%',width:'0px',height:'0px'});c.style.top='30%';c.style.bottom='auto'}

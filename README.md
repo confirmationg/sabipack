@@ -99,3 +99,9 @@ Never put keys in files or in GitHub.
 4. The Teacher Dashboard opens automatically. Turn on Windows Mobile Hotspot or join classroom Wi-Fi.
 5. Copy the student access address displayed on the dashboard and share it with the class.
 See `classroom/README.md` for details.
+
+## Windows teacher classroom
+
+For a guided setup and explanation of the local classroom, built-in packs, teacher uploads, AI API connection, and hackathon demo flow, see [SABIPACK_HACKATHON_GUIDE.md](SABIPACK_HACKATHON_GUIDE.md).
+
+Double-click `START_SABIPACK_CLASSROOM.bat` on Windows. The launcher selects an available port starting at 8080. Optional AI proxy configuration is documented in `classroom/settings.example.bat`.
